@@ -1,0 +1,45 @@
+{
+    "extName": {
+        "message": "Comic Viewer"
+    },
+
+    "extDescription": {
+        "message": ""
+    },
+
+    "actionLinkReaderText" : {
+        "message": "Reader"
+    },
+
+    "loading": {
+        "message": "Loading"
+    },
+
+    "parsing_page": {
+        "message": "Parsing page"
+    },
+
+    "loading_image": {
+        "message": "Loading image"
+    },
+
+    "completed" : {
+        "message": "Completed"
+    },
+
+    "parsed" : {
+        "message": "Parsed"
+    },
+
+    "page_s": {
+        "message": "page(s)"
+    },
+
+    "create_containers_for_images": {
+        "message": "Create containers for images"
+    },
+
+    "image_s": {
+        "message": "image(s)"
+    }
+}
