@@ -2,7 +2,6 @@
     <div class="row">
         <div v-if="showInfo" class="col-md-12">
             <div class="site">{{site}}</div>
-            <div class="title">{{comicTitle}}</div>
             <button class="btn btn-default"
                     @click="startReadClickHandle">{{startRead}}</button>
         </div>
@@ -20,7 +19,6 @@
         data () {
             return {
                 showInfo: true,
-                comicTitle: "unkown comic",
                 startRead: _('start_read'),
                 site: "unkown site",
                 parser: null,
@@ -38,7 +36,6 @@
                         tabId: tabs[0].id
                     }
                 }, (response) => {
-                    _this.comicTitle = response.data.title;
                     _this.site = response.data.site;
                     _this.requestUrl = response.data.url;
                     _this.parser = response.data.parser;
@@ -56,7 +53,6 @@
                         chrome.extension.getURL('./pages/comic_viewer.html')
                     );
                     url.setParams({
-                        title: this.comicTitle,
                         url  : this.requestUrl,
                         name : this.parser
                     });

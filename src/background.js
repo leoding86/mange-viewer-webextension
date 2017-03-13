@@ -7,8 +7,6 @@ chrome.webRequest.onCompleted.addListener((details) => {
     matcher.setUrl(details.url);
     if (name = matcher.is()) {
         if (details.tabId > 1) {
-            chrome.tabs.executeScript(details.tabId, {file: './build/bundle.injectscript.js'});
-
             tabStack.add(
                 details.tabId,
                 { parser: name, site: matcher.site(name), url: details.url }
@@ -27,7 +25,5 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (responseData) {
             sendResponse({ data: responseData });
         }
-    } else if (request.from === 'frontpage' && request.data.op === 'setComicTitle') {
-        tabStack.set(sender.tab.id, 'title', request.data.title);
     }
 });

@@ -4,8 +4,11 @@
     <div class="comic-slider"
          :style="{ width: wrapperWidth + 'px', height: wrapperHeight + 'px' }"
          @click="_to">
-        <div class="info">
+        <div class="info" :class="{'info-hidden': infoHidden}" @click="infoClickHandle">
             <input type="text" v-model="_currentPage" @input="pageChangeInput"> / <span class="total-page">{{totalPage}}</span>
+        </div>
+        <div class="process-bar" @mouseover="processBarMouseoverHandle">
+            <div class="process-line" :style="{width: processWidth + '%'}"></div>
         </div>
         <div class="items-wrapper"
              ref="itemsWrapper"
@@ -54,8 +57,10 @@
                 currentPage: 1,
                 totalPage  : 0,
 
+                infoHidden: false,
+
                 isMoved: false,
-                itemsWrapperTransition: 'all 0.5s',
+                itemsWrapperTransition: 'all 0.6s',
                 direction: 0
             }
         },
@@ -76,6 +81,9 @@
                         this.currentPage = val;
                     }
                 }
+            },
+            processWidth () {
+                return Math.round(this._currentPage / this.totalPage * 100);
             }
         },
 
@@ -209,6 +217,15 @@
                 }
             },
 
+            infoClickHandle (evt) {
+                evt.stopPropagation();
+                this.infoHidden = true;
+            },
+
+            processBarMouseoverHandle (evt) {
+                this.infoHidden = false;
+            },
+
             recomputeGalleryPosition () {
                 this.$refs.gallery.forEach((gallery) => {
                     gallery.$el.style.left = (gallery.extras.page - 1) * this.wrapperWidth + 'px';
@@ -221,14 +238,49 @@
 <style lang="sass">
     .comic-slider {
         position: fixed;
+        top: 0;
+        left: 0;
         overflow: hidden;
         background: #000;
 
         .info {
-            position: absolute;
+            position: relative;
+            padding: 5px 0;
             width: 100%;
             text-align: center;
             z-index: 10;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            transition: all 0.1s;
+
+            input {
+                background:rgba(255, 255, 255, 0.6);
+                border: none;
+                border-radius: 3px;
+                width: 5em;
+                text-align: center;
+            }
+        }
+
+        .info-hidden {
+            margin-top: -32px;
+        }
+
+        .process-bar {
+            position: relative;
+            width: 100%;
+            height: 2px;
+            left: 0px;
+            bottom: 0px;
+            z-index: 10;
+
+            .process-line {
+                position: absolute;
+                height: 2px;
+                left: 0;
+                background: #9acbff;
+                transition: all 0.5s;
+            }
         }
 
         .action-area {

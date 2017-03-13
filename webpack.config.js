@@ -5,8 +5,7 @@ module.exports = {
   entry: {
     main: './src/main.js',
     popup: './src/popup.js',
-    background: './src/background.js',
-    injectscript: './src/injectscript.js'
+    background: './src/background.js'
   },
   output: {
     path: path.resolve(__dirname, './package/build'),

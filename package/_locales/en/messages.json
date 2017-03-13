@@ -11,6 +11,10 @@
         "message": "Start Read"
     },
 
+    "refresh_target_page": {
+        "message": "Refresh the comic page and try again"
+    },
+
     "actionLinkReaderText" : {
         "message": "Reader"
     },

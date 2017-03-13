@@ -8,7 +8,7 @@
         <div class="row" v-if="parserReady">
             <div class="col-md-12">
                 <comic-slider :parser="parser"
-                              :preloadPage="5"></comic-slider>
+                              :preloadPage="3"></comic-slider>
             </div>
         </div>
     </div>
