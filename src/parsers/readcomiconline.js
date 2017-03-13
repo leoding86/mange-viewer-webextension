@@ -1,0 +1,1 @@
+import * as Common from '../modules/common';

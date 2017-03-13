@@ -19,7 +19,8 @@
     "permissions": [
         "webRequest",
         // "*://*.e-hentai.org/*",
-        "*://*.readcomics.tv/*"
+        "*://*.readcomics.tv/*",
+        "*://*.readcomiconline.to/*"
     ],
 
     "background": {

@@ -1,5 +1,6 @@
 const _r = {
-    readcomics: /^https?:\/{2}w{3}\.readcomics\.tv\/[^\/]+\/chapter-[\d]+/i
+    readcomics: /^https?:\/{2}w{3}\.readcomics\.tv\/[^\/]+\/chapter-[\d]+/i,
+    readcomiconline: /^https?:\/{2}w{0,3}?\.readcomiconline\.to\/Comic\/[^\/]+\/Issue-[\d]+\?id=[\d]+/,
 }
 
 function Matcher(url) {
@@ -14,6 +15,10 @@ Matcher.prototype.rules = {
     'readcomics': {
        pattern: _r.readcomics,
        site: 'readcomics.tv'
+    },
+    'readcomiconline': {
+        pattern: _r.readcomiconline,
+        site: 'readcomiconline.to'
     }
 };
 
