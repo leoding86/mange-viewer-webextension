@@ -1,10 +1,14 @@
 {
     "extName": {
-        "message": "Comic Viewer"
+        "message": "漫画阅读器"
     },
 
     "extDescription": {
         "message": ""
+    },
+
+    "start_read": {
+        "message": "开始阅读"
     },
 
     "actionLinkReaderText" : {
@@ -12,34 +16,34 @@
     },
 
     "loading": {
-        "message": "Loading"
+        "message": "加载中"
     },
 
     "parsing_page": {
-        "message": "Parsing page"
+        "message": "解析页面"
     },
 
     "loading_image": {
-        "message": "Loading image"
+        "message": "加载图片"
     },
 
     "completed" : {
-        "message": "Completed"
+        "message": "已完成"
     },
 
     "parsed" : {
-        "message": "Parsed"
+        "message": "已解析"
     },
 
     "page_s": {
-        "message": "page(s)"
+        "message": "分页"
     },
 
     "create_containers_for_images": {
-        "message": "Create containers for images"
+        "message": "加载图片容器"
     },
 
     "image_s": {
-        "message": "image(s)"
+        "message": "图片"
     }
 }

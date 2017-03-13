@@ -2,11 +2,16 @@ var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
-  entry: './src/main.js',
+  entry: {
+    main: './src/main.js',
+    popup: './src/popup.js',
+    background: './src/background.js',
+    injectscript: './src/injectscript.js'
+  },
   output: {
-    path: path.resolve(__dirname, './build'),
+    path: path.resolve(__dirname, './package/build'),
     publicPath: '../build/',
-    filename: 'bundle.js'
+    filename: 'bundle.[name].js'
   },
   module: {
     rules: [

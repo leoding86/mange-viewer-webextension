@@ -33,10 +33,12 @@
             },
             datasets     : {
                 type: Array,
-                default: []
+                default () {
+                    return [];
+                }
             },
             preloadPage: {
-                type   : Number,
+                type   : [Number, String],
                 default: 2
             }
         },
@@ -104,6 +106,22 @@
         },
 
         methods: {
+            getImgSrc (gallery) {
+                if (this.parser) {
+                    this.parser.getImgSrc(gallery.extras.page, this.setGalleryImgSrcCallback, this);
+                } else {
+                    gallery.imgSrc = this.datasets[gallery.extras.page - 1];
+                }
+            },
+
+            isValidIndex (index) {
+                if (this.parser) {
+                    return this.parser.isValidIndex(index);
+                } else {
+                    return this.datasets[index];
+                }
+            },
+
             setControl (startPage) {
                 this.$refs.gallery.forEach((gallery) => {
                     gallery.extras = { page: startPage };
@@ -116,7 +134,7 @@
             setControlAsync (startPage) {
                 this.$refs.gallery.forEach((gallery) => {
                     gallery.extras = { page: startPage };
-                    this.parser(this.setGalleryImgSrcCallback);
+                    this.parser.getImgSrc(startPage, this.setGalleryImgSrcCallback, this);
                     gallery.$el.style.left = (gallery.extras.page - 1) * this.wrapperWidth + 'px';
                     startPage++;
                 });
@@ -161,7 +179,7 @@
                 this.$refs.gallery[0].extras = { page: this.currentPage - 1 };
                 this.$refs.gallery[0].$el.style.left = (this.$refs.gallery[0].extras.page - 1) * this.wrapperWidth + 'px';
 
-                this.$refs.gallery[0].imgSrc = this.datasets[this.currentPage - 2];
+                this.getImgSrc(this.$refs.gallery[0]);
             },
 
             transitionNextComplete () {
@@ -170,8 +188,8 @@
                 this.$refs.gallery[this.preloadPage].extras = { page: parseInt(this.currentPage) + parseInt(this.preloadPage) };
                 this.$refs.gallery[this.preloadPage].$el.style.left = (this.$refs.gallery[this.preloadPage].extras.page - 1) * this.wrapperWidth + 'px';
 
-                if (this.datasets[this.currentPage + this.preloadPage]) {
-                    this.$refs.gallery[this.preloadPage].imgSrc = this.datasets[this.$refs.gallery[this.preloadPage].extras.page - 1];
+                if (this.isValidIndex(this.currentPage + this.preloadPage)) {
+                    this.getImgSrc(this.$refs.gallery[this.preloadPage]);
                 }
             },
 
@@ -223,7 +241,7 @@
             top: 0;
             left: 0;
             z-index: 9;
-            transition: all 0.5s;
+            transition: all 0.8s;
 
             .item {
                 position: absolute;
