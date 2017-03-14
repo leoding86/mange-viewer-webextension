@@ -7,12 +7,38 @@ function Parser(url) {
 }
 
 Parser.prototype.init = function () {
+    let _this = this;
+    chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
+        details.requestHeaders.push({
+            name: "Referer",
+            value: _this.geturl()
+        });
+        let headers = details.requestHeaders;
+        return { requestHeaders: headers };
+    }, { urls: ['*://*.readcomics.tv/*'], types: ['xmlhttprequest'] }, [ 'requestHeaders', 'blocking' ]);
+
     return new Promise((resolve, reject) => {
         let matches = this.url.match(Common._r.readcomics);
         if (matches) {
             this.getDocument(matches[0] + '/full', resolve, reject);
         }
     });
+}
+
+/**
+ * must implemenet
+ * @return {[type]} [description]
+ */
+Parser.prototype.geturl = function () {
+    return this.url;
+}
+
+Parser.prototype.getSiteurl = function () {
+    return 'http://readcomics.tv';
+}
+
+Parser.prototype.getSitelogo = function () {
+    return 'http://www.readcomics.tv/images/site/front/logo4.png';
 }
 
 Parser.prototype.getImgSrc = function (page, callback, context) {

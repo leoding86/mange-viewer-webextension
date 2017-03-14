@@ -8,12 +8,39 @@ function Parser(url) {
 }
 
 Parser.prototype.init = function () {
+    let _this = this;
+    
+    chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
+        details.requestHeaders.push({
+            name: "Referer",
+            value: _this.geturl()
+        });
+        let headers = details.requestHeaders;
+        return { requestHeaders: headers };
+    }, { urls: ['*://*.readcomiconline.to/*'], types: ['xmlhttprequest'] }, [ 'requestHeaders', 'blocking' ]);
+
     return new Promise((resolve, reject) => {
         let matches = this.url.match(Common._r.readcomiconline);
         if (matches) {
             this.getDocument(matches[0] + '&readType=1', resolve, reject);
         }
     });
+}
+
+/**
+ * must implemenet
+ * @return {[type]} [description]
+ */
+Parser.prototype.geturl = function () {
+    return this.url;
+}
+
+Parser.prototype.getSiteurl = function () {
+    return 'http://readcomiconline.to';
+}
+
+Parser.prototype.getSitelogo = function () {
+    return 'http://readcomiconline.to/Content/images/logo.png';
 }
 
 Parser.prototype.getImgSrc = function (page, callback, context) {
@@ -33,8 +60,12 @@ Parser.prototype.getDocument = function(url, resolve, reject) {
     let xhr = new XMLHttpRequest();
     xhr.open('GET', url);
     xhr.onload = function () {
+        if (xhr.responseURL.indexOf('Special/AreYouHuman') > -1) {
+            reject(_('check_issue'));
+        }
+
         if ((xhr.status + "").indexOf("5") == 0) {
-            alert(_('refresh_target_page'));
+            reject(_('refresh_target_page'));
         } else {
             _this.parserDocument(xhr.responseText);
             resolve(_this);
