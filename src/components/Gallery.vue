@@ -199,7 +199,7 @@
             },
 
             imageMouseMoveHandler (e) {
-                if (!this.mousemoved) {
+                if (!this.mousemoved && (e.movementX > 0 || e.movementY > 0)) {
                     this.mousemoved = true;
                     return;
                 }
