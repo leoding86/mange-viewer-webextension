@@ -1,15 +1,16 @@
 <template>
-    <div class="row">
-        <div v-if="showInfo" class="col-md-12">
-            <div class="site">{{site}}</div>
-            <button class="btn btn-default"
-                    @click="startReadClickHandle">{{startRead}}</button>
+    <div class="popup-content">
+        <div v-if="!showInfo">
+            <p class="not-supported">{{not_supported}}</p>
+        </div>
+        <div v-if="showInfo" class="site-info">
+            <div class="site"><img :src="logo" :alt="site"></div>
+            <div class="button" @click="startReadClickHandle">{{startRead}}</div>
         </div>
     </div>
 </template>
 
 <script>
-    import 'bootstrap/dist/css/bootstrap.css';
     import _ from './modules/_';
     import { UrlBuilder } from './modules/common';
 
@@ -18,11 +19,18 @@
 
         data () {
             return {
-                showInfo: true,
+                showInfo: false,
                 startRead: _('start_read'),
                 site: "unkown site",
+                logo: null,
                 parser: null,
                 requestUrl: null
+            }
+        },
+
+        computed: {
+            not_supported () {
+                return _('not_supported');
             }
         },
 
@@ -36,14 +44,20 @@
                         tabId: tabs[0].id
                     }
                 }, (response) => {
-                    _this.site = response.data.site;
-                    _this.requestUrl = response.data.url;
-                    _this.parser = response.data.parser;
+                    console.log(response);
+                    if (response) {
+                        _this.showInfo = true;
+                        _this.site = response.data.site;
+                        _this.logo = response.data.logo;
+                        _this.requestUrl = response.data.url;
+                        _this.parser = response.data.parser;
+                    }
                 })
             });
         },
 
         mounted () {
+            
         },
 
         methods: {
@@ -63,4 +77,38 @@
     }
 </script>
 
-<style></style>
+<style lang="sass">
+    body {
+        background: #101010;
+    }
+
+    .popup-content {
+        width: 200px;
+
+        .not-supported {
+            color: #fff;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .site-info {
+            img {
+                width: 200px;
+            }
+
+            .button {
+                padding: 5px 0;
+                text-align: center;
+                background: #008fd4;
+                border: 1px solid #1ba7ec;
+                color: #f1faff;
+                font-size: 14px;
+                cursor: pointer;
+            }
+
+            .button:hover {
+                box-shadow: 0 0px 8px #9cdcfb
+            }
+        }
+    }
+</style>

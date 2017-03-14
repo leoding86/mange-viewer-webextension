@@ -1,6 +1,7 @@
 const _r = {
     readcomics: /^https?:\/{2}w{3}\.readcomics\.tv\/[^\/]+\/chapter-[\d]+/i,
-    readcomiconline: /^https?:\/{2}readcomiconline\.to\/Comic\/[^\/]+\/Issue-[\d]+\?id=[\d]+/
+    readcomiconline: /^https?:\/{2}readcomiconline\.to\/Comic\/[^\/]+\/[^\/]+\?id=[\d]+/,
+    dm5: /^https?:\/{2}w{3}\.dm5\.com\/m([\d]+)(?:-p[\d]+)?\/?/
 }
 
 function Matcher(url) {
@@ -14,16 +15,23 @@ Matcher.prototype.setUrl = function (url) {
 Matcher.prototype.rules = {
     'readcomics': {
        pattern: _r.readcomics,
-       site: 'readcomics.tv'
+       site: 'readcomics.tv',
+       logo: 'http://www.readcomics.tv/images/site/front/logo4.png'
     },
     'readcomiconline': {
         pattern: _r.readcomiconline,
-        site: 'readcomiconline.to'
+        site: 'readcomiconline.to',
+        logo: 'http://readcomiconline.to/Content/images/logo.png'
+    },
+    'dm5': {
+        pattern: _r.dm5,
+        site: 'dm5.com',
+        logo: 'http://js16.tel.cdndm.com/v201703101145/default/images/newImages/index_main_logo.png'
     }
 };
 
 Matcher.prototype.site = function (name) {
-    return this.rules[name].site;
+    return this.rules[name];
 };
 
 Matcher.prototype.is = function () {
@@ -47,7 +55,7 @@ TabStack.prototype.get = function (tabId) {
     if (this.stack['tab' + tabId])
         return this.stack['tab' + tabId];
     else
-        return { };
+        return null;
 }
 
 TabStack.prototype.set = function (tabId, name, value) {

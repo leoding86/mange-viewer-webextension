@@ -19,6 +19,10 @@
              }"
              @dragstart="() => {return false}"
              draggable="false" @transitionend="(evt) => { evt.stopPropagation(); }" />
+        <div class="status" v-if="!isComplete"
+             :style="{ top: statusTop + 'px' }">
+            <div class="info">{{statusInfo}}</div>
+        </div>
     </div>
 </template>
 
@@ -69,6 +73,7 @@
                 imgInitOffsetTop : 0,
                 imgOffsetLeft    : 0,
                 imgOffsetTop     : 0,
+                isComplete: true,
                 pointDownX: 0,
                 pointDownY: 0,
                 pointMoveX: 0,
@@ -77,6 +82,7 @@
                 minOffsetTop: null,
                 reachedEdge : false,
                 mousemoved : false,
+                statusInfo: 'waiting',
 
                 extras : {} // For some extras data
             }
@@ -84,6 +90,7 @@
 
         watch: {
             imgSrc (val) {
+                this.isComplete = false;
                 this.imgStyle.transition = 'all 0s';
                 this.$img.src = '';
                 this.init();
@@ -98,9 +105,20 @@
             }
         },
 
+        computed: {
+            statusTop () {
+                if (this.$el && this.$el.querySelector('.status')) {
+                    return this.height / 2 - this.$el.querySelector('.status').offsetHeight;
+                } else {
+                    return this.height / 2 - 15;
+                }
+            }
+        },
+
         mounted () {
             this.$img = this.$el.querySelector('img');
             this.$img.addEventListener('load', this.imageLoadHandler);
+            this.$img.addEventListener('error', this.imgeErrorHandler);
             this.$img.addEventListener('wheel', this.imageWheelHandler);
             this.$img.addEventListener('mousedown', this.imageMouseDownHandler);
             this.imgSrc = this.srcData;
@@ -133,6 +151,8 @@
             },
 
             imageLoadHandler () {
+                this.isComplete = true;
+
                 /* How to fill wrapper */
                 this.determineImageFill();
 
@@ -143,6 +163,11 @@
                 setTimeout(() => {
                     this.imgStyle.transition = 'all 0.2s';
                 }, 500);
+            },
+
+            imageErrorHandler () {
+                this.imgSrc = null;
+                this.imgSrc = this.$img.target.src;
             },
 
             imageWheelHandler (e) {
@@ -287,3 +312,19 @@
         }
     }
 </script>
+
+<style lang="sass">
+    .gallery {
+        .status {
+            position: absolute;
+            width: 100%;
+            z-index: 99;
+            text-align: center;
+
+            .info {
+                display: inline-block;
+                color: #fff;
+            }
+        }
+    }
+</style>

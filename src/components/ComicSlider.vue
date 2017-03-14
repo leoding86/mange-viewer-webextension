@@ -4,7 +4,7 @@
     <div class="comic-slider"
          :style="{ width: wrapperWidth + 'px', height: wrapperHeight + 'px' }"
          @click="_to">
-        <div class="info" :class="{'info-hidden': infoHidden}" @click="infoClickHandle">
+        <div class="info" :style="{'margin-top': infoMTop + 'px'}" @click="infoClickHandle">
             <input type="text" v-model="_currentPage" @input="pageChangeInput"> / <span class="total-page">{{totalPage}}</span>
         </div>
         <div class="process-bar" @mouseover="processBarMouseoverHandle">
@@ -84,6 +84,13 @@
             },
             processWidth () {
                 return Math.round(this._currentPage / this.totalPage * 100);
+            },
+            infoMTop () {
+                if (this.infoHidden) {
+                    return -this.$el.querySelector('.info').offsetHeight;
+                } else {
+                    return 0;
+                }
             }
         },
 
@@ -257,13 +264,9 @@
                 background:rgba(255, 255, 255, 0.6);
                 border: none;
                 border-radius: 3px;
-                width: 5em;
+                width: 3em;
                 text-align: center;
             }
-        }
-
-        .info-hidden {
-            margin-top: -32px;
         }
 
         .process-bar {

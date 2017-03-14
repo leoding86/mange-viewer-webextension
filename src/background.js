@@ -7,9 +7,23 @@ chrome.webRequest.onCompleted.addListener((details) => {
     matcher.setUrl(details.url);
     if (name = matcher.is()) {
         if (details.tabId > 1) {
+            /* Change icon to active one */
+            setTimeout(() => {
+                chrome.browserAction.setIcon({
+                    path: {
+                        '38': '../assets/icon.png'
+                    },
+                    tabId: details.tabId
+                }, () => { console.log('icon has been setted') });
+            }, 100);
             tabStack.add(
                 details.tabId,
-                { parser: name, site: matcher.site(name), url: details.url }
+                {
+                    parser: name,
+                    site: matcher.site(name).site,
+                    url: details.url,
+                    logo: matcher.site(name).logo
+                }
             );
         }
     }
@@ -22,7 +36,7 @@ chrome.tabs.onRemoved.addListener((tabId) => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.from === 'popup' && request.data.op === 'needData') {
         var responseData = tabStack.get(request.data.tabId);
-        if (responseData) {
+        if (responseData !== null) {
             sendResponse({ data: responseData });
         }
     }
