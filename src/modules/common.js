@@ -1,7 +1,8 @@
 const _r = {
     readcomics: /^https?:\/{2}w{3}\.readcomics\.tv\/[^\/]+\/chapter-[\d]+/i,
     readcomiconline: /^https?:\/{2}readcomiconline\.to\/Comic\/[^\/]+\/[^\/]+\?id=[\d]+/,
-    dm5: /^https?:\/{2}w{3}\.dm5\.com\/m([\d]+)(?:-p[\d]+)?\/?/
+    dm5: /^https?:\/{2}w{3}\.dm5\.com\/m([\d]+)(?:-p[\d]+)?\/?/,
+    hentai2read: /^https?:\/{2}hentai2read\.com\/[^\/]+\/\d+(?:\/\d+)?\/?/
 }
 
 function Matcher(url) {
@@ -27,6 +28,11 @@ Matcher.prototype.rules = {
         pattern: _r.dm5,
         site: 'dm5.com',
         logo: 'http://js16.tel.cdndm.com/v201703101145/default/images/newImages/index_main_logo.png'
+    },
+    'hentai2read': {
+        pattern: _r.hentai2read,
+        site: 'hentai2read.com',
+        logo: 'https://hentaicdn.com/cdn/v2/assets/img/favicons/favicon-192x192.png'
     }
 };
 
