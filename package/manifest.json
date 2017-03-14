@@ -19,10 +19,7 @@
     "permissions": [
         "webRequest",
         "webRequestBlocking",
-        // "*://*.e-hentai.org/*",
-        "*://*.readcomics.tv/*",
-        "*://*.readcomiconline.to/*",
-        "*://*.dm5.com/*"
+        "<all_urls>"
     ],
 
     "background": {
