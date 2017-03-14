@@ -71,7 +71,7 @@
                     this.parser = parser;
                     this.parserReady = true;
                 }, (e) => {
-                    alert(_('initializing_parser_failed') + '[parser: ' + params.name + ']');
+                    alert(_('initializing_parser_failed') + '[' + e + '][parser: ' + params.name + ']');
                 });
             });
         },
