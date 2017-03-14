@@ -15,39 +15,19 @@
         "message": "Refresh the comic page and try again"
     },
 
-    "actionLinkReaderText" : {
-        "message": "Reader"
+    "not_supported": {
+        "message": "This page is not been supported"
     },
 
-    "loading": {
-        "message": "Loading"
+    "initializing_parser": {
+        "message": "Initializing parser"
     },
 
-    "parsing_page": {
-        "message": "Parsing page"
+    "initializing_parser_failed": {
+        "message": "Initializing parser failed"
     },
 
-    "loading_image": {
-        "message": "Loading image"
-    },
-
-    "completed" : {
-        "message": "Completed"
-    },
-
-    "parsed" : {
-        "message": "Parsed"
-    },
-
-    "page_s": {
-        "message": "page(s)"
-    },
-
-    "create_containers_for_images": {
-        "message": "Create containers for images"
-    },
-
-    "image_s": {
-        "message": "image(s)"
+    "check_issue": {
+        "message": "There was a issue about target comic page, please check it and try again"
     }
 }

@@ -11,39 +11,23 @@
         "message": "开始阅读"
     },
 
-    "actionLinkReaderText" : {
-        "message": "Reader"
+    "refresh_target_page": {
+        "message": "请刷新员网页再重试"
     },
 
-    "loading": {
-        "message": "加载中"
+    "not_supported": {
+        "message": "当前页面不被支持"
     },
 
-    "parsing_page": {
-        "message": "解析页面"
+    "initializing_parser": {
+        "message": "初始化解析器"
     },
 
-    "loading_image": {
-        "message": "加载图片"
+    "initializing_parser_failed": {
+        "message": "初始化解析器失败"
     },
 
-    "completed" : {
-        "message": "已完成"
-    },
-
-    "parsed" : {
-        "message": "已解析"
-    },
-
-    "page_s": {
-        "message": "分页"
-    },
-
-    "create_containers_for_images": {
-        "message": "加载图片容器"
-    },
-
-    "image_s": {
-        "message": "图片"
+    "check_issue": {
+        "message": "请检查原网页是否异常，然后重试"
     }
 }
