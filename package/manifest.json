@@ -2,6 +2,7 @@
     "manifest_version": 2,
 
     "name": "__MSG_extName__",
+    "short_name": "CVR",
     "description": "__MSG_extDescription__",
     "version": "0.1",
     "default_locale": "en",
@@ -16,6 +17,7 @@
         "default_popup": "./pages/popup.html",
         "default_title": "__MSG_extName__"
     },
+
     "permissions": [
         "webRequest",
         "webRequestBlocking",
