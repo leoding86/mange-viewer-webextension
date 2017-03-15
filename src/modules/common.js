@@ -6,6 +6,7 @@ const _r = {
 }
 
 function Matcher(url) {
+    this.rule = null;
     this.setUrl(url);
 }
 
@@ -43,11 +44,16 @@ Matcher.prototype.site = function (name) {
 Matcher.prototype.is = function () {
     for (var name in this.rules) {
         if (this.rules[name].pattern.test(this.url)) {
+            this.rule = this.rules[name];
             return name;
         }
     }
     return null;
-}
+};
+
+Matcher.prototype.origin = function () {
+    return '*://*.' + this.rule.site + '/*';
+};
 
 function TabStack () {
     this.stack = { };
