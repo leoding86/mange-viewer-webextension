@@ -220,7 +220,7 @@
                 if (evt.target.value > 0 && evt.target.value <= this.totalPage) {
                     this.parser ? this.setControlAsync(evt.target.value) : this.setControl(evt.target.value);
                 } else {
-                    console.notice('Invalid input page number');
+                    window.console && console.log('Invalid input page number');
                 }
             },
 
