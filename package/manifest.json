@@ -17,6 +17,7 @@
         "default_popup": "./pages/popup.html",
         "default_title": "__MSG_extName__"
     },
+
     "permissions": [
         "webRequest",
         "webRequestBlocking",
