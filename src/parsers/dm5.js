@@ -32,6 +32,15 @@ Parser.prototype.init = function () {
         return { requestHeaders: headers };
     }, { urls: ['*://*.dm5.com/*'], types: ['xmlhttprequest'] }, [ 'requestHeaders', 'blocking' ]);
 
+    chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
+        details.requestHeaders.push({
+            name: "Referer",
+            value: _this.geturl()
+        });
+        let headers = details.requestHeaders;
+        return { requestHeaders: headers };
+    }, { urls: ['*://*.cdndm5.com/*'] }, [ 'requestHeaders', 'blocking' ]);
+
     return new Promise((resolve, reject) => {
         this.getDocument(this.url, resolve, reject);
     });
