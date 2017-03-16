@@ -16,7 +16,7 @@ class Parser extends BaseParser {
 
     init () {
         let _this = this;
-        this.url = Common._r.mangapanda.exec(this.url)[0];
+        this.url = Common._r.mangapanda.exec(this.url)[1];
         return new Promise((resolve, reject) => {
             this.getDocument(this.url, resolve, reject);
         });
@@ -67,7 +67,7 @@ class Parser extends BaseParser {
                 let xhr = new XMLHttpRequest();
                 xhr.open('GET', pageurl);
                 xhr.onload = () => {
-                    let matches = /<img[^>]+src="([^"]+?)"[^>]+\/>/.exec(xhr.responseText);
+                    let matches = /<img[^>]+id="img"[^>]+src="([^"]+?)"[^>]+\/?>/.exec(xhr.responseText);
                     this.datasets[page] = {
                         status: _this.COMPLETED,
                         src: matches[1]
