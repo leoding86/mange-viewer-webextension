@@ -8,6 +8,7 @@ class Parser {
         this.totalPage = 0;
         this.PROCESSING = 1;
         this.COMPLETED = 2;
+        this.datasets = { };
 
         // 修改请求头信息
         this.webRequestModifyHeader();
