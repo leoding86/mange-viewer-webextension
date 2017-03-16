@@ -4,7 +4,7 @@
     "name": "__MSG_extName__",
     "short_name": "CVR",
     "description": "__MSG_extDescription__",
-    "version": "0.1.2.1",
+    "version": "0.1.3.2",
     "default_locale": "en",
     "icons": {
         "16": "./assets/icon16.png",
