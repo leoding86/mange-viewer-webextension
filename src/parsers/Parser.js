@@ -1,3 +1,5 @@
+import { _ua } from '../modules/common';
+
 class Parser {
 
     constructor (url, siteurl, sitelogo, resOrigin) {
@@ -20,6 +22,9 @@ class Parser {
             details.requestHeaders.push({
                 name: "Referer",
                 value: _this.geturl()
+            }, {
+                name: "User-Agent",
+                value: _ua
             });
             let headers = details.requestHeaders;
             return { requestHeaders: headers };

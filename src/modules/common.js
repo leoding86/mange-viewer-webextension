@@ -7,6 +7,8 @@ const _r = {
     mangastream: /^(https?:\/{2}(?:w{3}?\.)?mangastream\.com\/r\/[^\/]+\/\d+\/\d+)(?:\/\d+)?\/?/i
 }
 
+const _ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.19 Safari/537.36';
+
 function Matcher(url) {
     this.rule = null;
     this.setUrl(url);
@@ -125,4 +127,4 @@ UrlBuilder.prototype.toString = function () {
     return this.url;
 }
 
-export { Matcher, TabStack, UrlBuilder, _r }
+export { Matcher, TabStack, UrlBuilder, _r, _ua }
