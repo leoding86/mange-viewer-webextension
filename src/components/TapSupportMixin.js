@@ -23,10 +23,12 @@ let TapEventMixin = {
         },
 
         removeTapSupport () {
-            this.$_target.removeEventListener('touchstart', this.componentTouchstartHandler);
-            this.$_target.removeEventListener('touchmove', this.componentTouchmoveHandler);
-            this.$_target.removeEventListener('touchend', this.componentTouchendHandler);
-            this._supported = false;
+            if (this.$_target) {
+                this.$_target.removeEventListener('touchstart', this.componentTouchstartHandler);
+                this.$_target.removeEventListener('touchmove', this.componentTouchmoveHandler);
+                this.$_target.removeEventListener('touchend', this.componentTouchendHandler);
+                this._supported = false;
+            }
         },
 
         componentTouchstartHandler (evt) {
