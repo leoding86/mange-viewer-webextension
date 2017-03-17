@@ -1,10 +1,10 @@
 <!-- For my Chrome extension -->
 
 <template>
-    <div class="comic-slider"
-         :style="{ width: wrapperWidth + 'px', height: wrapperHeight + 'px' }"
-         @click="_to">
-        <div class="info" :style="{'margin-top': infoMTop + 'px'}" @click="infoClickHandle">
+    <div class="comic-slider" ref="comicSlider"
+         :style="{ width: wrapperWidth + 'px', height: wrapperHeight + 'px' }">
+        <div class="info" ref="info"
+             :style="{'margin-top': infoMTop + 'px'}">
             <input type="text" v-model="_currentPage" @input="pageChangeInput"> / <span class="total-page">{{totalPage}}</span>
         </div>
         <div class="process-bar" @mouseover="processBarMouseoverHandle">
@@ -22,12 +22,16 @@
 </template>
 
 <script>
+    import TapSupportMixin from './TapSupportMixin';
+
     export default {
         components: {
             'control': require('./Gallery.vue')
         },
 
         name: 'comic-slider',
+
+        mixins: [TapSupportMixin],
 
         props: {
             parser       : {
@@ -61,7 +65,11 @@
 
                 isMoved: false,
                 itemsWrapperTransition: 'all 0.6s',
-                direction: 0
+                direction: 0,
+
+                DESKTOP: 1,
+                TOUCHESCREEN: 2,
+                interactiveMode: 1
             }
         },
 
@@ -100,6 +108,7 @@
 
         mounted () {
             let _this = this;
+            // _this.interactiveMode = this.TOUCHESCREEN; //DEBUG
 
             window.addEventListener('resize', () => {
                 _this.setWrapperSize();
@@ -107,6 +116,7 @@
             });
 
             this.$nextTick(() => {
+                this.initEventListener(this.interactiveMode);
                 this.$refs.itemsWrapper.addEventListener('transitionend', this.transitionend);
                 this.setWrapperSize();
 
@@ -121,6 +131,16 @@
         },
 
         methods: {
+            initEventListener (mode) {
+                if (mode === this.DESKTOP) {
+                    this.$refs.comicSlider.addEventListener('click', this._to);
+                    this.$refs.info.addEventListener('click', this.infoClickHandle);
+                } else if (mode === this.TOUCHESCREEN) {
+                    this.$on('tap', this._to);
+                    this.addTapSupport(this.$refs.comicSlider);
+                }
+            },
+
             getImgSrc (gallery) {
                 if (this.parser) {
                     this.parser.getImgSrc(gallery.extras.page, this.setGalleryImgSrcCallback, this);
@@ -185,7 +205,8 @@
             },
 
             _to (evt) {
-                return evt.clientX < this.wrapperWidth / 2 ? this.to(-1) : this.to(1);
+                let clientX = evt.clientX ? evt.clientX : evt.touches[0].clientX;
+                return clientX < this.wrapperWidth / 2 ? this.to(-1) : this.to(1);
             },
 
             transitionPrevBefore () {
@@ -227,6 +248,10 @@
             infoClickHandle (evt) {
                 evt.stopPropagation();
                 this.infoHidden = true;
+            },
+
+            controlTaponceHandler () {
+                console.log(1);
             },
 
             processBarMouseoverHandle (evt) {

@@ -27,8 +27,12 @@
 </template>
 
 <script>
+    import TapSupportMixin from './TapSupportMixin';
+
     export default {
         name: 'gallery',
+
+        mixins: [TapSupportMixin],
 
         props: {
             srcData: {
@@ -71,18 +75,22 @@
                 },
                 imgInitOffsetLeft: 0,
                 imgInitOffsetTop : 0,
-                imgOffsetLeft    : 0,
-                imgOffsetTop     : 0,
+                imgOffsetLeft    : 0, // need ?
+                imgOffsetTop     : 0, // need ?
                 isComplete: true,
                 pointDownX: 0,
                 pointDownY: 0,
-                pointMoveX: 0,
-                pointMoveY: 0,
+                pointMoveX: 0, // need ?
+                pointMoveY: 0, // need ?
                 minOffsetLeft: null,
                 minOffsetTop: null,
                 reachedEdge : false,
                 mousemoved : false,
                 statusInfo: 'waiting',
+
+                DESKTOP: 1,
+                TOUCHSCREEN: 2,
+                interactiveMode: 1,
 
                 extras : {} // For some extras data
             }
@@ -116,11 +124,12 @@
         },
 
         mounted () {
+            // this.interactiveMode = this.TOUCHSCREEN; // debug
+
             this.$img = this.$el.querySelector('img');
             this.$img.addEventListener('load', this.imageLoadHandler);
             this.$img.addEventListener('error', this.imgeErrorHandler);
-            this.$img.addEventListener('wheel', this.imageWheelHandler);
-            this.$img.addEventListener('mousedown', this.imageMouseDownHandler);
+            this.initEventListener(this.interactiveMode);
             this.imgSrc = this.srcData;
 
             this.$nextTick(() => {
@@ -150,6 +159,31 @@
                 }
             },
 
+            initEventListener (mode) {
+                if (mode === this.DESKTOP) {
+                    /* 取消事件 */
+                    this.$off('tap', this.imageTaphandler);
+                    this.$off('dbtap', this.imageDbtapHandler);
+                    this.$img.removeEventListener('touchstart', this.imageTouchstartHandler);
+                    this.$img.removeEventListener('touchmove', this.imageTouchmoveHandler);
+                    this.removeTapSupport(this.$img);
+
+                    /* 绑定新事件 */
+                    this.$img.addEventListener('wheel', this.imageWheelHandler);
+                    this.$img.addEventListener('mousedown', this.imageMouseDownHandler);
+                } else if (mode === this.TOUCHSCREEN) {
+                    this.$img.removeEventListener('wheel', this.imageWheelHandler);
+                    this.$img.removeEventListener('mousedown', this.imageMouseDownHandler);
+
+                    /* 绑定新事件 */
+                    this.$on('tap', this.imageTaphandler);
+                    this.$on('dbtap', this.imageDbtapHandler);
+                    this.$img.addEventListener('touchstart', this.imageTouchstartHandler)
+                    this.$img.addEventListener('touchmove', this.imageTouchmoveHandler);
+                    this.addTapSupport(this.$img);
+                }
+            },
+
             imageLoadHandler () {
                 this.isComplete = true;
 
@@ -170,6 +204,39 @@
                 this.imgSrc = this.$img.target.src;
             },
 
+            imagePointMove (clientX, clientY, e) {
+                this.pointMoveX = clientX;
+                this.pointMoveY = clientY;
+
+                if (this.zoom == 1 || this.imgStyle.width <= this.width) {
+                    // Do nothing
+                } else {
+                    let computedLeft = this.imgOffsetLeft + this.pointMoveX - this.pointDownX;
+
+                    if (computedLeft >= 0) {
+                        this.imgStyle.left = 0;
+                    } else if (this.minOffsetLeft && computedLeft <= this.minOffsetLeft) {
+                        this.imgStyle.left = this.minOffsetLeft;
+                    } else {
+                        this.imgStyle.left = computedLeft;
+                    }
+                }
+
+                if (this.zoom == 1 || this.imgStyle.height <= this.height) {
+                    // Do nothing
+                } else {
+                    let computedTop = this.imgOffsetTop + this.pointMoveY - this.pointDownY;
+
+                    if (computedTop >= 0) {
+                        this.imgStyle.top = 0;
+                    } else if (this.minOffsetTop && computedTop <= this.minOffsetTop) {
+                        this.imgStyle.top = this.minOffsetTop;
+                    } else {
+                        this.imgStyle.top = computedTop;
+                    }
+                }
+            },
+
             imageWheelHandler (e) {
                 e.preventDefault();
                 let zoom = null;
@@ -178,7 +245,7 @@
                 } else if (e.deltaY > 0 && this.zoom > 1) {
                     zoom = -1;
                 }
-                this.calcTargetOffset(e, zoom);
+                this.calcTargetOffset(e.layerX, e.layerY, zoom);
             },
 
             imageMouseDownHandler (e) {
@@ -203,38 +270,37 @@
                     this.mousemoved = true;
                     return;
                 }
+                this.imagePointMove(e.clientX, e.clientY, e);
+            },
 
-                this.pointMoveX = e.clientX;
-                this.pointMoveY = e.clientY;
+            imageTouchstartHandler (e) {
+                this.pointDownX = e.touches[0].clientX;
+                this.pointDownY = e.touches[0].clientY;
+                this.imgOffsetLeft = this.imgStyle.left;
+                this.imgOffsetTop  = this.imgStyle.top;
+                this.imgStyle.transition = 'all 0s';
+            },
 
-                if (this.zoom == 1 || this.imgStyle.width <= this.width) {
-                    // Do nothing
-                } else {
-                    let computedLeft = this.imgOffsetLeft + this.pointMoveX - this.pointDownX;
+            imageTouchmoveHandler (e) {
+                this.imagePointMove(e.touches[0].clientX, e.touches[0].clientY, e);
+            },
 
-                    if (computedLeft >= 0) {
-                        this.imgStyle.left = 0;
-                    } else if (this.minOffsetLeft && computedLeft <= this.minOffsetLeft) {
-                        this.imgStyle.left = this.minOffsetLeft;
-                    } else {
-                        e.stopPropagation();
-                        this.imgStyle.left = computedLeft;
-                    }
+            imageDbtapHandler (evt) {
+                evt.stopPropagation();
+                let zoom = null;
+                if (this.zoom < this.zoomMax) {
+                    zoom = 1;
+                } else if (this.zoom >= this.zoomMax) {
+                    zoom = - (this.zoomMax - 1);
                 }
+                this.calcTargetOffset(
+                    evt.targetTouches[0].clientX - this.imgStyle.left,
+                    evt.targetTouches[0].clientY - this.imgStyle.top,
+                    zoom
+                );
+            },
 
-                if (this.zoom == 1 || this.imgStyle.height <= this.height) {
-                    // Do nothing
-                } else {
-                    let computedTop = this.imgOffsetTop + this.pointMoveY - this.pointDownY;
-
-                    if (computedTop >= 0) {
-                        this.imgStyle.top = 0;
-                    } else if (this.minOffsetTop && computedTop <= this.minOffsetTop) {
-                        this.imgStyle.top = this.minOffsetTop;
-                    } else {
-                        this.imgStyle.top = computedTop;
-                    }
-                }
+            imageTaphandler (evt) {
 
             },
 
@@ -245,7 +311,7 @@
                 this.mousemoved = false;
             },
 
-            calcTargetOffset (evt, zoom) {
+            calcTargetOffset (x, y, zoom) {
                 this.scale = zoom / this.zoom;
                 this.zoom += zoom;
 
@@ -264,16 +330,16 @@
                 if (this.imgStyle.width <= this.width) {
                     this.minOffsetTop = this.height - this.imgStyle.height;
                     targetOffsetLeft  = (this.width - this.imgStyle.width) / 2;
-                    targetOffsetTop   = this.imgStyle.top - evt.layerY * this.scale;
+                    targetOffsetTop   = this.imgStyle.top - y * this.scale;
                 } else if (this.imgStyle.height <= this.height) {
                     this.minOffsetLeft = this.width - this.imgStyle.width;
                     targetOffsetTop    = (this.height - this.imgStyle.height) / 2;
-                    targetOffsetLeft   = this.imgStyle.left - evt.layerX * this.scale;
+                    targetOffsetLeft   = this.imgStyle.left - x * this.scale;
                 } else {
                     this.minOffsetLeft = this.width - this.imgStyle.width;
                     this.minOffsetTop  = this.height - this.imgStyle.height;
-                    targetOffsetTop    = this.imgStyle.top - evt.layerY * this.scale;
-                    targetOffsetLeft   = this.imgStyle.left - evt.layerX * this.scale;
+                    targetOffsetTop    = this.imgStyle.top - y * this.scale;
+                    targetOffsetLeft   = this.imgStyle.left - x * this.scale;
                 }
 
                 /* check */
