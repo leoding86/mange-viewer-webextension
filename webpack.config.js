@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var fs = require('fs')
 
 module.exports = {
   entry: {
@@ -82,4 +83,15 @@ if (process.env.NODE_ENV === 'production') {
       minimize: true
     })
   ])
+} else if (process.env.NODE_ENV === 'chrome') {
+  // remove builded files
+  console.log('Remove builds');
+  var files = fs.readdirSync(path.resolve(__dirname, 'package/build'));
+  files.forEach(function(file) {
+    if (file === '.' || file === '...') {
+      return;
+    }
+
+    fs.unlinkSync(path.resolve(__dirname, 'package/build', file));
+  });
 }
