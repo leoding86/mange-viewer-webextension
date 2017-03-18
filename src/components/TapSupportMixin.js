@@ -38,7 +38,7 @@ let TapEventMixin = {
         },
 
         componentTouchmoveHandler (evt) {
-            console.log(this);
+            // console.log(this);
             this._pointMoved = true;
             this._touchtimeout = null;
         },
