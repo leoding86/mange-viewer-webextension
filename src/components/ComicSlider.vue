@@ -5,7 +5,7 @@
          :style="{ width: wrapperWidth + 'px', height: wrapperHeight + 'px' }">
         <div class="info" ref="info"
              :style="{'margin-top': infoMTop + 'px'}">
-            <input type="text" v-model="_currentPage" @input="pageChangeInput"> / <span class="total-page">{{totalPage}}</span>
+            <input type="text" v-model="_currentPage" @input="pageChangeInput" @click="pageChangeClickHandle"> / <span class="total-page">{{totalPage}}</span>
         </div>
         <div class="process-bar" @mouseover="processBarMouseoverHandle">
             <div class="process-line" :style="{width: processWidth + '%'}"></div>
@@ -103,7 +103,15 @@
         },
 
         watch: {
-            
+            interactiveMode (val, oldVal) {
+                if (val !== oldVal) {
+                    this.initEventListener(val);
+
+                    this.$refs.gallery.forEach((gallery) => {
+                        gallery.interactiveMode = val;
+                    });
+                }
+            }
         },
 
         mounted () {
@@ -133,9 +141,15 @@
         methods: {
             initEventListener (mode) {
                 if (mode === this.DESKTOP) {
+                    this.$off('tap', this._to);
+                    this.removeTapSupport(this.$refs.comicSlider);
+
                     this.$refs.comicSlider.addEventListener('click', this._to);
                     this.$refs.info.addEventListener('click', this.infoClickHandle);
                 } else if (mode === this.TOUCHESCREEN) {
+                    this.$refs.comicSlider.removeEventListener('click', this._to);
+                    this.$refs.info.removeEventListener('click', this.infoClickHandle);
+
                     this.$on('tap', this._to);
                     this.addTapSupport(this.$refs.comicSlider);
                 }
@@ -243,6 +257,10 @@
                 } else {
                     window.console && console.log('Invalid input page number');
                 }
+            },
+
+            pageChangeClickHandle (evt) {
+                evt.stopPropagation();
             },
 
             infoClickHandle (evt) {
