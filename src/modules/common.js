@@ -110,6 +110,11 @@ UrlBuilder.prototype.setParams = function (params) {
 
 UrlBuilder.prototype.getParams = function () {
     let paramStr = this.url.substr(this.url.indexOf('?') + 1);
+
+    if (paramStr.indexOf('#') > -1) {
+        paramStr = paramStr.substr(0, paramStr.indexOf('#'));
+    }
+
     let paramArr = paramStr.split('&');
     let result = {};
 
