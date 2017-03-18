@@ -10,11 +10,16 @@
         </div>
         <div v-if="parserReady">
             <div>
-                <comic-slider :parser="parser"
+                <comic-slider ref="comicSlider"
+                              :parser="parser"
                               :preloadPage="3"></comic-slider>
             </div>
             <div class="site-info">
                 <a :href="siteurl"><img :src="sitelogo" /></a>
+            </div>
+            <div class="config">
+                <switcher :values="modeSwitcherValues"
+                          @switch="modeSwitchHandle"></switcher>
             </div>
         </div>
         </transition>
@@ -29,7 +34,8 @@
     export default {
         components: {
             'gallery'      : require('./components/Gallery.vue'),
-            'comic-slider' : require('./components/ComicSlider.vue')
+            'comic-slider' : require('./components/ComicSlider.vue'),
+            'switcher'     : require('./components/Switcher.vue')
         },
 
         name: 'app',
@@ -38,7 +44,8 @@
             return {
                 parserReady: false,
                 parser: null,
-                initMTop: 0
+                initMTop: 0,
+                modeSwitcherValues: [1, 2]
             }
         },
 
@@ -79,6 +86,10 @@
         methods: {
             setInitPosition () {
                 this.initMTop = window.innerHeight * 0.3;
+            },
+
+            modeSwitchHandle (val) {
+                this.$refs.comicSlider.interactiveMode = val;
             }
         }
     }
@@ -97,6 +108,17 @@
 
         img:hover {
             opacity: 1;
+        }
+    }
+
+    .config {
+        position: fixed;
+        bottom: 1px;
+        right: 1px;
+        color: #fff;
+
+        a {
+            color: #fff;
         }
     }
 
