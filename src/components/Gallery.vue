@@ -110,6 +110,12 @@
 
             height (val) {
                 this.init();
+            },
+
+            interactiveMode (val, oldVal) {
+                if (val !== oldVal) {
+                    this.initEventListener(val);
+                }
             }
         },
 
