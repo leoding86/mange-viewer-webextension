@@ -4,6 +4,7 @@
     <div class="comic-slider" ref="comicSlider"
          :style="{ width: wrapperWidth + 'px', height: wrapperHeight + 'px' }">
         <div class="info" ref="info"
+             v-show="showInfo"
              :style="{'margin-top': infoMTop + 'px'}">
             <input type="text" v-model="_currentPage" @input="pageChangeInput" @click="pageChangeClickHandle"> / <span class="total-page">{{totalPage}}</span>
         </div>
@@ -35,7 +36,7 @@
 
         props: {
             parser       : {
-                type: null,
+                type   : null,
                 default: null
             },
             datasets     : {
@@ -47,18 +48,26 @@
             preloadPage: {
                 type   : [Number, String],
                 default: 2
+            },
+            showInfo: {
+                type   : Boolean,
+                default: true
+            },
+            curPage: {
+                type   : Number,
+                default: 1
             }
         },
 
         data () {
             return {
                 /* sizes */
+                currentPage: 1,
                 wrapperWidth: 0,
                 wrapperHeight: 0,
                 areaWidth: 0,
                 areaHeight: 0,
 
-                currentPage: 1,
                 totalPage  : 0,
 
                 infoHidden: false,
@@ -77,9 +86,24 @@
             itemsWrapperWidth () {
                 return this.wrapperWidth * this.totalPage;
             },
+
             itemsWrapperLeft () {
                 return -(this._currentPage - 1) * this.wrapperWidth;
             },
+
+            processWidth () {
+                return Math.round(this._currentPage / this.totalPage * 100);
+            },
+
+            infoMTop () {
+                if (this.infoHidden) {
+                    return -this.$el.querySelector('.info').offsetHeight;
+                } else {
+                    return 0;
+                }
+            },
+
+            /** For self input model **/
             _currentPage: {
                 get () {
                     return this.currentPage > this.totalPage ? this.totalPage : this.currentPage;
@@ -88,16 +112,6 @@
                     if (val > 0 && val <= this.totalPage) {
                         this.currentPage = val;
                     }
-                }
-            },
-            processWidth () {
-                return Math.round(this._currentPage / this.totalPage * 100);
-            },
-            infoMTop () {
-                if (this.infoHidden) {
-                    return -this.$el.querySelector('.info').offsetHeight;
-                } else {
-                    return 0;
                 }
             }
         },
@@ -111,6 +125,11 @@
                         gallery.interactiveMode = val;
                     });
                 }
+            },
+
+            /** For prop change **/
+            curPage (val) {
+                this.initControl(val);
             }
         },
 
@@ -155,6 +174,15 @@
                 }
             },
 
+            initControl (curPage) {
+                if (curPage > 0 && curPage <= this.totalPage) {
+                    this.currentPage = curPage;
+                    this.parser ? this.setControlAsync(curPage) : this.setControl(curPage);
+                } else {
+                    window.console && console.log('Invalid input page number');
+                }
+            },
+
             getImgSrc (gallery) {
                 if (this.parser) {
                     this.parser.getImgSrc(gallery.extras.page, this.setGalleryImgSrcCallback, this);
@@ -172,6 +200,7 @@
             },
 
             setControl (startPage) {
+                this.$emit('init', startPage, this.totalPage);
                 this.$refs.gallery.forEach((gallery) => {
                     gallery.extras = { page: startPage };
                     gallery.imgSrc = this.datasets[startPage - 1];
@@ -181,6 +210,7 @@
             },
 
             setControlAsync (startPage) {
+                this.$emit('init', startPage, this.totalPage);
                 this.$refs.gallery.forEach((gallery) => {
                     gallery.extras = { page: startPage };
                     this.parser.getImgSrc(startPage, this.setGalleryImgSrcCallback, this);
@@ -212,9 +242,11 @@
                     this.transitionstart = true;
                     this.transitionPrevBefore();
                     this.currentPage--;
+                    this.$emit('slide', this.currentPage, this.totalPage);
                 } else if (this.currentPage < this.totalPage && direction == 1) {
                     this.transitionstart = true;
                     this.currentPage++;
+                    this.$emit('slide', this.currentPage, this.totalPage);
                 }
             },
 
@@ -252,11 +284,7 @@
             },
 
             pageChangeInput (evt) {
-                if (evt.target.value > 0 && evt.target.value <= this.totalPage) {
-                    this.parser ? this.setControlAsync(evt.target.value) : this.setControl(evt.target.value);
-                } else {
-                    window.console && console.log('Invalid input page number');
-                }
+                this.initControl(evt.target.value);
             },
 
             pageChangeClickHandle (evt) {
