@@ -33,5 +33,9 @@
 
     "interactive_mode": {
         "message": "触摸屏"
+    },
+
+    "open": {
+        "message": "打开"
     }
 }
