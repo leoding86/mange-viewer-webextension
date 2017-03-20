@@ -1,11 +1,10 @@
 <template>
     <div class="switcher-control">
-        <div class="icon-left"></div>
+        <div class="config-title">{{configTitle}}</div>
         <div class="switch-wrapper" @click="toggleSwitch">
             <div class="handler"
-                 :class="{ 'switch-active': active, 'switch-deactive': !active }"></div>
+                 :class="{ 'handler-active': active, 'handler-deactive': !active }"></div>
         </div>
-        <div class="icon-right"></div>
     </div>
 </template>
 
@@ -19,6 +18,11 @@ export default {
             default () {
                 return [0, 1];
             }
+        },
+
+        configTitle: {
+            type: String,
+            default: 'Untitled'
         }
     },
 
@@ -38,47 +42,54 @@ export default {
 </script>
 
 <style lang="sass">
+    $width: 90px;
+    $height: 20px;
+    $switchWrapperWidth: 40px;
+    $handlerWidth: $height - 4;
+    $handlerHeight: $handlerWidth;
+    $handlerRadius: 9px;
+    $handlerTop: ($height - $handlerWidth) / 2;
+    $handlerDeactiveLeft: $handlerTop;
+    $handlerActiveLeft: $switchWrapperWidth - $handlerWidth - $handlerTop;
+
     .switcher-control {
-        width: 130px;
-        height: 30px;
+        width: $width;
+        height: $height;
 
-        .icon-left,
-        .icon-right {
-            width: 30px;
-            height: 30px;
+        .config-title {
+            font-size: 12px;
+            line-height: 18px;
             float: left;
-        }
-
-        .icon-right {
-            margin-left: 5px;
         }
 
         .switch-wrapper {
-            width: 60px;
-            height: 30px;
-            background: rgba(0, 0, 0, 0.5);
+            width: $switchWrapperWidth;
+            height: $height;
+            background: rgba(255, 255, 255, 0.5);
             border-radius: 15px;
             cursor: pointer;
             position: relative;
-            float: left;
+            float: right;
             margin-left: 5px;
 
             .handler {
-                width: 22px;
-                height: 22px;
-                background: blue;
-                border-radius: 11px;
+                width: $handlerWidth;
+                height: $handlerHeight;
+                border-radius: $handlerRadius;
                 position: absolute;
-                top: 4px;
+                top: $handlerTop;
+                box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
                 transition: all 0.3s;
             }
 
-            .switch-deactive {
-                left: 4px;
+            .handler-deactive {
+                background: rgb(255, 255, 255);
+                left: $handlerDeactiveLeft;
             }
 
-            .switch-active {
-                left: 34px;
+            .handler-active {
+                background: rgb(15, 152, 0);
+                left: $handlerActiveLeft;
             }
         }
     }

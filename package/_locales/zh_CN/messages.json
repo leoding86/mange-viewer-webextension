@@ -29,5 +29,9 @@
 
     "check_issue": {
         "message": "请检查原网页是否异常，然后重试"
+    },
+
+    "interactive_mode": {
+        "message": "触摸屏"
     }
 }

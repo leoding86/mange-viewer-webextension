@@ -4,7 +4,7 @@
     "name": "__MSG_extName__",
     "short_name": "CVR",
     "description": "__MSG_extDescription__",
-    "version": "0.1.3.2",
+    "version": "0.2.0.0",
     "default_locale": "en",
     "icons": {
         "16": "./assets/icon16.png",
@@ -21,7 +21,12 @@
     "permissions": [
         "webRequest",
         "webRequestBlocking",
-        "<all_urls>"
+        "*://*.readcomics.tv/*",
+        "*://*.readcomiconline.to/*",
+        "*://*.dm5.com/*",
+        "*://*.cdndm5.com/*",
+        "*://*.mangapanda.com/*",
+        "*://*.mangastream.com/*"
     ],
 
     "background": {
