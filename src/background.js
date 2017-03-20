@@ -25,6 +25,8 @@ chrome.webRequest.onCompleted.addListener((details) => {
                     logo: matcher.site(name).logo
                 }
             );
+
+            chrome.tabs.executeScript(details.tabId, { file: './build/bundle.app_cvr.js' });
         }
     }
 }, { urls: [ "<all_urls>" ], types: [ "main_frame" ] });
