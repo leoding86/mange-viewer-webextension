@@ -251,7 +251,7 @@
                 } else if (e.deltaY > 0 && this.zoom > 1) {
                     zoom = -1;
                 }
-                this.calcTargetOffset(e.layerX, e.layerY, zoom);
+                this.calcTargetOffset(e.offsetX, e.offsetY, zoom);
             },
 
             imageMouseDownHandler (e) {
@@ -367,8 +367,8 @@
             },
 
             determineImageFill () {
-                let width = this.$el.offsetWidth;
-                let height = this.$el.offsetHeight;
+                let width = this.$el.offsetWidth ? this.$el.offsetWidth : this.width;
+                let height = this.$el.offsetHeight ? this.$el.offsetHeight : this.height;
 
                 if (width / height > this.$img.naturalWidth / this.$img.naturalHeight) {
                     this.imgSize.height = height;
