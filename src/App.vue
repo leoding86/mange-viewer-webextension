@@ -71,7 +71,9 @@
                 configPanelActive: false,
                 modeConfigTitle: _('interactive_mode'),
                 modeSwitcherValues: [1, 2],
-                open: _('open')
+                open: _('open'),
+
+                viewportmeta: null
 
                 /* styles */
             }
@@ -96,6 +98,12 @@
 
             this.$nextTick(() => {
                 let _this = this;
+
+                let viewportmeta = document.querySelector('meta[name="viewport"]');
+                if (viewportmeta) {
+                    this.viewportmeta = viewportmeta;
+                }
+
                 this.initPosition();
 
                 let matcher = new Matcher(window.location.href);
@@ -106,16 +114,6 @@
                         this.parser = parser;
                         this.parserReady = true;
                     });
-
-                    // ).then((module) => {
-                    //     console.log(module);
-                    //     // return new module.Parser(window.location.href);
-                    // }).then((parser) => {
-                    //     this.parser = parser;
-                    //     this.parserReady = true;
-                    // }, (e) => {
-                    //     alert(_('initializing_parser_failed') + '[' + e + '][parser: ' + parser + ']');
-                    // });
                 }
             });
         },
@@ -129,6 +127,23 @@
 
             modeSwitchHandle (val) {
                 this.$refs.comicSlider.interactiveMode = val;
+                if (val === 2) {
+                    let viewportmeta = null;
+                    if (this.viewportmeta) {
+                        viewportmeta = document.querySelector('meta[name="viewport"]');
+                    } else {
+                        viewportmeta = document.createElement('meta');
+                        viewportmeta.name = 'viewport';
+                        document.querySelector('head').appendChild(viewportmeta);
+                    }
+                    viewportmeta.content = 'width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0';
+                } else {
+                    if (this.viewportmeta) {
+                        document.querySelector('meta[name="viewport"]').content = this.viewportmeta.content;
+                    } else {
+                        document.querySelector('meta[name="viewport"]').remove();
+                    }
+                }
             },
 
             sliderSlideHandler (curPage, totalPage) {
