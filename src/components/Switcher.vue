@@ -60,12 +60,13 @@ export default {
             font-size: 12px;
             line-height: 18px;
             float: left;
+            color: #000;
         }
 
         .switch-wrapper {
             width: $switchWrapperWidth;
             height: $height;
-            background: rgba(255, 255, 255, 0.5);
+            background: #8a8a8a;
             border-radius: 15px;
             cursor: pointer;
             position: relative;
