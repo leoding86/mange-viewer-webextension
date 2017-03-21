@@ -7,10 +7,10 @@ $appContainer.id = 'cvr-app-container';
 $appContainer.style.position = 'fixed';
 $appContainer.style.top = '0';
 $appContainer.style.left = '0';
-$appContainer.style.width = '100%';
-$appContainer.style.height = '100%';
 $appContainer.innerText = '123';
 document.querySelector('body').appendChild($appContainer);
+
+let _cvrBus = window._cvrBus = new Vue();
 
 new Vue({
   el: '#cvr-app-container',
