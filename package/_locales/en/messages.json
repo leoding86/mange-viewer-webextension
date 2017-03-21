@@ -33,5 +33,9 @@
 
     "interactive_mode": {
         "message": "Touchscreen"
+    },
+
+    "open": {
+        "message": "Open"
     }
 }

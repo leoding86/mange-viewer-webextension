@@ -13,7 +13,7 @@ class Parser {
         this.datasets = { };
 
         // 修改请求头信息
-        this.webRequestModifyHeader();
+        // this.webRequestModifyHeader();
     }
 
     webRequestModifyHeader () {
