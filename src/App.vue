@@ -3,6 +3,9 @@
         <div class="cvr-app-show-btn" @click="appShowBtnClickHandler">
             <span style="color:#1c6af8;font-weight:700">C</span><span style="color:#aa2c1b;font-weight:700">V</span><span style="color:#179709;font-weight:700">R</span>
         </div>
+        <debug-panel style="position:fixed;bottom:3px;left:3px;z-index:9999"
+                     v-if="debugModeActive"
+                     :event-bus="eventBus"></debug-panel>
         <div class="cvr-app" v-show="showApp"
              :style="{ width: containerWidth + 'px', height: containerHeight + 'px' }">
             <div v-if="!parserReady">
@@ -26,9 +29,12 @@
                 <span class="config-toggler icon-toggler"
                       @click="configTogglerClickHandler"></span>
                 <div class="config-panel" v-show="configPanelActive">
-                    <switcher :values="modeSwitcherValues"
+                    <switcher :values="[1, 2]"
                               :configTitle="modeConfigTitle"
-                              @switch="modeSwitchHandle"></switcher>
+                              v-model="interactiveMode"></switcher>
+                    <switcher :values="[0, 1]"
+                              :configTitle="debugModeTitle"
+                              v-model="debugMode"></switcher>
                 </div>
                 <comic-slider ref="comicSlider"
                               :parser="parser"
@@ -36,7 +42,8 @@
                               :curPage="sliderCurPage"
                               :showInfo="false"
                               @init="sliderInit"
-                              @slide="sliderSlideHandler"></comic-slider>
+                              @slide="sliderSlideHandler"
+                              :debug-event-bus="eventBus"></comic-slider>
             </div>
         </div>
     </div>
@@ -51,7 +58,8 @@
         components: {
             'gallery'      : require('./components/Gallery.vue'),
             'comic-slider' : require('./components/ComicSlider.vue'),
-            'switcher'     : require('./components/Switcher.vue')
+            'switcher'     : require('./components/Switcher.vue'),
+            'debug-panel'   : require('./components/DebugPanel.vue')
         },
 
         name: 'app',
@@ -70,7 +78,10 @@
                 comicInfoDeactive: false,
                 configPanelActive: false,
                 modeConfigTitle: _('interactive_mode'),
-                modeSwitcherValues: [1, 2],
+                debugModeTitle: _('debug_mode'),
+                interactiveMode: 1, // 1: desktop; 2: touchscreen
+                debugMode: 0,
+                eventBus: window._cvrBus,
                 open: _('open'),
 
                 viewportmeta: null
@@ -88,6 +99,9 @@
             },
             initializing_parser () {
                 return _('initializing_parser');
+            },
+            debugModeActive () {
+                return this.debugMode === 1 ? true : false;
             }
         },
 
@@ -109,8 +123,11 @@
                 let matcher = new Matcher(window.location.href);
                 let parser = matcher.is();
                 if (parser !== null) {
+this.debug('Initializing parser');
+
                     let p = require('./parsers/' + parser + '.js');
                     (new p.Parser(window.location.href)).then((parser) => {
+this.debug('Praser is ready');
                         this.parser = parser;
                         this.parserReady = true;
                     });
@@ -118,14 +135,8 @@
             });
         },
 
-        methods: {
-            initPosition () {
-                this.containerWidth = window.innerWidth;
-                this.containerHeight = window.innerHeight;
-                this.initMTop = window.innerHeight * 0.3;
-            },
-
-            modeSwitchHandle (val) {
+        watch: {
+            interactiveMode (val) {
                 this.$refs.comicSlider.interactiveMode = val;
                 if (val === 2) {
                     let viewportmeta = null;
@@ -144,6 +155,14 @@
                         document.querySelector('meta[name="viewport"]').remove();
                     }
                 }
+            }
+        },
+
+        methods: {
+            initPosition () {
+                this.containerWidth = window.innerWidth;
+                this.containerHeight = window.innerHeight;
+                this.initMTop = window.innerHeight * 0.3;
             },
 
             sliderSlideHandler (curPage, totalPage) {
@@ -169,15 +188,22 @@
 
             configTogglerClickHandler () {
                 this.configPanelActive = !this.configPanelActive;
+this.debug((this.configPanelActive ? 'Show' : 'Hide') + ' config panel');
             },
 
             appShowBtnClickHandler () {
                 this.showApp = !this.showApp;
                 if (this.showApp) {
+this.debug('Show app viewer');
                     document.querySelector('body').style.overflow = 'hidden';
                 } else {
+this.debug('Hide app viewer');
                     document.querySelector('body').style.overflow = 'auto';
                 }
+            },
+
+            debug (text) {
+                _cvrBus.$emit('debug', text);
             }
         }
     }
@@ -303,6 +329,7 @@
     }
 
     .config-panel {
+        width: 120px;
         padding: 5px;
         border-radius: 3px;
         background: rgb(255, 255, 255);

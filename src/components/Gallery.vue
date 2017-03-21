@@ -28,11 +28,12 @@
 
 <script>
     import TapSupportMixin from './TapSupportMixin';
+    import DebugMixin from './DebugMixin';
 
     export default {
         name: 'gallery',
 
-        mixins: [TapSupportMixin],
+        mixins: [TapSupportMixin, DebugMixin],
 
         props: {
             srcData: {
@@ -299,6 +300,7 @@
                 } else if (this.zoom >= this.zoomMax) {
                     zoom = - (this.zoomMax - 1);
                 }
+
                 this.calcTargetOffset(
                     evt.targetTouches[0].clientX - this.imgStyle.left,
                     evt.targetTouches[0].clientY - this.imgStyle.top,
@@ -318,8 +320,14 @@
             },
 
             calcTargetOffset (x, y, zoom) {
+                if (this.zoom == this.zoom + zoom) {
+                    return;
+                }
+
                 this.scale = zoom / this.zoom;
                 this.zoom += zoom;
+
+this.debug('zoom to ' + this.zoom + ' time(s)');
 
                 this.imgStyle.width  = this.imgSize.width * this.zoom;
                 this.imgStyle.height = this.imgSize.height * this.zoom;

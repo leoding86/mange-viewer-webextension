@@ -17,13 +17,15 @@
                 <control v-for="n in (preloadPage + 1)" :index-data="n" ref="gallery" 
                          src-data=""
                          :width="wrapperWidth" :height="wrapperHeight"
-                         :style="{ position: 'absolute' }"></control>
+                         :style="{ position: 'absolute' }"
+                         :debug-event-bus="debugEventBus"></control>
         </div>
     </div>
 </template>
 
 <script>
     import TapSupportMixin from './TapSupportMixin';
+    import DebugMixin from './DebugMixin';
 
     export default {
         components: {
@@ -32,7 +34,7 @@
 
         name: 'comic-slider',
 
-        mixins: [TapSupportMixin],
+        mixins: [TapSupportMixin, DebugMixin],
 
         props: {
             parser       : {
@@ -134,6 +136,8 @@
         },
 
         mounted () {
+this.debug('Initializing slider');
+
             let _this = this;
             // _this.interactiveMode = this.TOUCHESCREEN; //DEBUG
 
@@ -143,6 +147,7 @@
             });
 
             this.$nextTick(() => {
+this.debug('Slider is ready');
                 this.initEventListener(this.interactiveMode);
                 this.$refs.itemsWrapper.addEventListener('transitionend', this.transitionend);
                 this.setWrapperSize();
@@ -159,13 +164,16 @@
 
         methods: {
             initEventListener (mode) {
+
                 if (mode === this.DESKTOP) {
+this.debug('Change mode to \'desktop\'');
                     this.$off('tap', this._to);
                     this.removeTapSupport(this.$refs.comicSlider);
 
                     this.$refs.comicSlider.addEventListener('click', this._to);
                     this.$refs.info.addEventListener('click', this.infoClickHandle);
                 } else if (mode === this.TOUCHESCREEN) {
+this.debug('Change mode to \'touchscreen\'');
                     this.$refs.comicSlider.removeEventListener('click', this._to);
                     this.$refs.info.removeEventListener('click', this.infoClickHandle);
 
@@ -200,6 +208,7 @@
             },
 
             setControl (startPage) {
+this.debug('Set current page to ' + startPage + ' [type: sync]');
                 this.$emit('init', startPage, this.totalPage);
                 this.$refs.gallery.forEach((gallery) => {
                     gallery.extras = { page: startPage };
@@ -210,6 +219,7 @@
             },
 
             setControlAsync (startPage) {
+this.debug('Set current page to ' + startPage + ' [type: async]');
                 this.$emit('init', startPage, this.totalPage);
                 this.$refs.gallery.forEach((gallery) => {
                     gallery.extras = { page: startPage };
@@ -242,10 +252,12 @@
                     this.transitionstart = true;
                     this.transitionPrevBefore();
                     this.currentPage--;
+this.debug('Go to prev page ' + this.currentPage);
                     this.$emit('slide', this.currentPage, this.totalPage);
                 } else if (this.currentPage < this.totalPage && direction == 1) {
                     this.transitionstart = true;
                     this.currentPage++;
+this.debug('Go to next page ' + this.currentPage);
                     this.$emit('slide', this.currentPage, this.totalPage);
                 }
             },
