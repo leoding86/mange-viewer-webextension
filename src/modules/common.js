@@ -4,7 +4,8 @@ const _r = {
     dm5: /^https?:\/{2}w{3}\.dm5\.com\/m([\d]+)(?:-p[\d]+)?\/?/i,
     mangapanda: /^(https?:\/{2}(?:w{3}\.)?mangapanda\.com\/[^\/]+\/\d+)(?:\/\d+)?/i,
     mangastream: /^(https?:\/{2}(?:w{3}?\.)?mangastream\.com\/r\/[^\/]+\/\d+\/\d+)(?:\/\d+)?\/?/i,
-    eatmanga: /^https?:\/{2}(?:w{3}\.)?eatmanga\.com\/Manga-Scan\/([^\/]+)\/([^\/]+)/i
+    eatmanga: /^https?:\/{2}(?:w{3}\.)?eatmanga\.com\/Manga-Scan\/([^\/]+)\/([^\/]+)/i,
+    kissmanga: /^https?:\/{2}kissmanga\.com\/Manga\/[^\/]+\/[^\/]+\?id=\d+/i
 }
 
 const _ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.19 Safari/537.36';
@@ -48,6 +49,11 @@ Matcher.prototype.rules = {
         pattern: _r.eatmanga,
         site: 'eatmanga.com',
         logo: 'http://cdn.eatmanga.com/media/logo.png'
+    },
+    'kissmanga': {
+        pattern: _r.kissmanga,
+        site: 'kissmanga.com',
+        logo: 'http://kissmanga.com/Content/images/logo.png'
     }
 };
 
