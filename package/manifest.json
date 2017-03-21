@@ -4,7 +4,7 @@
     "name": "__MSG_extName__",
     "short_name": "CVR",
     "description": "__MSG_extDescription__",
-    "version": "0.2.0.0",
+    "version": "0.3.2.1",
     "default_locale": "en",
     "icons": {
         "16": "./assets/icon16.png",
@@ -27,7 +27,9 @@
         "*://*.cdndm5.com/*",
         "*://*.mangapanda.com/*",
         "*://*.mangastream.com/*",
-        "*://*.eatmanga.com/*"
+        "*://*.eatmanga.com/*",
+        "*://*.kissmanga.com/*",
+        "*://*.googleusercontent.com/*"
     ],
 
     "background": {
