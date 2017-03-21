@@ -184,7 +184,7 @@
 </script>
 
 <style lang="sass">
-    $top: 9999;
+    $top: 99999;
 
     .cvr-app-container {
         position: fixed;
@@ -202,6 +202,7 @@
         right: 3px;
         bottom: 3px;
         cursor: pointer;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
         padding: 3px;
         border-radius: 3px;
     }
@@ -210,6 +211,7 @@
         position: absolute;
         width: 100%;
         height: 100%;
+        overflow: hidden;
     }
 
     .comic-info {
