@@ -1,0 +1,44 @@
+{
+    "manifest_version": 2,
+
+    "name": "__MSG_extName__",
+    "short_name": "CVR",
+    "description": "__MSG_extDescription__",
+    "version": "0.3.2.1",
+    "default_locale": "en",
+    "icons": {
+        "16": "./assets/icon16.png",
+        "48": "./assets/icon48.png",
+        "128": "./assets/icon128.png"
+    },
+
+    "browser_action": {
+        "default_icon": "./assets/deactiveicon.png",
+        "default_popup": "./pages/popup.html",
+        "default_title": "__MSG_extName__"
+    },
+
+    "permissions": [
+        "webRequest",
+        "webRequestBlocking",
+        "*://*.readcomics.tv/*",
+        "*://*.readcomiconline.to/*",
+        "*://*.dm5.com/*",
+        "*://*.cdndm5.com/*",
+        "*://*.mangapanda.com/*",
+        "*://*.mangastream.com/*",
+        "*://*.eatmanga.com/*",
+        "*://*.kissmanga.com/*",
+        "*://*.googleusercontent.com/*"
+    ],
+
+    "background": {
+        "scripts": ["./build/bundle.background.js"]
+    },
+
+    "web_accessible_resources": [
+        "build/*"
+    ],
+
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';"
+}
