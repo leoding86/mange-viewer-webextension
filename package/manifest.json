@@ -21,6 +21,7 @@
     "permissions": [
         "webRequest",
         "webRequestBlocking",
+        "storage",
         "*://*.readcomics.tv/*",
         "*://*.readcomiconline.to/*",
         "*://*.dm5.com/*",

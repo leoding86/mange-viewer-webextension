@@ -31,9 +31,6 @@
                     <switcher :values="[1, 2]"
                               :configTitle="modeConfigTitle"
                               v-model="interactiveMode"></switcher>
-                    <switcher :values="[0, 1]"
-                              :configTitle="debugModeTitle"
-                              v-model="debugMode"></switcher>
                 </div>
                 <comic-slider ref="comicSlider"
                               :parser="parser"
@@ -50,8 +47,8 @@
 <script>
     import { Matcher } from './modules/common';
     import _ from './modules/_';
-    import Debug from './components/CvrDebugEvent'
-    // let Parser;
+    import Debug from './components/CvrDebugEvent';
+    import Config from './modules/Config';
 
     export default {
         components: {
@@ -103,7 +100,34 @@
             }
         },
 
+        watch: {
+            interactiveMode (val) {
+                this.$refs.comicSlider.interactiveMode = val;
+                if (val === 2) {
+                    let viewportmeta = null;
+                    if (this.viewportmeta) {
+                        viewportmeta = document.querySelector('meta[name="viewport"]');
+                    } else {
+                        viewportmeta = document.createElement('meta');
+                        viewportmeta.name = 'viewport';
+                        document.querySelector('head').appendChild(viewportmeta);
+                    }
+                    viewportmeta.content = 'width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0';
+                } else {
+                    if (this.viewportmeta) {
+                        document.querySelector('meta[name="viewport"]').content = this.viewportmeta.content;
+                    } else {
+                        document.querySelector('meta[name="viewport"]').remove();
+                    }
+                }
+            }
+        },
+
+
         mounted () {
+            this.initConfig();
+            Config.change(this.configChanged);
+
             window.addEventListener('resize', () => {
                 this.initPosition();
             });
@@ -133,30 +157,19 @@ Debug.emit('Praser is ready');
             });
         },
 
-        watch: {
-            interactiveMode (val) {
-                this.$refs.comicSlider.interactiveMode = val;
-                if (val === 2) {
-                    let viewportmeta = null;
-                    if (this.viewportmeta) {
-                        viewportmeta = document.querySelector('meta[name="viewport"]');
-                    } else {
-                        viewportmeta = document.createElement('meta');
-                        viewportmeta.name = 'viewport';
-                        document.querySelector('head').appendChild(viewportmeta);
-                    }
-                    viewportmeta.content = 'width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0';
-                } else {
-                    if (this.viewportmeta) {
-                        document.querySelector('meta[name="viewport"]').content = this.viewportmeta.content;
-                    } else {
-                        document.querySelector('meta[name="viewport"]').remove();
-                    }
-                }
-            }
-        },
-
         methods: {
+            initConfig () {
+                this.debugMode = _cvrContainer.config && _cvrContainer.config.debug_mode ? 
+                                    _cvrContainer.config.debug_mode : 0;
+            },
+
+            configChanged (changes, namespace) {
+                Config.get('debug_mode').then((val) => {
+                    console.log(val)
+                    this.debugMode = val;
+                });
+            },
+
             initPosition () {
                 this.containerWidth = window.innerWidth;
                 this.containerHeight = window.innerHeight;
