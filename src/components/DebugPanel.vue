@@ -5,22 +5,13 @@
 </template>
 
 <script>
+    import Debug from './CvrDebugEvent';
+
     export default {
         name: 'debug-panel',
 
-        props: {
-            eventBus: {
-                type: null,
-                default: null
-            }
-        },
-
         mounted () {
-            if (this.eventBus === null) {
-                throw('Need a event bus for debug panel');
-            }
-
-            this.eventBus.$on('debug', (text) => {
+            Debug.on((text) => {
                 let date = new Date();
                 text = '[' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '] ' + text;
                 this.insertDebugStr(text);

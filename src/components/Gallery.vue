@@ -28,12 +28,12 @@
 
 <script>
     import TapSupportMixin from './TapSupportMixin';
-    import DebugMixin from './DebugMixin';
+    import Debug from './CvrDebugEvent';
 
     export default {
         name: 'gallery',
 
-        mixins: [TapSupportMixin, DebugMixin],
+        mixins: [TapSupportMixin],
 
         props: {
             srcData: {
@@ -327,7 +327,7 @@
                 this.scale = zoom / this.zoom;
                 this.zoom += zoom;
 
-this.debug('zoom to ' + this.zoom + ' time(s)');
+Debug.emit('zoom to ' + this.zoom + ' time(s)');
 
                 this.imgStyle.width  = this.imgSize.width * this.zoom;
                 this.imgStyle.height = this.imgSize.height * this.zoom;

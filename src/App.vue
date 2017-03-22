@@ -4,8 +4,7 @@
             <span style="color:#1c6af8;font-weight:700">C</span><span style="color:#aa2c1b;font-weight:700">V</span><span style="color:#179709;font-weight:700">R</span>
         </div>
         <debug-panel style="position:fixed;bottom:3px;left:3px;z-index:9999"
-                     v-if="debugModeActive"
-                     :event-bus="eventBus"></debug-panel>
+                     v-if="debugModeActive"></debug-panel>
         <div class="cvr-app" v-show="showApp"
              :style="{ width: containerWidth + 'px', height: containerHeight + 'px' }">
             <div v-if="!parserReady">
@@ -42,8 +41,7 @@
                               :curPage="sliderCurPage"
                               :showInfo="false"
                               @init="sliderInit"
-                              @slide="sliderSlideHandler"
-                              :debug-event-bus="eventBus"></comic-slider>
+                              @slide="sliderSlideHandler"></comic-slider>
             </div>
         </div>
     </div>
@@ -52,6 +50,7 @@
 <script>
     import { Matcher } from './modules/common';
     import _ from './modules/_';
+    import Debug from './components/CvrDebugEvent'
     // let Parser;
 
     export default {
@@ -81,7 +80,6 @@
                 debugModeTitle: _('debug_mode'),
                 interactiveMode: 1, // 1: desktop; 2: touchscreen
                 debugMode: 0,
-                eventBus: window._cvrBus,
                 open: _('open'),
 
                 viewportmeta: null
@@ -123,11 +121,11 @@
                 let matcher = new Matcher(window.location.href);
                 let parser = matcher.is();
                 if (parser !== null) {
-this.debug('Initializing parser');
+Debug.emit('Initializing parser');
 
                     let p = require('./parsers/' + parser + '.js');
                     (new p.Parser(window.location.href)).then((parser) => {
-this.debug('Praser is ready');
+Debug.emit('Praser is ready');
                         this.parser = parser;
                         this.parserReady = true;
                     });
@@ -188,22 +186,18 @@ this.debug('Praser is ready');
 
             configTogglerClickHandler () {
                 this.configPanelActive = !this.configPanelActive;
-this.debug((this.configPanelActive ? 'Show' : 'Hide') + ' config panel');
+Debug.emit((this.configPanelActive ? 'Show' : 'Hide') + ' config panel');
             },
 
             appShowBtnClickHandler () {
                 this.showApp = !this.showApp;
                 if (this.showApp) {
-this.debug('Show app viewer');
+Debug.emit('Show app viewer');
                     document.querySelector('body').style.overflow = 'hidden';
                 } else {
-this.debug('Hide app viewer');
+Debug.emit('Hide app viewer');
                     document.querySelector('body').style.overflow = 'auto';
                 }
-            },
-
-            debug (text) {
-                _cvrBus.$emit('debug', text);
             }
         }
     }
