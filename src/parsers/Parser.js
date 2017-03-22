@@ -16,20 +16,20 @@ class Parser {
         // this.webRequestModifyHeader();
     }
 
-    webRequestModifyHeader () {
-        let _this = this;
-        chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
-            details.requestHeaders.push({
-                name: "Referer",
-                value: _this.geturl()
-            }, {
-                name: "User-Agent",
-                value: _ua
-            });
-            let headers = details.requestHeaders;
-            return { requestHeaders: headers };
-        }, { urls: _this.resOrigin }, [ 'requestHeaders', 'blocking' ]);
-    }
+    // webRequestModifyHeader () {
+    //     let _this = this;
+    //     chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
+    //         details.requestHeaders.push({
+    //             name: "Referer",
+    //             value: _this.geturl()
+    //         }, {
+    //             name: "User-Agent",
+    //             value: _ua
+    //         });
+    //         let headers = details.requestHeaders;
+    //         return { requestHeaders: headers };
+    //     }, { urls: _this.resOrigin }, [ 'requestHeaders', 'blocking' ]);
+    // }
 
     geturl () {
         return this.url;
