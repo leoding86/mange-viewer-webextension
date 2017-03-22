@@ -106,9 +106,4 @@ if (process.env.NODE_ENV === 'production') {
     });
 } else if (process.env.NODE_ENV === 'development') {
     module.exports.devtool = '#eval';
-    module.exports.output = {
-        path: path.resolve(__dirname, './package_dev/build'),
-        publicPath: '../build/',
-        filename: 'bundle.[name].js'
-    }
 }
