@@ -15,32 +15,16 @@ class Parser extends BaseParser {
     }
 
     init () {
-        let _this = this;
         this.url = Common._r.mangapanda.exec(this.url)[1];
         return new Promise((resolve, reject) => {
-            this.getDocument(this.url, resolve, reject);
+            this.parseDocument();
+            resolve(this);
         });
     }
 
-    getDocument (url, resolve, reject) {
-        let _this = this;
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', url);
-        xhr.onload = function () {
-            _this.parseDocument(xhr.responseText);
-            resolve(_this);
-        }
-        xhr.onerror = function () {
-            reject(e);
-        }
-        xhr.send(null);
-    }
-
-    parseDocument (responseText) {
-        let matches = /<select[^>]+id="pageMenu"[^>]+>([\s\S]+?)<\/select>/.exec(responseText);
-        let dom = document.createElement('div');
-        dom.innerHTML = matches[1];
-        this.totalPage = dom.querySelectorAll('option').length;
+    parseDocument () {
+        let $pageMenu = document.body.querySelector('#pageMenu');
+        this.totalPage = $pageMenu.querySelectorAll('option').length;
     }
 
     getImgSrc (page, callback, context) {

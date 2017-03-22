@@ -15,25 +15,11 @@ class Parser extends BaseParser {
     }
 
     init () {
-        let _this = this;
         this.url = Common._r.mangastream.exec(this.url)[1];
         return new Promise((resolve, reject) => {
-            this.getDocument(this.url, resolve, reject);
+            this.parseDocument(document.body.innerHTML);
+            resolve(this);
         });
-    }
-
-    getDocument (url, resolve, reject) {
-        let _this = this;
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', url);
-        xhr.onload = function () {
-            _this.parseDocument(xhr.responseText);
-            resolve(_this);
-        }
-        xhr.onerror = function () {
-            reject(e);
-        }
-        xhr.send(null);
     }
 
     parseDocument (responseText) {
