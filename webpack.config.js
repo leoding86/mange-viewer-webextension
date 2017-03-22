@@ -77,32 +77,38 @@ devtool: '#eval-source-map'
 
 if (process.env.NODE_ENV === 'production') {
     module.exports.devtool = '#source-map'
-// http://vue-loader.vuejs.org/en/workflow/production.html
-module.exports.plugins = (module.exports.plugins || []).concat([
-    new webpack.DefinePlugin({
-        'process.env': {
-            NODE_ENV: '"production"'
-        }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-        sourceMap: true,
-        compress: {
-            warnings: false
-        }
-    }),
-    new webpack.LoaderOptionsPlugin({
-        minimize: true
-    })
+    /** http://vue-loader.vuejs.org/en/workflow/production.html **/
+    module.exports.plugins = (module.exports.plugins || []).concat([
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: '"production"'
+            }
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            sourceMap: true,
+            compress: {
+                warnings: false
+            }
+        }),
+        new webpack.LoaderOptionsPlugin({
+            minimize: true
+        })
     ])
 } else if (process.env.NODE_ENV === 'chrome') {
-// remove builded files
-console.log('Remove builds');
-var files = fs.readdirSync(path.resolve(__dirname, 'package/build'));
-files.forEach(function(file) {
-    if (file === '.' || file === '...') {
-        return;
-    }
+    console.log('Remove builds');
+    var files = fs.readdirSync(path.resolve(__dirname, 'package/build'));
+    files.forEach(function(file) {
+        if (file === '.' || file === '...') {
+            return;
+        }
 
-    fs.unlinkSync(path.resolve(__dirname, 'package/build', file));
-});
+        fs.unlinkSync(path.resolve(__dirname, 'package/build', file));
+    });
+} else if (process.env.NODE_ENV === 'development') {
+    module.exports.devtool = '#eval';
+    module.exports.output = {
+        path: path.resolve(__dirname, './package_dev/build'),
+        publicPath: '../build/',
+        filename: 'bundle.[name].js'
+    }
 }
