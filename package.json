@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --progress --watch --colors",
-    "build": "cross-env NODE_ENV=chrome webpack --progress --hide-modules --colors"
+    "build": "cross-env NODE_ENV=chrome webpack --progress --hide-modules --colors -p"
   },
   "dependencies": {
     "vue": "^2.2.1"
