@@ -33,5 +33,13 @@
 
     "interactive_mode": {
         "message": "触摸屏"
+    },
+
+    "debug_mode": {
+        "message": "调式模式"
+    },
+
+    "open": {
+        "message": "打开"
     }
 }

@@ -24,6 +24,7 @@
 
 <script>
     import TapSupportMixin from './TapSupportMixin';
+    import Debug from './CvrDebugEvent';
 
     export default {
         components: {
@@ -134,6 +135,8 @@
         },
 
         mounted () {
+Debug.emit('Initializing slider');
+
             let _this = this;
             // _this.interactiveMode = this.TOUCHESCREEN; //DEBUG
 
@@ -143,6 +146,7 @@
             });
 
             this.$nextTick(() => {
+Debug.emit('Slider is ready');
                 this.initEventListener(this.interactiveMode);
                 this.$refs.itemsWrapper.addEventListener('transitionend', this.transitionend);
                 this.setWrapperSize();
@@ -159,13 +163,16 @@
 
         methods: {
             initEventListener (mode) {
+
                 if (mode === this.DESKTOP) {
+Debug.emit('Change mode to \'desktop\'');
                     this.$off('tap', this._to);
                     this.removeTapSupport(this.$refs.comicSlider);
 
                     this.$refs.comicSlider.addEventListener('click', this._to);
                     this.$refs.info.addEventListener('click', this.infoClickHandle);
                 } else if (mode === this.TOUCHESCREEN) {
+Debug.emit('Change mode to \'touchscreen\'');
                     this.$refs.comicSlider.removeEventListener('click', this._to);
                     this.$refs.info.removeEventListener('click', this.infoClickHandle);
 
@@ -185,9 +192,11 @@
 
             getImgSrc (gallery) {
                 if (this.parser) {
+Debug.emit('[page:' + gallery.extras.page + '] Prase image url');
                     this.parser.getImgSrc(gallery.extras.page, this.setGalleryImgSrcCallback, this);
                 } else {
                     gallery.imgSrc = this.datasets[gallery.extras.page - 1];
+Debug.emit('[page:' + gallery.extras.page + '] Image url: ' + gallery.imgSrc);
                 }
             },
 
@@ -200,6 +209,7 @@
             },
 
             setControl (startPage) {
+Debug.emit('Set current page to ' + startPage + ' [type: sync]');
                 this.$emit('init', startPage, this.totalPage);
                 this.$refs.gallery.forEach((gallery) => {
                     gallery.extras = { page: startPage };
@@ -210,6 +220,7 @@
             },
 
             setControlAsync (startPage) {
+Debug.emit('Set current page to ' + startPage + ' [type: async]');
                 this.$emit('init', startPage, this.totalPage);
                 this.$refs.gallery.forEach((gallery) => {
                     gallery.extras = { page: startPage };
@@ -220,6 +231,7 @@
             },
 
             setGalleryImgSrcCallback (page, src) {
+Debug.emit('[page:' + page + '] Image url: ' + src);
                 this.$refs.gallery.forEach((gallery) => {
                     if (gallery.extras.page == page) {
                         gallery.imgSrc = src;
@@ -242,10 +254,12 @@
                     this.transitionstart = true;
                     this.transitionPrevBefore();
                     this.currentPage--;
+Debug.emit('Go to prev page ' + this.currentPage);
                     this.$emit('slide', this.currentPage, this.totalPage);
                 } else if (this.currentPage < this.totalPage && direction == 1) {
                     this.transitionstart = true;
                     this.currentPage++;
+Debug.emit('Go to next page ' + this.currentPage);
                     this.$emit('slide', this.currentPage, this.totalPage);
                 }
             },

@@ -7,24 +7,25 @@ class Parser extends BaseParser {
     constructor (url) {
         super(
             url,
-            'http://www.mangapanda.com',
-            'http://s5.mangapanda.com/sup/images/dark.813ab89088.png',
-            ['*://*.mangapanda.com/*']);
+            'http://www.eatmanga.com',
+            'http://eatmanga.com/assets/img/logo.png',
+            ['*://*.eatmanga.com/*']);
 
         return this.init();
     }
 
     init () {
-        this.url = Common._r.mangapanda.exec(this.url)[1];
+        let _this = this;
+        this.url = Common._r.eatmanga.exec(this.url)[0];
         return new Promise((resolve, reject) => {
-            this.parseDocument();
-            resolve(this);
+            this.getDocument(this.url, resolve, reject);
         });
     }
 
-    parseDocument () {
-        let $pageMenu = document.body.querySelector('#pageMenu');
-        this.totalPage = $pageMenu.querySelectorAll('option').length;
+    getDocument (url, resolve, reject) {
+        let $pageSelect = document.querySelector('#pages');
+        this.totalPage = $pageSelect.querySelectorAll('option').length;
+        resolve(this);
     }
 
     getImgSrc (page, callback, context) {
@@ -34,7 +35,7 @@ class Parser extends BaseParser {
     }
 
     getPageUrlByPage (page) {
-        return this.url + '/' + page;
+        return this.url + '/page-' + page;
     }
 
     requestImgSrc (page) {
@@ -51,12 +52,14 @@ class Parser extends BaseParser {
                 let xhr = new XMLHttpRequest();
                 xhr.open('GET', pageurl);
                 xhr.onload = () => {
-                    let matches = /<img[^>]+id="img"[^>]+src="([^"]+?)"[^>]+\/?>/.exec(xhr.responseText);
+                    let matches = /<img\s+id="eatmanga_image[^"]*"\s+src="(.+?)"/.exec(xhr.responseText);
+
                     this.datasets[page] = {
                         status: _this.COMPLETED,
                         src: matches[1]
                     }
                     resolve(matches[1]);
+
                 };
                 xhr.onerror = () => {
                     reject(_('network_issue'));

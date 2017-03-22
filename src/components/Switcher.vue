@@ -23,26 +23,49 @@ export default {
         configTitle: {
             type: String,
             default: 'Untitled'
+        },
+
+        value: {
+            type: null,
+            default: 0
         }
     },
 
     data () {
         return {
+            _value: 0,
             active: false
         }
+    },
+
+    watch: {
+        value (val) {
+            this._value = val;
+        }
+    },
+
+    mounted () {
+        let index = this.values.indexOf(this.value);
+
+        if (index === -1) {
+            throw('Invalid value of switcher [' + this.value + ']');
+        }
+
+        this.active = index === 0 ? false : true;
     },
 
     methods: {
         toggleSwitch () {
             this.active = !this.active;
-            this.$emit('switch', this.values[(this.active ? 1 : 0)]);
+            this._value = this.values[(this.active ? 1 : 0)];
+            this.$emit('input', this._value);
         }
     }
 }    
 </script>
 
 <style lang="sass">
-    $width: 90px;
+    $width: 100%;
     $height: 20px;
     $switchWrapperWidth: 40px;
     $handlerWidth: $height - 4;
@@ -55,17 +78,19 @@ export default {
     .switcher-control {
         width: $width;
         height: $height;
+        margin: 5px auto;
 
         .config-title {
             font-size: 12px;
             line-height: 18px;
             float: left;
+            color: #000;
         }
 
         .switch-wrapper {
             width: $switchWrapperWidth;
             height: $height;
-            background: rgba(255, 255, 255, 0.5);
+            background: #8a8a8a;
             border-radius: 15px;
             cursor: pointer;
             position: relative;

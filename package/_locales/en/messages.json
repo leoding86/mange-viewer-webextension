@@ -33,5 +33,13 @@
 
     "interactive_mode": {
         "message": "Touchscreen"
+    },
+
+    "debug_mode": {
+        "message": "Debug mode"
+    },
+
+    "open": {
+        "message": "Open"
     }
 }

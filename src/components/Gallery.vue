@@ -28,6 +28,7 @@
 
 <script>
     import TapSupportMixin from './TapSupportMixin';
+    import Debug from './CvrDebugEvent';
 
     export default {
         name: 'gallery',
@@ -251,7 +252,7 @@
                 } else if (e.deltaY > 0 && this.zoom > 1) {
                     zoom = -1;
                 }
-                this.calcTargetOffset(e.layerX, e.layerY, zoom);
+                this.calcTargetOffset(e.offsetX, e.offsetY, zoom);
             },
 
             imageMouseDownHandler (e) {
@@ -299,6 +300,7 @@
                 } else if (this.zoom >= this.zoomMax) {
                     zoom = - (this.zoomMax - 1);
                 }
+
                 this.calcTargetOffset(
                     evt.targetTouches[0].clientX - this.imgStyle.left,
                     evt.targetTouches[0].clientY - this.imgStyle.top,
@@ -318,8 +320,14 @@
             },
 
             calcTargetOffset (x, y, zoom) {
+                if (this.zoom == this.zoom + zoom) {
+                    return;
+                }
+
                 this.scale = zoom / this.zoom;
                 this.zoom += zoom;
+
+Debug.emit('zoom to ' + this.zoom + ' time(s)');
 
                 this.imgStyle.width  = this.imgSize.width * this.zoom;
                 this.imgStyle.height = this.imgSize.height * this.zoom;
@@ -367,8 +375,8 @@
             },
 
             determineImageFill () {
-                let width = this.$el.offsetWidth;
-                let height = this.$el.offsetHeight;
+                let width = this.$el.offsetWidth ? this.$el.offsetWidth : this.width;
+                let height = this.$el.offsetHeight ? this.$el.offsetHeight : this.height;
 
                 if (width / height > this.$img.naturalWidth / this.$img.naturalHeight) {
                     this.imgSize.height = height;

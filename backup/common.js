@@ -2,10 +2,9 @@ const _r = {
     readcomics: /^https?:\/{2}w{3}\.readcomics\.tv\/[^\/]+\/chapter-[\d]+/i,
     readcomiconline: /^https?:\/{2}readcomiconline\.to\/Comic\/[^\/]+\/[^\/]+\?id=[\d]+/i,
     dm5: /^https?:\/{2}w{3}\.dm5\.com\/m([\d]+)(?:-p[\d]+)?\/?/i,
+    hentai2read: /^https?:\/{2}hentai2read\.com\/[^\/]+\/\d+(?:\/\d+)?\/?/i,
     mangapanda: /^(https?:\/{2}(?:w{3}\.)?mangapanda\.com\/[^\/]+\/\d+)(?:\/\d+)?/i,
-    mangastream: /^(https?:\/{2}(?:w{3}?\.)?mangastream\.com\/r\/[^\/]+\/\d+\/\d+)(?:\/\d+)?\/?/i,
-    eatmanga: /^https?:\/{2}(?:w{3}\.)?eatmanga\.com\/Manga-Scan\/([^\/]+)\/([^\/]+)/i,
-    kissmanga: /^https?:\/{2}kissmanga\.com\/Manga\/[^\/]+\/[^\/]+\?id=\d+/i
+    mangastream: /^(https?:\/{2}(?:w{3}?\.)?mangastream\.com\/r\/[^\/]+\/\d+\/\d+)(?:\/\d+)?\/?/i
 }
 
 const _ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.19 Safari/537.36';
@@ -35,6 +34,11 @@ Matcher.prototype.rules = {
         site: 'dm5.com',
         logo: 'http://js16.tel.cdndm.com/v201703101145/default/images/newImages/index_main_logo.png'
     },
+    'hentai2read': {
+        pattern: _r.hentai2read,
+        site: 'hentai2read.com',
+        logo: 'https://hentaicdn.com/cdn/v2/assets/img/favicons/favicon-192x192.png'
+    },
     'mangapanda': {
         pattern: _r.mangapanda,
         site: 'www.mangapanda.com',
@@ -44,16 +48,6 @@ Matcher.prototype.rules = {
         pattern: _r.mangastream,
         site: 'mangastream.com',
         logo: 'http://mangastream.com/assets/img/logo.png'
-    },
-    'eatmanga': {
-        pattern: _r.eatmanga,
-        site: 'eatmanga.com',
-        logo: 'http://cdn.eatmanga.com/media/logo.png'
-    },
-    'kissmanga': {
-        pattern: _r.kissmanga,
-        site: 'kissmanga.com',
-        logo: 'http://kissmanga.com/Content/images/logo.png'
     }
 };
 

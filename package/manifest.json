@@ -4,7 +4,7 @@
     "name": "__MSG_extName__",
     "short_name": "CVR",
     "description": "__MSG_extDescription__",
-    "version": "0.2.0.0",
+    "version": "0.3.2.1",
     "default_locale": "en",
     "icons": {
         "16": "./assets/icon16.png",
@@ -26,14 +26,19 @@
         "*://*.dm5.com/*",
         "*://*.cdndm5.com/*",
         "*://*.mangapanda.com/*",
-        "*://*.mangastream.com/*"
+        "*://*.mangastream.com/*",
+        "*://*.eatmanga.com/*",
+        "*://*.kissmanga.com/*",
+        "*://*.googleusercontent.com/*"
     ],
 
     "background": {
         "scripts": ["./build/bundle.background.js"]
     },
 
-    "web_accessible_resources": [],
+    "web_accessible_resources": [
+        "build/*"
+    ],
 
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';"
 }
