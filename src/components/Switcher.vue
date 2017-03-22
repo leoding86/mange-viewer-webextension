@@ -41,6 +41,8 @@ export default {
     watch: {
         value (val) {
             this._value = val;
+            let index = this.values.indexOf(val);
+            this.active = index === 0 ? false : true;
         }
     },
 
