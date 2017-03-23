@@ -16,6 +16,7 @@
              :style="{ width: itemsWrapperWidth + 'px', height: wrapperHeight + 'px', 'left': itemsWrapperLeft + 'px', transition: itemsWrapperTransition }">
                 <control v-for="n in (preloadPage + 1)" :index-data="n" ref="gallery" 
                          src-data=""
+                         :init-zoom="galleryInitZoom"
                          :width="wrapperWidth" :height="wrapperHeight"
                          :style="{ position: 'absolute' }"></control>
         </div>
@@ -79,7 +80,8 @@
 
                 DESKTOP: 1,
                 TOUCHESCREEN: 2,
-                interactiveMode: 1
+                interactiveMode: 1,
+                galleryInitZoom: window._cvrContainer.config['init_zoom_level']
             }
         },
 
