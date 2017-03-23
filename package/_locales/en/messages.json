@@ -41,5 +41,9 @@
 
     "open": {
         "message": "Open"
+    },
+
+    "init_zoom_level": {
+        "message": "Init zoom"
     }
 }

@@ -41,5 +41,9 @@
 
     "open": {
         "message": "打开"
+    },
+
+    "init_zoom_level": {
+        "message": "初始缩放"
     }
 }
