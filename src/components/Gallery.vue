@@ -57,6 +57,11 @@
             zoomMax: {
                 type: [Number, String],
                 default: 4
+            },
+
+            initZoom: {
+                type: [Number, String],
+                default: 2
             }
         },
 
@@ -201,6 +206,8 @@
                 this.imgStyle.height = this.imgSize.height;
                 this.imgStyle.left = this.imgInitOffsetLeft;
                 this.imgStyle.top = this.imgInitOffsetTop;
+                this.calcTargetOffset(0, 0, this.initZoom - 1); // init zoom
+
                 setTimeout(() => {
                     this.imgStyle.transition = 'all 0.2s';
                 }, 500);
