@@ -83,7 +83,6 @@ export default {
     .switcher-control {
         width: $width;
         height: $height;
-        margin: 5px auto;
 
         .config-title {
             font-size: 12px;
