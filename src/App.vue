@@ -125,7 +125,8 @@
 
 
         mounted () {
-            this.initConfig();
+            this.debugMode = window._cvrContainer.config['debug_mode'];
+
             Config.change(this.configChanged);
 
             window.addEventListener('resize', () => {
@@ -158,14 +159,8 @@ Debug.emit('Praser is ready');
         },
 
         methods: {
-            initConfig () {
-                this.debugMode = _cvrContainer.config && _cvrContainer.config.debug_mode ? 
-                                    _cvrContainer.config.debug_mode : 0;
-            },
-
             configChanged (changes, namespace) {
                 Config.get('debug_mode').then((val) => {
-                    console.log(val)
                     this.debugMode = val;
                 });
             },
