@@ -1,7 +1,10 @@
 <template>
     <div class="switcher-control">
-        <div class="config-title">{{configTitle}}</div>
-        <div class="switch-wrapper" @click="toggleSwitch">
+        <div class="config-title"
+             @click="toggleSwitch">{{configTitle}}</div>
+        <div class="switch-wrapper"
+             :class="{ 'status-active': active, 'status-deactive': !active }"
+             @click="toggleSwitch">
             <div class="handler"
                  :class="{ 'handler-active': active, 'handler-deactive': !active }"></div>
         </div>
@@ -87,17 +90,18 @@ export default {
             line-height: 18px;
             float: left;
             color: #000;
+            cursor: pointer;
         }
 
         .switch-wrapper {
             width: $switchWrapperWidth;
             height: $height;
-            background: #8a8a8a;
             border-radius: 15px;
             cursor: pointer;
             position: relative;
             float: right;
             margin-left: 5px;
+            transition: background 0.3s;
 
             .handler {
                 width: $handlerWidth;
@@ -106,18 +110,25 @@ export default {
                 position: absolute;
                 top: $handlerTop;
                 box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+                background: rgb(255, 255, 255);
                 transition: all 0.3s;
             }
 
             .handler-deactive {
-                background: rgb(255, 255, 255);
                 left: $handlerDeactiveLeft;
             }
 
             .handler-active {
-                background: rgb(15, 152, 0);
                 left: $handlerActiveLeft;
             }
+        }
+
+        .status-active {
+            background: rgb(20, 185, 0);
+        }
+
+        .status-deactive {
+            background: #ddd;
         }
     }
 </style>
