@@ -6,7 +6,7 @@ var tabStack = new TabStack();
 chrome.webRequest.onCompleted.addListener((details) => {
     matcher.setUrl(details.url);
     if (name = matcher.is()) {
-        if (details.tabId > 1) {
+        if (details.tabId > -1) {
             /* Change icon to active one */
             setTimeout(() => {
                 chrome.browserAction.setIcon({
