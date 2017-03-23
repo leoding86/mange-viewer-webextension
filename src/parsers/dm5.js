@@ -1,5 +1,6 @@
 import * as Common from '../modules/common';
 import _ from '../modules/_';
+import XHR from '../modules/XHR';
 import BaseParser from './Parser';
 
 class Parser extends BaseParser {
@@ -23,22 +24,9 @@ class Parser extends BaseParser {
     init () {
         let _this = this;
         return new Promise((resolve, reject) => {
-            this.getDocument(this.url, resolve, reject);
-        });
-    }
-
-    getDocument (url, resolve, reject) {
-        let _this = this;
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', url);
-        xhr.onload = function () {
-            _this.parseDocument(xhr.responseText);
+            _this.parseDocument(document.body.innerHTML);
             resolve(_this);
-        }
-        xhr.onerror = function (e) {
-            reject(e);
-        }
-        xhr.send(null);
+        });
     }
 
     parseDocument (responseText) {
@@ -72,7 +60,7 @@ class Parser extends BaseParser {
     }
 
     sendHistoryRequest (page) {
-        let xhr = new XMLHttpRequest();
+        let xhr = XHR();
         xhr.open('GET', this.getHistoryUrlByPage(page));
         xhr.send(null);
     }
@@ -92,7 +80,7 @@ class Parser extends BaseParser {
 
                 this.datasets[page].status = this.PROCESSING;
                 let chapterfun = this.getChapterfunUrlByPage(page);
-                let xhr = new XMLHttpRequest();
+                let xhr = XHR();
                 xhr.open('GET', chapterfun);
                 xhr.onload = () => {
                     let script = xhr.responseText;
