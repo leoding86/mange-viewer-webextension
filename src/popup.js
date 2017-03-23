@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import App from './Popup.vue'
-import Config from './modules/Config';
+import config from './modules/config';
 
 _cvrContainer = window._cvrContainer = {}
 
 /* load config from storage */
-Config.get(null).then((config) => {
+config.get(null).then((config) => {
     _cvrContainer.config = config;
 
     new Vue({

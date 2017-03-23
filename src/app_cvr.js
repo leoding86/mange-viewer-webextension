@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
-import Config from './modules/Config';
+import config from './modules/config';
+
+let _cvrContainer = window._cvrContainer = {};
 
 /* Create a mount point */
 let $appContainer = document.createElement('div');
@@ -10,10 +12,9 @@ $appContainer.style.top = '0';
 $appContainer.style.left = '0';
 document.querySelector('body').appendChild($appContainer);
 
-let _cvrContainer = window._cvrContainer = {}
-
 /* load config from storage */
-Config.get(null).then((config) => {
+config.get(null).then((config) => {
+console.log(config);
     _cvrContainer.config = config;
 
     new Vue({

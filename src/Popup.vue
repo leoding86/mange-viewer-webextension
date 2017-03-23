@@ -14,7 +14,7 @@
 
 <script>
     import _ from './modules/_';
-    import Config from './modules/Config';
+    import config from './modules/config';
     import { UrlBuilder } from './modules/common';
 
     export default {
@@ -34,19 +34,19 @@
 
         watch: {
             debugModeValue (val) {
-                Config.set('debug_mode', val);
+                config.set('debug_mode', val);
             },
 
             initZoomValue (val) {
                 if (!/^[1-9]\d*$/.test(val) || val > 3) {
                     this.initZoomValue = val = 1;
                 }
-                Config.set('init_zoom_level', val);
+                config.set('init_zoom_level', val);
             },
         },
 
         beforeCreate () {
-            Config.get('debug_mode').then((val) => {
+            config.get('debug_mode').then((val) => {
                 this.debugModeValue = val;
             });
         },

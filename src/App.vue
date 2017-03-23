@@ -48,7 +48,7 @@
     import { Matcher } from './modules/common';
     import _ from './modules/_';
     import Debug from './components/CvrDebugEvent';
-    import Config from './modules/Config';
+    import config from './modules/config';
 
     export default {
         components: {
@@ -127,7 +127,7 @@
         mounted () {
             this.debugMode = window._cvrContainer.config['debug_mode'];
 
-            Config.change(this.configChanged);
+            config.change(this.configChanged);
 
             window.addEventListener('resize', () => {
                 this.initPosition();
@@ -160,7 +160,7 @@ Debug.emit('Praser is ready');
 
         methods: {
             configChanged (changes, namespace) {
-                Config.get('debug_mode').then((val) => {
+                config.get('debug_mode').then((val) => {
                     this.debugMode = val;
                 });
             },
