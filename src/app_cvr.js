@@ -14,7 +14,6 @@ document.querySelector('body').appendChild($appContainer);
 
 /* load config from storage */
 config.get(null).then((config) => {
-console.log(config);
     _cvrContainer.config = config;
 
     new Vue({
