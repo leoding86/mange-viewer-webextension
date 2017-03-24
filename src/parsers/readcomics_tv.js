@@ -4,13 +4,7 @@ import BaseParser from './Parser';
 class Parser extends BaseParser {
 
     constructor (url) {
-        super(
-            'readcomics_tv',
-            url,
-            'http://www.readcomics.tv',
-            'http://www.readcomics.tv/images/site/front/logo4.png'
-        );
-
+        super('readcomics_tv', url);
         return this.init();
     }
 

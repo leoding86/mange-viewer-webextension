@@ -5,13 +5,7 @@ import BaseParser from './Parser';
 class Parser extends BaseParser {
 
     constructor (url) {
-        super(
-            'mangapanda_com',
-            url,
-            'http://www.mangapanda.com',
-            'http://s5.mangapanda.com/sup/images/dark.813ab89088.png',
-            ['*://*.mangapanda.com/*']);
-
+        super('mangapanda_com', url);
         return this.init();
     }
 

@@ -5,14 +5,7 @@ import BaseParser from './Parser';
 class Parser extends BaseParser {
 
     constructor (url) {
-        super(
-            'readcomiconline_to',
-            url,
-            'http://www.readcomiconline.to',
-            'http://readcomiconline.to/Content/images/logo.png',
-            ['*://*.readcomiconline.to/*']
-        );
-
+        super('readcomiconline_to', url);
         return this.init();
     }
 

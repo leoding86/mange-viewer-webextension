@@ -5,13 +5,7 @@ import BaseParser from './Parser';
 class Parser extends BaseParser {
 
     constructor (url) {
-        super(
-            'kissmanga_com',
-            url,
-            'http://kissmanga.com',
-            'http://kissmanga.com/Content/images/logo.png',
-            ['*://*.kissmanga.com/*']);
-
+        super('kissmanga_com', url);
         return this.init();
     }
 

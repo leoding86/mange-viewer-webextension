@@ -5,13 +5,7 @@ import BaseParser from './Parser';
 class Parser extends BaseParser {
 
     constructor (url) {
-        super(
-            'mangastream_com',
-            url,
-            'http://www.mangastream.com',
-            'http://mangastream.com/assets/img/logo.png',
-            ['*://*.mangastream.com/*']);
-
+        super('mangastream_com', url);
         return this.init();
     }
 

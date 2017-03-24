@@ -1,16 +1,18 @@
-import { _ua } from '../modules/common';
+import { _ua, _r } from '../modules/common';
 
 class Parser {
 
-    constructor (url, siteurl, sitelogo, resOrigin) {
+    constructor (name, url) {
+        this.name = name;
         this.url = url;
-        this.siteurl = siteurl;
-        this.sitelogo = sitelogo;
-        this.resOrigin = resOrigin;
         this.totalPage = 0;
         this.PROCESSING = 1;
         this.COMPLETED = 2;
         this.datasets = [];
+        this.pattern = _r[this.name].pattern;
+        this.siteurl = _r[this.name].site;
+        this.sitelogo = _r[this.name].logo;
+        this.resOrigin = _r[this.name].origins;
 
         // 修改请求头信息
         // this.webRequestModifyHeader();

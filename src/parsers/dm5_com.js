@@ -6,17 +6,10 @@ import BaseParser from './Parser';
 class Parser extends BaseParser {
 
     constructor (url) {
-        super(
-            'dm5_com',
-            url,
-            'http://www.dm5.com',
-            'http://js16.tel.cdndm.com/v201703101145/default/images/newImages/index_main_logo.png',
-            ['*://*.dm5.com/*', '*://*.cdndm5.com/*']
-        );
+        super('dm5_com', url);
         this.cid = null;
         this.mid = null;
         this.uid = 0;
-        this.datasets = { };
 
         this.parseUrl();
         return this.init();

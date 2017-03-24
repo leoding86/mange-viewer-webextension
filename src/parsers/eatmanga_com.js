@@ -5,13 +5,7 @@ import BaseParser from './Parser';
 class Parser extends BaseParser {
 
     constructor (url) {
-        super(
-            'eatmanga_com',
-            url,
-            'http://www.eatmanga.com',
-            'http://eatmanga.com/assets/img/logo.png',
-            ['*://*.eatmanga.com/*']);
-
+        super('eatmanga_com', url);
         return this.init();
     }
 
