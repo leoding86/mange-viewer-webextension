@@ -413,5 +413,10 @@ Debug.emit('zoom to ' + this.zoom + ' time(s)');
                 color: #fff;
             }
         }
+
+        img {
+            max-width: initial;
+            min-width: initial;
+        }
     }
 </style>
