@@ -8,15 +8,7 @@ function Parser(url) {
 
 Parser.prototype.init = function () {
     let _this = this;
-    chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
-        details.requestHeaders.push({
-            name: "Referer",
-            value: _this.geturl()
-        });
-        let headers = details.requestHeaders;
-        return { requestHeaders: headers };
-    }, { urls: ['*://*.readcomics.tv/*'], types: ['xmlhttprequest'] }, [ 'requestHeaders', 'blocking' ]);
-
+    
     return new Promise((resolve, reject) => {
         let matches = this.url.match(Common._r.readcomics);
         if (matches) {
