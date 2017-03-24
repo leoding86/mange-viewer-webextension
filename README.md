@@ -10,4 +10,6 @@ cdndm5.com
 mangapanda.com  
 mangastream.com  
 eatmanga.com  
-kissmanga.com  
+kissmanga.com  
+mangadoom.cn
+...keep adding
