@@ -33,7 +33,7 @@
 
 <style lang="sass">
     .cvr-debug-panel {
-        width: 50%;
+        width: 90%;
         height: 50%;
         background: rgba(255, 255, 255, 0.6);
         border-radius: 3px;
@@ -45,6 +45,12 @@
             margin: 0 3px;
             padding: 3px 0;
             border-bottom: 1px solid #fff;
+        }
+
+        p {
+            margin: 0;
+            line-height: 16px;
+            font-size: 14px;
         }
     }
 </style>
