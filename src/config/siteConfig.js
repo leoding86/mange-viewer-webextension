@@ -46,6 +46,13 @@ const siteConfig = {
         site: 'kissmanga.com',
         logo: 'http://kissmanga.com/Content/images/logo.png',
         origins: []
+    },
+
+    mangadoom_co: {
+        pattern: /^https?:\/{2}mangadoom\.co\/[^\/]+\/\d+/i,
+        site: 'mangadoom.do',
+        logo: 'http://mangadoom.co/assets/img/lgo.png',
+        origins: []
     }
 }
 
