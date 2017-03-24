@@ -138,4 +138,73 @@ UrlBuilder.prototype.toString = function () {
     return this.url;
 }
 
-export { Matcher, TabStack, UrlBuilder, _r, _ua }
+function Magic() {
+    this.randStr = randStr(16);
+}
+
+Magic.prototype.iDom = function(remove) {
+    if (!remove) {
+        let iDom = document.createElement('div');
+        iDom.style.display = 'none';
+        iDom.setAttribute('id', 'idom-' + this.randStr);
+        return iDom;
+    } else {
+        document.querySelector('#idom-' + this.randStr).remove();
+    }
+}
+
+Magic.prototype.iScript = function(remove) {
+    if (!remove) {
+        let iScript = document.createElement('script');
+        iScript.style.display = 'none';
+        iScript.setAttribute('id', 'ijs-' + this.randStr);
+        return iScript;
+    } else {
+        document.querySelector('#ijs-' + this.randStr).remove();
+    }
+}
+
+Magic.prototype.getVar = function(obj, type) {
+    let iDom = this.iDom();
+
+    document.documentElement.appendChild(iDom);
+    var script = '(function(){';
+    script += 'var string = null;';
+    script += 'if (typeof ' + obj + ' == "string") string = ' + obj + ';';
+    script += 'else if (typeof ' + obj + ' == "object") string = JSON.stringify(' + obj + ');';
+    script += 'document.querySelector("#idom-' + this.randStr + '").setAttribute("data", string);';
+    script += '})()';
+
+    let iScript = this.iScript();
+    iScript[(iScript.innerText ? 'innerText' : 'textContent')] = script;
+    document.documentElement.appendChild(iScript);
+    var domData = iDom.getAttribute('data');
+
+    this.clearup();
+
+    if (type === 'string')
+        return domData;
+    else if (type === 'object' || type === 'json')
+        return JSON.parse(domData);
+    else
+        return null;
+}
+
+Magic.prototype.getResult = function(callable, params) {
+
+}
+
+Magic.prototype.clearup = function() {
+    this.iDom(true);
+    this.iScript(true);
+}
+
+const randStr = function(len) {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for( var i = 0; i < len; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+}
+
+export { Matcher, TabStack, UrlBuilder, _r, _ua, randStr, Magic }
