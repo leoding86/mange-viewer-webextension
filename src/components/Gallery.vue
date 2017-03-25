@@ -61,7 +61,7 @@
 
             initZoom: {
                 type: [Number, String],
-                default: 2
+                default: 1
             }
         },
 
@@ -97,6 +97,7 @@
                 DESKTOP: 1,
                 TOUCHSCREEN: 2,
                 interactiveMode: 1,
+                oldDistance: null,
 
                 extras : {} // For some extras data
             }
@@ -178,6 +179,7 @@
                     this.$off('dbtap', this.imageDbtapHandler);
                     this.$img.removeEventListener('touchstart', this.imageTouchstartHandler);
                     this.$img.removeEventListener('touchmove', this.imageTouchmoveHandler);
+                    this.$img.removeEventListener('touchend', this.imageTouchendHandler);
                     this.removeTapSupport(this.$img);
 
                     /* 绑定新事件 */
@@ -190,8 +192,9 @@
                     /* 绑定新事件 */
                     this.$on('tap', this.imageTaphandler);
                     this.$on('dbtap', this.imageDbtapHandler);
-                    this.$img.addEventListener('touchstart', this.imageTouchstartHandler)
+                    this.$img.addEventListener('touchstart', this.imageTouchstartHandler);
                     this.$img.addEventListener('touchmove', this.imageTouchmoveHandler);
+                    this.$img.addEventListener('touchend', this.imageTouchendHandler);
                     this.addTapSupport(this.$img);
                 }
             },
@@ -288,15 +291,64 @@
             },
 
             imageTouchstartHandler (e) {
-                this.pointDownX = e.touches[0].clientX;
-                this.pointDownY = e.touches[0].clientY;
-                this.imgOffsetLeft = this.imgStyle.left;
-                this.imgOffsetTop  = this.imgStyle.top;
-                this.imgStyle.transition = 'all 0s';
+
+                if (e.touches.length == 1) {
+                    this.pointDownX = e.touches[0].clientX;
+                    this.pointDownY = e.touches[0].clientY;
+                    this.imgOffsetLeft = this.imgStyle.left;
+                    this.imgOffsetTop  = this.imgStyle.top;
+                    this.imgStyle.transition = 'all 0s';
+                } else if (e.touches.length > 1) {
+                    this.oldDistance = this.calDistance(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+                }
+            },
+
+            imageTouchendHandler (e) {
+                if (e.touches.length == 1) {
+                    this.pointDownX = e.touches[0].clientX;
+                    this.pointDownY = e.touches[0].clientY;
+                    this.imgOffsetLeft = this.imgStyle.left;
+                    this.imgOffsetTop  = this.imgStyle.top;
+                    this.imgStyle.transition = 'all 0s';
+                }
             },
 
             imageTouchmoveHandler (e) {
-                this.imagePointMove(e.touches[0].clientX, e.touches[0].clientY, e);
+                e.preventDefault();
+
+                if (e.touches.length == 1) {
+                    this.imagePointMove(e.touches[0].clientX, e.touches[0].clientY, e);
+                } else if (e.touches.length > 1) {
+                    let distance = this.calDistance(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+
+                    console.log(distance, this.oldDistance);
+
+                    let zoom = 0;
+                    if (distance > this.oldDistance) {
+                        zoom = 0.03;
+                    } else if (distance < this.oldDistance) {
+                        zoom = -0.03;
+                    }
+
+                    this.oldDistance = distance;
+
+                    let vpoint = {
+                        x: Math.round((e.touches[0].clientX + e.touches[1].clientX) / 2),
+                        y: Math.round((e.touches[0].clientY + e.touches[1].clientY) / 2)
+                    }
+
+                    this.calcTargetOffset(
+                        vpoint.x - this.imgStyle.left,
+                        vpoint.y - this.imgStyle.top,
+                        zoom
+                    );
+                }
             },
 
             imageDbtapHandler (evt) {
@@ -308,6 +360,7 @@
                     zoom = - (this.zoomMax - 1);
                 }
 
+                this.imgStyle.transition = 'all 0.2s';
                 this.calcTargetOffset(
                     evt.targetTouches[0].clientX - this.imgStyle.left,
                     evt.targetTouches[0].clientY - this.imgStyle.top,
@@ -331,8 +384,14 @@
                     return;
                 }
 
-                this.scale = zoom / this.zoom;
-                this.zoom += zoom;
+                if ((this.zoom + zoom) > this.zoomMax) {
+                    return;
+                } else if ((this.zoom + zoom) < 1) {
+                    return;
+                } else {
+                    this.scale = zoom / this.zoom;
+                    this.zoom += zoom;
+                }
 
 Debug.emit('zoom to ' + this.zoom + ' time(s)');
 
@@ -379,6 +438,11 @@ Debug.emit('zoom to ' + this.zoom + ' time(s)');
                 } else {
                     this.imgStyle.top = targetOffsetTop;
                 }
+            },
+
+            calDistance (l1, l2) {
+                let distance = Math.sqrt(Math.pow(Math.round(l1), 2) + Math.pow(Math.round(l2), 2));
+                return distance;
             },
 
             determineImageFill () {
