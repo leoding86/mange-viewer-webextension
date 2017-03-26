@@ -129,7 +129,7 @@ Magic.prototype.getVar = function(obj, type) {
     document.documentElement.appendChild(iDom);
     var script = '(function(){';
     script += 'var string = null;';
-    script += 'if (typeof ' + obj + ' == "string") string = ' + obj + ';';
+    script += 'if (typeof ' + obj + ' == "string" || "number") string = ' + obj + ';';
     script += 'else if (typeof ' + obj + ' == "object") string = JSON.stringify(' + obj + ');';
     script += 'document.querySelector("#idom-' + this.randStr + '").setAttribute("data", string);';
     script += '})()';
