@@ -149,7 +149,7 @@
 Debug.emit('Initializing parser');
 
                     let p = require('./parsers/' + parser + '.js');
-                    (new p.Parser(window.location.href)).then((parser) => {
+                    (new p.default(window.location.href)).then((parser) => {
 Debug.emit('Praser is ready');
                         this.parser = parser;
                         this.parserReady = true;
