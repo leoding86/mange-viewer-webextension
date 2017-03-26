@@ -62,6 +62,15 @@ const siteConfig = {
         site: 'mangadoom.do',
         logo: 'http://mangadoom.co/assets/img/lgo.png',
         origins: []
+    },
+
+    mangapark_me: {
+        parser: 'mangapark_me',
+        pattern: /^(https?:\/{2}(?:w{3}?\.)?mangapark\.me\/manga\/[^\/]+\/s\d+(?:\/v\d+)?\/c\d+)/i,
+        site: 'mangapark.me',
+        logo: 'http://h.s.mangapark.me/img/logo.png',
+        origins: [],
+        nsfw: true
     }
 }
 
