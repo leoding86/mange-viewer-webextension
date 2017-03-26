@@ -33,4 +33,4 @@ class Parser extends BaseParser {
 
 }
 
-export { Parser };
+export default Parser;
