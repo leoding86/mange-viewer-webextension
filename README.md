@@ -12,4 +12,5 @@ mangastream.com(readms.com)
 eatmanga.com  
 kissmanga.com  
 mangadoom.cn  
+mangapark.me
 (...keep adding)
