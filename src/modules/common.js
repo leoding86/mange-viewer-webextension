@@ -24,7 +24,7 @@ Matcher.prototype.is = function () {
     for (var name in this.rules) {
         if (this.rules[name].pattern.test(this.url)) {
             this.rule = this.rules[name];
-            return name;
+            return this.rules[name].parser;
         }
     }
     return null;
