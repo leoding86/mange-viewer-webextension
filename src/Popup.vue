@@ -74,6 +74,14 @@
 
         .input-field-row {
             margin: 10px auto;
+
+            label.control-label {
+                font-size: 14px;
+            }
+
+            .config-title {
+                font-size: 14px;
+            }
         }
     }
 </style>
