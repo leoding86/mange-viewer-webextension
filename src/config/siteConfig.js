@@ -23,6 +23,14 @@ const siteConfig = {
         origins: []
     },
 
+    'dm5_com-mob': {
+        parser: 'dm5_com-mob',
+        pattern: /^https?:\/{2}m\.dm5\.com\/m([\d]+)(?:-p[\d]+)?\/?/i,
+        site: 'm.dm5.com',
+        logo: 'http://js16.tel.cdndm.com/v201703101145/default/images/newImages/index_main_logo.png',
+        origins: []
+    },
+
     mangapanda_com: {
         parser: 'mangapanda_com',
         pattern: /^(https?:\/{2}(?:w{3}\.)?mangapanda\.com\/[^\/]+\/\d+)(?:\/\d+)?/i,
