@@ -75,7 +75,7 @@
                 configPanelActive: false,
                 modeConfigTitle: _('interactive_mode'),
                 debugModeTitle: _('debug_mode'),
-                interactiveMode: 1, // 1: desktop; 2: touchscreen
+                interactiveMode: _cvrContainer.config['interactive_mode'], // 1: desktop; 2: touchscreen
                 debugMode: 0,
                 open: _('open'),
 
@@ -102,17 +102,12 @@
 
         watch: {
             interactiveMode (val) {
+                config.set('interactive_mode', val);
+
                 this.$refs.comicSlider.interactiveMode = val;
+
                 if (val === 2) {
-                    let viewportmeta = null;
-                    if (this.viewportmeta) {
-                        viewportmeta = document.querySelector('meta[name="viewport"]');
-                    } else {
-                        viewportmeta = document.createElement('meta');
-                        viewportmeta.name = 'viewport';
-                        document.querySelector('head').appendChild(viewportmeta);
-                    }
-                    viewportmeta.content = 'width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0';
+                    this.applyViewport();
                 } else {
                     if (this.viewportmeta) {
                         document.querySelector('meta[name="viewport"]').content = this.viewportmeta.content;
@@ -122,7 +117,6 @@
                 }
             }
         },
-
 
         mounted () {
             this.debugMode = window._cvrContainer.config['debug_mode'];
@@ -162,6 +156,11 @@ Debug.emit('Praser is ready');
             configChanged (changes, namespace) {
                 config.get('debug_mode').then((val) => {
                     this.debugMode = val;
+                    _cvrContainer.config['debug_mode'] = val; // refresh
+                });
+                config.get('interactive_mode').then((val) => {
+                    this.interactiveMode = val;
+                    _cvrContainer.config['interactive_mode'] = val; // refresh
                 });
             },
 
@@ -201,10 +200,32 @@ Debug.emit((this.configPanelActive ? 'Show' : 'Hide') + ' config panel');
                 this.showApp = !this.showApp;
                 if (this.showApp) {
 Debug.emit('Show app viewer');
+
+                    this.applyViewport(_cvrContainer.config['interactive_mode']);
                     document.querySelector('body').style.overflow = 'hidden';
                 } else {
 Debug.emit('Hide app viewer');
                     document.querySelector('body').style.overflow = 'auto';
+                }
+            },
+
+            applyViewport (type) {
+                if (type == 1) {
+                    if (this.viewportmeta) {
+                        document.querySelector('meta[name="viewport"]').content = this.viewportmeta.content;
+                    } else {
+                        document.querySelector('meta[name="viewport"]').remove();
+                    }
+                } else if (type == 2) {
+                    let viewportmeta = null;
+                    if (this.viewportmeta) {
+                        viewportmeta = document.querySelector('meta[name="viewport"]');
+                    } else {
+                        viewportmeta = document.createElement('meta');
+                        viewportmeta.name = 'viewport';
+                        document.querySelector('head').appendChild(viewportmeta);
+                    }
+                    viewportmeta.content = 'width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0';
                 }
             }
         }
