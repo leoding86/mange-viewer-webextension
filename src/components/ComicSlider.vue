@@ -80,7 +80,7 @@
 
                 DESKTOP: 1,
                 TOUCHESCREEN: 2,
-                interactiveMode: 1,
+                interactiveMode: window._cvrContainer.config['interactive_mode'],
                 galleryInitZoom: window._cvrContainer.config['init_zoom_level']
             }
         },
