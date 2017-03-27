@@ -129,8 +129,9 @@ Magic.prototype.getVar = function(obj, type) {
     document.documentElement.appendChild(iDom);
     var script = '(function(){';
     script += 'var string = null;';
-    script += 'if (typeof ' + obj + ' == "string" || "number") string = ' + obj + ';';
-    script += 'else if (typeof ' + obj + ' == "object") string = JSON.stringify(' + obj + ');';
+    script += 'if (typeof ' + obj + ' == ("string" || "number")) { string = ' + obj + ';console.log(1); }';
+    script += 'else if (typeof ' + obj + ' == "object") { string = JSON.stringify(' + obj + ');console.log(2); }';
+    // script += 'console.log(typeof ' + obj +');';
     script += 'document.querySelector("#idom-' + this.randStr + '").setAttribute("data", string);';
     script += '})()';
 
@@ -141,12 +142,13 @@ Magic.prototype.getVar = function(obj, type) {
 
     this.clearup();
 
-    if (type === 'string')
+    if (type === 'string') {
         return domData;
-    else if (type === 'object' || type === 'json')
+    } else if (type === 'object' || type === 'json') {
         return JSON.parse(domData);
-    else
+    } else {
         return null;
+    }
 }
 
 Magic.prototype.getResult = function(callable, params) {
