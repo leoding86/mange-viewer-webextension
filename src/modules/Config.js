@@ -4,13 +4,13 @@ import storage from '../modules/storage';
 let config = {
     set (key, value) {
 Debug.emit('Set config \'' + key + '\' to ' + value);
-        storage.get('config', (items) => {
+        storage.getLocal('config', (items) => {
             if (!items.config) {
                 items.config = {};
             }
             items.config[key] = value;
-            storage.set({'config': items.config}, () => {
-                if (chrome.runtime.lastError !== undefined) {
+            storage.setLocal({'config': items.config}, () => {
+                if (chrome.runtime.lastError === undefined) {
 Debug.emit('Config has been saved');
                 } else {
 Debug.emit('Save config failed. ' + chrome.runtime.lastError);
@@ -21,7 +21,7 @@ Debug.emit('Save config failed. ' + chrome.runtime.lastError);
 
     get (key) {
         return new Promise((resolve, reject) => {
-            storage.get('config', (items) => {
+            storage.getLocal('config', (items) => {
                 if (!items.config) {
                     items.config = this._config;
                 } else {
@@ -48,14 +48,17 @@ Debug.emit('Save config failed. ' + chrome.runtime.lastError);
     },
 
     _config: {
-        'debug_mode'     : 0,
-        'init_zoom_level': 1
+        'interactive_mode' : 1, // 1: mouse; 2: touchscreen
+        'debug_mode'       : 0,
+        'init_zoom_level'  : 1
     },
 
     _checkConfigItem (name, value) {
         if (name == 'debug_mode' && value && /^[01]$/.test(value)) {
             return true;
         } else if (name == 'init_zoom_level' && value && /^[123]$/.test(value)) {
+            return true;
+        } else if (name == 'interactive_mode' && value && /^[12]$/.test(value)) {
             return true;
         }
 
