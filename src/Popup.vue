@@ -5,6 +5,10 @@
                          :rule="['number','require']"
                          v-model="initZoomValue"></input-field>
             <switcher class="input-field-row"
+                      :values="[1, 2]"
+                      :configTitle="_('interactive_mode')"
+                      v-model="interactiveModeValue"></switcher>
+            <switcher class="input-field-row"
                       :values="[0, 1]"
                       :configTitle="_('debug_mode')"
                       v-model="debugModeValue"></switcher>
@@ -27,12 +31,17 @@
 
         data () {
             return {
+                interactiveModeValue: _cvrContainer.config['interactive_mode'],
                 debugModeValue: _cvrContainer.config['debug_mode'],
                 initZoomValue: _cvrContainer.config['init_zoom_level']
             };
         },
 
         watch: {
+            interactiveModeValue (val) {
+                config.set('interactive_mode', val);
+            },
+
             debugModeValue (val) {
                 config.set('debug_mode', val);
             },
@@ -49,10 +58,6 @@
             config.get('debug_mode').then((val) => {
                 this.debugModeValue = val;
             });
-        },
-
-        mounted () {
-            
         },
 
         methods : {
