@@ -14,7 +14,8 @@ entry () {
         main: './src/main.js',
         popup: './src/popup.js',
         background: './src/background.js',
-        app_cvr: './src/app_cvr.js'
+        app_cvr: './src/app_cvr.js',
+        content_script: './src/content_script.js'
     };
 
     return entries;
