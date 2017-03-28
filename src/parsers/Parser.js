@@ -4,15 +4,27 @@ class Parser {
 
     constructor (name, url) {
         this.name = name;
-        this.url = url;
+        this.link = null;
+        this.title = '';
         this.totalPage = 0;
         this.PROCESSING = 1;
         this.COMPLETED = 2;
         this.datasets = [];
-        this.pattern = _r[this.name].pattern;
-        this.siteurl = _r[this.name].site;
-        this.sitelogo = _r[this.name].logo;
-        this.resOrigin = _r[this.name].origins;
+
+        this.siteConfig = _r[this.name];
+
+        this.pattern = this.siteConfig.pattern;
+        this.siteurl = this.siteConfig.site;
+        this.icon = this.siteConfig.icon;
+        this.sitelogo = this.siteConfig.logo;
+        this.resOrigin = this.siteConfig.origins;
+
+        let matches = this.pattern.exec(url);
+        this.mroot = matches[this.siteConfig.groups.mroot];
+        this.url = matches[this.siteConfig.groups.url];
+        this.id = matches[this.siteConfig.groups.id];
+        this.chapter = matches[this.siteConfig.groups.chapter];
+        this.volume = matches[this.siteConfig.groups.volume];
 
         // 修改请求头信息
         // this.webRequestModifyHeader();
@@ -32,6 +44,22 @@ class Parser {
     //         return { requestHeaders: headers };
     //     }, { urls: _this.resOrigin }, [ 'requestHeaders', 'blocking' ]);
     // }
+
+    getId () {
+        return this.id;
+    }
+
+    getIcon () {
+        return this.icon;
+    }
+
+    getChapter () {
+        return this.chapter;
+    }
+
+    getVolume () {
+        return this.volume;
+    }
 
     geturl () {
         return this.url;
