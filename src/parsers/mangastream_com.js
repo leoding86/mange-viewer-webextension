@@ -17,6 +17,22 @@ class Parser extends BaseParser {
         });
     }
 
+    getLink () {
+        return '';
+    }
+
+    getTitle () {
+        return document.querySelector('title').textContent;
+    }
+
+    getChapter () {
+        return '';
+    }
+
+    getVolume () {
+        return 'n/a';
+    }
+
     parseDocument (responseText) {
         let matches = />\s*Last\s+Page\s+\((\d+)\)\s*</i.exec(responseText);
         this.totalPage = matches[1];
