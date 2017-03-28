@@ -45,10 +45,10 @@
 </template>
 
 <script>
-    import { Matcher } from './modules/common';
     import _ from './modules/_';
     import Debug from './components/CvrDebugEvent';
     import config from './modules/config';
+    import WatchHistory from './models/WatchHistory';
 
     export default {
         components: {
@@ -79,9 +79,8 @@
                 debugMode: 0,
                 open: _('open'),
 
+                watchHistory: null, // watchHistory instance
                 viewportmeta: null
-
-                /* styles */
             }
         },
 
@@ -130,8 +129,7 @@
 
                 this.initPosition();
 
-                let matcher = new Matcher(window.location.href);
-                let parser = matcher.is();
+                let parser = window._cvrContainer.parser;
                 if (parser !== null) {
 Debug.emit('Initializing parser');
 
@@ -139,6 +137,16 @@ Debug.emit('Initializing parser');
                     (new p.default(window.location.href)).then((parser) => {
 Debug.emit('Praser is ready');
                         this.parser = parser;
+                        this.watchHistory = new WatchHistory(
+                            parser.getId(),
+                            parser.getIcon(),
+                            parser.getLink(),
+                            parser.getTitle(),
+                            parser.getVolume(),
+                            parser.getChapter()
+                        );
+
+                        console.log(this.watchHistory);
                         this.parserReady = true;
                     });
                 }
@@ -164,10 +172,12 @@ Debug.emit('Praser is ready');
             },
 
             sliderSlideHandler (curPage, totalPage) {
+                this.watchHistory.save(curPage); // save watch history
                 this.inputPage = curPage;
             },
 
             sliderInit (curPage, totalPage) {
+                this.watchHistory.save(curPage); // save watch history
                 this.comicPages = totalPage;
                 this.inputPage = curPage;
             },
