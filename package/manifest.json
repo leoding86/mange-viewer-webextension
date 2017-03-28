@@ -2,19 +2,25 @@
     "manifest_version": 2,
 
     "name": "__MSG_extName__",
-    "short_name": "CVR",
+    "short_name": "MVR",
     "description": "__MSG_extDescription__",
-    "version": "0.5.6.5",
+    "version": "0.5.6.12",
     "default_locale": "en",
     "icons": {
-        "16": "./assets/icon16.png",
-        "48": "./assets/icon48.png",
-        "128": "./assets/icon128.png"
+        "16": "assets/icon16.png",
+        "48": "assets/icon48.png",
+        "128": "assets/icon128.png"
     },
 
     "browser_action": {
-        "default_icon": "./assets/deactiveicon.png",
-        "default_popup": "./pages/popup.html",
+        "default_icon": {
+            "16": "assets/d-icon16.png",
+            "19": "assets/d-icon19.png",
+            "32": "assets/d-icon32.png",
+            "38": "assets/d-icon38.png",
+            "64": "assets/d-icon64.png"
+        },
+        "default_popup": "pages/popup.html",
         "default_title": "__MSG_extName__"
     },
 
@@ -36,12 +42,35 @@
         "*://*.googleusercontent.com/*"
     ],
 
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*.readcomics.tv/*",
+                "*://*.readcomiconline.to/*",
+                "*://*.dm5.com/*",
+                "*://*.cdndm5.com/*",
+                "*://*.mangapanda.com/*",
+                "*://*.mangastream.com/*",
+                "*://*.readms.com/*",
+                "*://*.eatmanga.com/*",
+                "*://*.kissmanga.com/*",
+                "*://*.mangadoom.co/*",
+                "*://*.mangapark.me/*",
+                "*://*.googleusercontent.com/*"
+            ],
+            "js": [
+                "build/bundle.content_script.js"
+            ]
+        }
+    ],
+
     "background": {
-        "scripts": ["./build/bundle.background.js"]
+        "scripts": ["build/bundle.background.js"]
     },
 
     "web_accessible_resources": [
-        "build/*"
+        "build/*",
+        "assets/*"
     ],
 
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';"
