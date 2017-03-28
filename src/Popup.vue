@@ -13,7 +13,7 @@
                       :configTitle="_('debug_mode')"
                       v-model="debugModeValue"></switcher>
             <div class="row">
-                <a href="javacript:void(0)" @click="openMorePage">{{_('more')}}</a>
+                <a href="#" @click="openMorePage">{{_('more')}}</a>
             </div>
         </div>
     </div>
@@ -71,19 +71,9 @@
             },
 
             openMorePage () {
-                chrome.tabs.query({
-                    url: this.morePageUrl + '*'
-                }, (tabs) => {
-                    if (tabs.length > 0) {
-                        chrome.tabs.update(tabs[0].id, {
-                            active: true,
-                            url: this.morePageUrl
-                        });
-                    } else {
-                        chrome.tabs.create({
-                            url: this.morePageUrl
-                        });
-                    }
+            console.log(this.morePageUrl);
+                chrome.tabs.create({
+                    url: this.morePageUrl
                 });
             }
         }
