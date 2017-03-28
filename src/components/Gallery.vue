@@ -327,7 +327,7 @@
                         e.touches[0].clientY - e.touches[1].clientY
                     );
 
-                    console.log(distance, this.oldDistance);
+                    // console.log(distance, this.oldDistance);
 
                     let zoom = 0;
                     if (distance > this.oldDistance) {
@@ -466,6 +466,14 @@ Debug.emit('zoom to ' + this.zoom + ' time(s)');
 
 <style lang="sass">
     .gallery {
+        -webkit-touch-callout:none;
+        -webkit-user-select:none;
+        -khtml-user-select:none;
+        -moz-user-select:none;
+        -ms-user-select:none;
+        user-select:none;
+        -webkit-tap-highlight-color:rgba(0,0,0,0);
+
         .status {
             position: absolute;
             width: 100%;
@@ -481,6 +489,11 @@ Debug.emit('zoom to ' + this.zoom + ' time(s)');
         img {
             max-width: initial;
             min-width: initial;
+            -webkit-transform: translateZ(0);
+            -moz-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            -o-transform: translateZ(0);
+            transform: translateZ(0);
         }
     }
 </style>
