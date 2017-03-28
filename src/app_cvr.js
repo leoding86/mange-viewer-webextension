@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import config from './modules/config';
 
-let _cvrContainer = window._cvrContainer = {};
+window._cvrContainer = {};
 
 /* Create a mount point */
 let $appContainer = document.createElement('div');
@@ -14,7 +14,7 @@ document.querySelector('body').appendChild($appContainer);
 
 /* load config from storage */
 config.get(null).then((config) => {
-    _cvrContainer.config = config;
+    window._cvrContainer.config = config;
 
     new Vue({
       el: '#cvr-app-container',
