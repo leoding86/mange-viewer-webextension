@@ -13,26 +13,36 @@
                     <div class="col-xs-12">
                         <div class="input-group search-input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-                            <input type="text" class="form-control" placeholder="Search history">
+                            <input type="text" class="form-control" placeholder="Search history" v-model="keywords">
                         </div>
                     </div>
                 </div>
                 <div class="row content-row">
                     <div class="col-xs-12">
-                        <button type="button" class="btn btn-sm" @click="selectAllHandler">Select All</button>
-                        <button type="button" class="btn btn-sm" @click="clearAllHandler">Clear</button>
-                        <table class="records-table table table-bordered table-condensed table-hover">
+                        <button type="button" class="btn btn-sm btn-primary" @click="selectAllHandler">Select All</button>
+                        <button type="button" class="btn btn-sm btn-primary" @click="clearAllHandler">Clear</button>
+                        <span v-if="haveDatasetsSelected">
+                            <button type="button" class="btn btn-sm btn-danger" @click="deleteSelectedRecords">Delete</button>
+                        </span>
+                        <table v-show="datasets.length > 0" class="records-table table table-bordered table-condensed table-hover">
                             <tbody>
                                 <tr v-for="dataset in datasets"
+                                    v-show="matchKeywords(dataset.title)"
                                     @mouseenter="recordMouseenterHandler"
                                     @mouseleave="recordMouseleaveHandler"
                                     @click="recordClickHandler(dataset)"
                                     :class="{'selected': dataset.__selected}">
                                     <td>
-                                        <span class="plain">{{dataset.toString()}}</span>
+                                        <span class="plain">{{getDateStr(dataset.lastVisited)}}</span>
+                                        <span class="plain">{{dataset.title}}</span>
+                                        <span class="plain">Vol.{{dataset.volume ? dataset.volume : 'n/a'}}</span>
+                                        <span class="plain">Ch.{{dataset.chapter}}</span>
+                                        <span class="plain">Pg.{{dataset.page}}</span>
                                         <div class="actions">
-                                            <button type="button" class="btn"><span class="glyphicon glyphicon-new-window"></span></button>
-                                            <button type="button" class="btn"><span class="glyphicon glyphicon-remove"></span></button>
+                                            <button type="button" class="btn"
+                                                    @click="openRecord(dataset, $event)"><span class="glyphicon glyphicon-new-window"></span></button>
+                                            <button type="button" class="btn"
+                                                    @click="deleteRecord(dataset, $event)"><span class="glyphicon glyphicon-remove"></span></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -47,6 +57,8 @@
 
 <script>
     import Vue from 'vue';
+    import moment from 'moment';
+    import storage from './modules/storage';
 
     export default {
         name: 'app',
@@ -54,38 +66,32 @@
         data () {
             return {
                 datasets: [],
-                selectedDatasets: []
+                keywords: ''
             }
         },
 
-        watch: {
-            selectedDatasets (val) {
-                console.log(val);
+        computed: {
+            haveDatasetsSelected () {
+                for (let i in this.datasets) {
+                    if (this.datasets[i].__selected) {
+                        return true;
+                    }
+                }
+                return false;
             }
         },
 
         mounted () {
-            this.datasets = [
-                {
-                    name: 1234567,
-                    value: 1,
-                    toString () { return this.name }
-                }, {
-                    name: 321,
-                    value: 1,
-                    toString () { return this.name }
-                }, {
-                    name: 'asddf',
-                    value: 1,
-                    toString () { return this.name }
-                },
-            ];
-
-            this.datasets.forEach((dataset) => {
-                Vue.set(dataset, '__selected', false);
+            storage.get('histories', (items) => {
+                if (!chrome.runtime.lastError) {
+                    this.datasets = items.histories;
+                    this.datasets.forEach((dataset) => {
+                        Vue.set(dataset, '__selected', false);
+                    });
+                } else {
+                    alert(chrome.runtime.lastError);
+                }
             });
-
-            this.selectedDatasets = [];
         },
 
         methods: {
@@ -105,28 +111,83 @@
 
             recordClickHandler (dataset) {
                 dataset.__selected = !dataset.__selected;
-
-                if (dataset.__selected) {
-                    this.selectedDatasets = this.selectedDatasets.concat([dataset]);
-                } else {
-                    this.selectedDatasets.splice(this.selectedDatasets.indexOf(dataset), 1);
-                }
             },
 
             selectAllHandler () {
                 this.datasets.forEach((dataset) => {
                     dataset.__selected = true;
                 });
-
-                this.selectedDatasets = [].concat(this.datasets);
             },
 
             clearAllHandler () {
                 this.datasets.forEach((dataset) => {
                     dataset.__selected = false;
                 });
+            },
 
-                this.selectedDatasets = [];
+            deleteRecord (dataset, e) {
+                e.stopPropagation();
+                let index = this.datasets.indexOf(dataset);
+
+                if (index > -1) {
+                    this.datasets.splice(index, 1);
+                }
+
+                this.saveHistory(this.datasets);
+            },
+
+            deleteSelectedRecords () {
+                let deletedIndex = [];
+
+                this.datasets.forEach((dataset) => {
+                    if (dataset.__selected) {
+                        let index = this.datasets.indexOf(dataset);
+
+                        if (index > -1) {
+                            deletedIndex.push(index);
+                        }
+                    }
+                });
+
+                let length = this.datasets.length;
+
+                deletedIndex.sort().forEach((i) => {
+                    this.datasets.splice(i - length, 1);
+                });
+
+                this.saveHistory(this.datasets);
+            },
+
+            openRecord (dataset, e) {
+                e.stopPropagation();
+            },
+
+            matchKeywords (title) {
+                if (!this.keywords) {
+                    return true;
+                }
+
+                if (title.toLowerCase().indexOf(this.keywords) > -1) {
+                    return true;
+                }
+
+                return false;
+            },
+
+            getDateStr (val) {
+                return moment(val).format('YYYY/MM/DD HH:mm:ss');
+            },
+
+            saveHistory () {
+                let datasets = [].concat(this.datasets);
+                datasets.map((dataset) => {
+                    delete dataset.__selected;
+                });
+                storage.set({'histories': datasets}, () => {
+                    if (chrome.runtime.lastError) {
+                        alert(chrome.runtime.lastError);
+                    }
+                });
             }
         }
     }
@@ -134,7 +195,7 @@
 
 <style lang="sass">
     body {
-        background: #f7f7f7 !important;
+        background: #efefef !important;
     }
 
     .side-col {
@@ -199,13 +260,18 @@
                 }
 
                 &.selected {
-                    background: #afe1ff !important;
+                    background: #3367d6 !important;
+
+                    .plain {
+                        color: #fff;
+                    }
                 }
             }
 
             td {
                 .plain {
                     padding-left: 10px;
+                    font-size: 14px;
                 }
             
                 .checkbox {
