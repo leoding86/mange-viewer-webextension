@@ -10,7 +10,6 @@ class Parser extends BaseParser {
     }
 
     init () {
-        this.url = this.pattern.exec(this.url)[1];
         return new Promise((resolve, reject) => {
             this.parseDocument();
             resolve(this);
@@ -20,6 +19,14 @@ class Parser extends BaseParser {
     parseDocument () {
         let $pageMenu = document.body.querySelector('#pageMenu');
         this.totalPage = $pageMenu.querySelectorAll('option').length;
+    }
+
+    getLink () {
+        return [this.mroot, this.id, this.chapter].join('/');
+    }
+
+    getTitle () {
+        return document.body.querySelector('#mangainfo h2').textContent;
     }
 
     getImgSrc (page, callback, context) {
