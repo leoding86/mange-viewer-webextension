@@ -12,6 +12,9 @@
                       :values="[0, 1]"
                       :configTitle="_('debug_mode')"
                       v-model="debugModeValue"></switcher>
+            <div class="row">
+                <a href="javacript:void(0)" @click="openMorePage">{{_('more')}}</a>
+            </div>
         </div>
     </div>
 </template>
@@ -33,7 +36,9 @@
             return {
                 interactiveModeValue: _cvrContainer.config['interactive_mode'],
                 debugModeValue: _cvrContainer.config['debug_mode'],
-                initZoomValue: _cvrContainer.config['init_zoom_level']
+                initZoomValue: _cvrContainer.config['init_zoom_level'],
+
+                morePageUrl: chrome.runtime.getURL('pages/more.html') // store tab id of more page for not open the page mutiplue times
             };
         },
 
@@ -63,6 +68,23 @@
         methods : {
             _ (str) {
                 return _(str);
+            },
+
+            openMorePage () {
+                chrome.tabs.query({
+                    url: this.morePageUrl + '*'
+                }, (tabs) => {
+                    if (tabs.length > 0) {
+                        chrome.tabs.update(tabs[0].id, {
+                            active: true,
+                            url: this.morePageUrl
+                        });
+                    } else {
+                        chrome.tabs.create({
+                            url: this.morePageUrl
+                        });
+                    }
+                });
             }
         }
     }
