@@ -13,18 +13,13 @@
     },
 
     "browser_action": {
-        "default_icon": {
-            "16": "assets/d-icon16.png",
-            "19": "assets/d-icon19.png",
-            "32": "assets/d-icon32.png",
-            "38": "assets/d-icon38.png",
-            "64": "assets/d-icon64.png"
-        },
+        "default_icon": "assets/icon128.png",
         "default_popup": "pages/popup.html",
         "default_title": "__MSG_extName__"
     },
 
     "permissions": [
+        "tabs",
         "webRequest",
         "webRequestBlocking",
         "storage",
