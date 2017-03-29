@@ -49,5 +49,9 @@
 
     "more": {
         "message": "更多"
+    },
+
+    "get_image_count": {
+        "message": "已获取图片数: "
     }
 }
