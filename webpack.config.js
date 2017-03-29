@@ -8,7 +8,8 @@ module.exports = {
             popup: './src/popup.js',
             background: './src/background.js',
             content_script: './src/content_script.js',
-            bootstrap: './src/bootstrap.js'
+            bootstrap: './src/bootstrap.js',
+            reader: './src/reader.js'
         };
 
         return entries;
