@@ -17,7 +17,7 @@
                  top: imgStyle.top + 'px',
                  left: imgStyle.left + 'px'
              }"
-             @dragstart="() => {return false}"
+             ondragstart="return false;"
              draggable="false" @transitionend="(evt) => { evt.stopPropagation(); }" />
         <div class="status" v-if="!isComplete"
              :style="{ top: statusTop + 'px' }">
