@@ -1,10 +1,13 @@
 <template>
     <div class="cvr-app-container">
         <div id="file-control" v-if="!showApp">
-            <div class="btn" @click="openFileHandler">Open File</div>
-            <input id="file" type="file" name="Open File" style="display:none"
+            <div class="btn" style="font-size:12px;" @click="openFileHandler">{{_('open_file')}}</div>
+            <input id="file" type="file" name="file" style="display:none"
                    @change="fileChangeHandler" />
-            <span style="display:inline;line-height:28px;padding:0 10px;color:#fff">{{_('get_image_count') + ' ' + completedCount}}</span>
+            <span style="display:inline;line-height:28px;padding:0 10px;color:#fff;font-size:12px;">
+                <span v-if="opening">{{_('get_image_count') + ' ' + completedCount}}</span>
+                <span v-if="!opening">{{_('file_format_support')}}</span>
+            </span>
         </div>
         <debug-panel style="position:fixed;bottom:3px;left:3px;z-index:9999"
                      v-if="debugModeActive"></debug-panel>
@@ -75,7 +78,8 @@
                 open: _('open'),
 
                 viewportmeta: null,
-                completedCount: 0
+                completedCount: 0,
+                opening: false
             }
         },
 
@@ -194,6 +198,7 @@ Debug.emit((this.configPanelActive ? 'Show' : 'Hide') + ' config panel');
 
             fileChangeHandler (e) {
                 let p = require('./modules/localParser.js');
+                this.opening = true;
                 (new p.default(e.target.files, this.onProcess)).then((parser) => {
                     this.parser = parser;
                     this.parserReady = true;
