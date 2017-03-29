@@ -38,7 +38,7 @@
                 debugModeValue: _cvrContainer.config['debug_mode'],
                 initZoomValue: _cvrContainer.config['init_zoom_level'],
 
-                morePageUrl: chrome.runtime.getURL('pages/more.html') // store tab id of more page for not open the page mutiplue times
+                morePageUrl: chrome.runtime.getURL('pages/index.html') // store tab id of more page for not open the page mutiplue times
             };
         },
 
