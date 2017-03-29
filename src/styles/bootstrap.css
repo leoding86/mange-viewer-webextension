@@ -10,6 +10,10 @@ body {
     }
 }
 
+.btn-primary {
+    background: #3367d6;
+}
+
 input, select {
     border-radius: 0 !important;
 
@@ -42,8 +46,8 @@ input, select {
     .menu-wrapper {
         padding: 10px 0;
 
-        border-bottom: 1px solid #ededed;
-        border-top: 1px solid #ededed;
+        border-bottom: 1px solid #ddd;
+        border-top: 1px solid #ddd;
     }
 
     .menu-items {
@@ -83,6 +87,11 @@ input, select {
 
         .action-btn {
             margin: 15px 0;
+            box-shadow: 0 2px 5px #999;
+
+            &:hover {
+                box-shadow: 0 2px 8px #666;
+            }
         }
     }
 }
