@@ -2,13 +2,13 @@
     <div class="container-fluid others-page">
         <div class="row title-row">
             <div class="col-xs-12">
-                <h2>Others</h2>
+                <h2>{{_('others')}}</h2>
             </div>
         </div>
         <div class="row content-row">
             <div class="col-xs-12">
                 <div class="section" v-if="hasSyncSupport">
-                    <h5>Sync memory in used</h5>
+                    <h5>{{_('sync_memory_in_used')}}</h5>
                     <div class="progress">
                         <div class="progress-bar" role="progressbar"
                              aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
@@ -19,7 +19,7 @@
                             @click="clearSyncData">Clear</button>
                 </div>
                 <div class="section">
-                    <h5>Local memory in used</h5>
+                    <h5>{{_('local_memory_in_used')}}</h5>
                     <div class="progress">
                         <div class="progress-bar" role="progressbar"
                              aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
@@ -36,6 +36,7 @@
 
 <script>
     import storage from './modules/storage';
+    import _ from './modules/_';
 
     export default {
         data () {
@@ -78,6 +79,10 @@
                         this.syncMemoryPercent = 0;
                     });
                 }
+            },
+
+            _ (string) {
+                return _(string);
             }
         }
     }

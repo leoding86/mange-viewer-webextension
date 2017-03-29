@@ -4,21 +4,21 @@
             <div class="col-xs-12">
                 <div class="input-group search-input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-                    <input type="text" class="form-control" placeholder="Search history" v-model="keywords">
+                    <input type="text" class="form-control" :placeholder="_('search_history')" v-model="keywords">
                 </div>
             </div>
         </div>
         <div class="row content-row">
             <div class="col-xs-12">
-                <button type="button" class="btn btn-sm btn-primary" @click="selectAllHandler">Select All</button>
-                <button type="button" class="btn btn-sm btn-primary" @click="clearAllHandler">Unselect All</button>
+                <button type="button" class="btn btn-sm btn-primary" @click="selectAllHandler">{{_('select_all')}}</button>
+                <button type="button" class="btn btn-sm btn-primary" @click="clearAllHandler">{{_('unselect_all')}}</button>
                 <span v-if="haveDatasetsSelected">
-                    <button type="button" class="btn btn-sm btn-danger" @click="deleteSelectedRecords">Delete</button>
+                    <button type="button" class="btn btn-sm btn-danger" @click="deleteSelectedRecords">{{_('delete')}}</button>
                 </span>
                 <div class="form-inline" style="float:right;">
                     <select v-model="storageType" class="form-control input-sm" style="font-size: 12px;">
-                        <option value="1">Local history</option>
-                        <option value="2">Sync history</option>
+                        <option value="1">{{_('local_history')}}</option>
+                        <option value="2">{{_('sync_history')}}</option>
                     </select>
                 </div>
                 <div class="notice">
@@ -56,6 +56,7 @@
     import Vue from 'vue';
     import moment from 'moment';
     import storage from './modules/storage';
+    import _ from './modules/_';
 
     export default {
         name: 'app',
@@ -80,9 +81,9 @@
 
             historyRecordsLimitation () {
                 if (this.storageType == 1) {
-                    return 'Local history storage used: ' + this.datasets.length + ' / 500';
+                    return this._('local_history_storage_in_used') + ': ' + this.datasets.length + ' / 500';
                 } else {
-                    return 'Sync history storage used: ' + this.datasets.length + ' / 20';
+                    return this._('sync_history_storage_in_used') + ': ' + this.datasets.length + ' / 20';
                 }
             }
         },
@@ -240,6 +241,10 @@
                         }
                     });
                 }
+            },
+
+            _ (str) {
+                return _(str);
             }
         }
     }
