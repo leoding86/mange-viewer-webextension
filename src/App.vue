@@ -141,9 +141,7 @@ Debug.emit('Praser is ready');
                             parser.getId(),
                             parser.getIcon(),
                             parser.getLink(),
-                            parser.getTitle(),
-                            parser.getVolume(),
-                            parser.getChapter()
+                            parser.getHistoryTitle()
                         );
 
                         console.log(this.watchHistory);
@@ -172,12 +170,12 @@ Debug.emit('Praser is ready');
             },
 
             sliderSlideHandler (curPage, totalPage) {
-                this.watchHistory.save(curPage); // save watch history
+                this.watchHistory.save(curPage, this.parser.getLink(curPage)); // save watch history
                 this.inputPage = curPage;
             },
 
             sliderInit (curPage, totalPage) {
-                this.watchHistory.save(curPage); // save watch history
+                this.watchHistory.save(curPage, this.parser.getLink(curPage)); // save watch history
                 this.comicPages = totalPage;
                 this.inputPage = curPage;
             },
