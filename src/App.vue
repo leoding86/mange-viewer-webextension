@@ -85,12 +85,6 @@
         },
 
         computed: {
-            siteurl () {
-                return this.parser.getSiteurl();
-            },
-            sitelogo () {
-                return this.parser.getSitelogo();
-            },
             initializing_parser () {
                 return _('initializing_parser');
             },
@@ -129,6 +123,9 @@
 
                 this.initPosition();
 
+                /**
+                 * 通过匹配名称获得站点解析器并实例化解析器
+                 */
                 let parser = window._cvrContainer.parser;
                 if (parser !== null) {
 Debug.emit('Initializing parser');
@@ -148,6 +145,8 @@ Debug.emit('Praser is ready');
                         this.parserReady = true;
                     });
                 }
+
+
             });
         },
 
