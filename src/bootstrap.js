@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/bootstrap.css';
+import _ from './modules/_';
 
 Vue.use(VueRouter);
 
@@ -30,6 +31,10 @@ const app = new Vue({
             chrome.tabs.create({
                 url: chrome.runtime.getURL('pages/reader.html')
             });
+        },
+
+        _ (string) {
+            return _(string);
         }
     }
 }).$mount('#app');
