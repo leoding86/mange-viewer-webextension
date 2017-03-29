@@ -1,6 +1,6 @@
 {
     "extName": {
-        "message": "Comic Viewer"
+        "message": "Manga Viewer"
     },
 
     "extDescription": {
@@ -53,5 +53,69 @@
 
     "get_image_count": {
         "message": "Got images: "
+    },
+
+    "file_format_support": {
+        "message": "Support zip, cbz file"
+    },
+
+    "history": {
+        "message": "History"
+    },
+
+    "others": {
+        "message": "Others"
+    },
+
+    "read_local_manga": {
+        "message": "Read Local Manga"
+    },
+
+    "sync_memory_in_used": {
+        "message": "Sync memory in used"
+    },
+
+    "local_memory_in_used": {
+        "message": "Local memory in used"
+    },
+
+    "local_history_storage_in_used": {
+        "message": "Local history storage in used"
+    },
+
+    "sync_history_storage_in_used": {
+        "message": "Sync history storage in used"
+    },
+
+    "select_all": {
+        "message": "Select All"
+    },
+
+    "unselect_all": {
+        "message": "Unselect All"
+    },
+
+    "delete": {
+        "message": "Delete"
+    },
+
+    "clear": {
+        "message": "Clear"
+    },
+
+    "local_history": {
+        "message": "Local History"
+    },
+
+    "sync_history": {
+        "message": "Sync History"
+    },
+
+    "search_history": {
+        "message": "Search History"
+    },
+
+    "open_file": {
+        "message": "Open File"
     }
 }

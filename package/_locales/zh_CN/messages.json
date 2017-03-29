@@ -53,5 +53,69 @@
 
     "get_image_count": {
         "message": "已获取图片数: "
+    },
+
+    "file_format_support": {
+        "message": "支持 zip, cbz 格式"
+    },
+
+    "history": {
+        "message": "历史记录"
+    },
+
+    "others": {
+        "message": "其他"
+    },
+
+    "read_local_manga": {
+        "message": "阅读本地漫画"
+    },
+
+    "sync_memory_in_used": {
+        "message": "云端存储已使用"
+    },
+
+    "local_memory_in_used": {
+        "message": "本地存储已使用"
+    },
+
+    "local_history_storage_in_used": {
+        "message": "云端历史记录空间已使用"
+    },
+
+    "sync_history_storage_in_used": {
+        "message": "本地历史记录空间已使用"
+    },
+
+    "select_all": {
+        "message": "全选"
+    },
+
+    "unselect_all": {
+        "message": "全不选"
+    },
+
+    "delete": {
+        "message": "删除"
+    },
+
+    "clear": {
+        "message": "清空"
+    },
+
+    "local_history": {
+        "message": "本地历史记录"
+    },
+
+    "sync_history": {
+        "message": "云端历史记录"
+    },
+
+    "search_history": {
+        "message": "搜索历史记录"
+    },
+
+    "open_file": {
+        "message": "打开文件"
     }
 }
