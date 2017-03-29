@@ -1,19 +1,15 @@
 <template>
     <div class="cvr-app-container">
-        <div class="cvr-app-show-btn" @click="appShowBtnClickHandler">
-            <span style="color:#1c6af8;font-weight:700">C</span><span style="color:#aa2c1b;font-weight:700">V</span><span style="color:#179709;font-weight:700">R</span>
+        <div id="file-control" v-if="!showApp">
+            <div class="btn" @click="openFileHandler">Open File</div>
+            <input id="file" type="file" name="Open File" style="display:none"
+                   @change="fileChangeHandler" />
+            <span style="display:inline;line-height:28px;padding:0 10px;color:#fff">{{_('get_image_count') + ' ' + completedCount}}</span>
         </div>
         <debug-panel style="position:fixed;bottom:3px;left:3px;z-index:9999"
                      v-if="debugModeActive"></debug-panel>
         <div class="cvr-app" v-show="showApp"
              :style="{ width: containerWidth + 'px', height: containerHeight + 'px' }">
-            <div v-if="!parserReady">
-                <div class="init"
-                     :style="{ 'margin-top': initMTop + 'px' }">
-                    <p style="text-align: center; font-size:14px;"><img src="./assets/icon128.png" />
-                    <br />{{initializing_parser}}...</p>
-                </div>
-            </div>
             <div v-if="parserReady">
                 <span class="info-toggler icon-toggler"
                           @click="infoTogglerClickHandler">i</span>
@@ -48,7 +44,6 @@
     import _ from './modules/_';
     import Debug from './components/CvrDebugEvent';
     import config from './modules/config';
-    import WatchHistory from './models/WatchHistory';
 
     export default {
         components: {
@@ -79,15 +74,12 @@
                 debugMode: 0,
                 open: _('open'),
 
-                watchHistory: null, // watchHistory instance
-                viewportmeta: null
+                viewportmeta: null,
+                completedCount: 0
             }
         },
 
         computed: {
-            initializing_parser () {
-                return _('initializing_parser');
-            },
             debugModeActive () {
                 return this.debugMode === 1 ? true : false;
             }
@@ -122,31 +114,6 @@
                 }
 
                 this.initPosition();
-
-                /**
-                 * 通过匹配名称获得站点解析器并实例化解析器
-                 */
-                let parser = window._cvrContainer.parser;
-                if (parser !== null) {
-Debug.emit('Initializing parser');
-
-                    let p = require('./parsers/' + parser + '.js');
-                    (new p.default(window.location.href)).then((parser) => {
-Debug.emit('Praser is ready');
-                        this.parser = parser;
-                        this.watchHistory = new WatchHistory(
-                            parser.getId(),
-                            parser.getIcon(),
-                            parser.getLink(),
-                            parser.getHistoryTitle()
-                        );
-
-                        console.log(this.watchHistory);
-                        this.parserReady = true;
-                    });
-                }
-
-
             });
         },
 
@@ -169,12 +136,10 @@ Debug.emit('Praser is ready');
             },
 
             sliderSlideHandler (curPage, totalPage) {
-                this.watchHistory.save(curPage, this.parser.getLink(curPage)); // save watch history
                 this.inputPage = curPage;
             },
 
             sliderInit (curPage, totalPage) {
-                this.watchHistory.save(curPage, this.parser.getLink(curPage)); // save watch history
                 this.comicPages = totalPage;
                 this.inputPage = curPage;
             },
@@ -194,18 +159,6 @@ Debug.emit('Praser is ready');
             configTogglerClickHandler () {
                 this.configPanelActive = !this.configPanelActive;
 Debug.emit((this.configPanelActive ? 'Show' : 'Hide') + ' config panel');
-            },
-
-            appShowBtnClickHandler () {
-                this.showApp = !this.showApp;
-                if (this.showApp) {
-Debug.emit('Show app viewer');
-                    document.querySelector('body').style.overflow = 'hidden';
-                } else {
-Debug.emit('Hide app viewer');
-                    document.querySelector('body').style.overflow = 'auto';
-                }
-                this.applyViewport(window._cvrContainer.config['interactive_mode']);
             },
 
             applyViewport (type) {
@@ -228,6 +181,28 @@ Debug.emit('Hide app viewer');
                     }
                     viewportmeta.content = 'width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0';
                 }
+            },
+
+
+            openFileHandler () {
+                this.$el.querySelector('#file').click();
+            },
+
+            onProcess (count) {
+                this.completedCount = count;
+            },
+
+            fileChangeHandler (e) {
+                let p = require('./modules/localParser.js');
+                (new p.default(e.target.files, this.onProcess)).then((parser) => {
+                    this.parser = parser;
+                    this.parserReady = true;
+                    this.showApp = true;
+                });
+            },
+
+            _ (string) {
+                return _(string);
             }
         }
     }
@@ -235,6 +210,18 @@ Debug.emit('Hide app viewer');
 
 <style lang="sass">
     $top: 99999;
+
+    body {
+        background: #000;
+
+        .btn {
+            padding: 6px 12px;
+            color: #fff;
+            background: #3367d6;
+            cursor: pointer;
+            float: left;
+        }
+    }
 
     .cvr-app-container {
         position: fixed;
@@ -342,7 +329,7 @@ Debug.emit('Hide app viewer');
         right: 3px;
     }
 
-    $configTogglerBottom: 30px;
+    $configTogglerBottom: 5px;
 
     .config-toggler {
         background: rgb(255, 255, 255) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NjY5OTJGMzAwRDVBMTFFNzhDODdCNjJDNEVFQUUxRTYiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NjY5OTJGMkYwRDVBMTFFNzhDODdCNjJDNEVFQUUxRTYiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MzFFQkUyOTAwRDNBMTFFNzhCQTFFOTQ3NUZFRjU2QUMiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MzFFQkUyOTEwRDNBMTFFNzhCQTFFOTQ3NUZFRjU2QUMiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5vaDiqAAADmElEQVR42ryZT2xMQRzH95XQiyLEv5BosIiiEqSNskUbFaHVQ10aNogbmpCsizg1qYNs4tAQFAeROCDpgURItqj/Ef1jHciWcqAkKNFqeH4TvyYvL7Mzv5k3M5N8DrvvvZn5zr/fn/FibstZoAboBZ4DnUAG+KZboe/7RjrWACwlvlvG2uXwFbgM1OkKiSImCfRgR/4SxbTnERIk4UpIJfCA04FPQJHgu70EEYzdtoVMBE5KOvEBOASUA/OB1cAe4CZRBGONbSGtCp2JwhxdIQXE9/84OtW2226gzNGM/ASm297sTxyJeQcssLW0WPniaHmxffISSAEzQsvuEnA6SuUFaH19xwwB94FXof9T4RnxiEKagLSieLYUs0AOGx+Px3IJsNjAzBUDfSr7g22+YeIIsiVxABsRFeYJNAMDEWbrocpmnwm8IVQ6AhzUGFXmDZyIIKaaJ2Qj0AhU4IjtR4dOVllW5ZTJUzYrzHqQrrCQRs0R6ca1b6KUaIpJBIXc06iAnWITDB+95Yp9GATio0Imac7GOkt25Bh1WQHzgkurXkNEu2Wj+F7Sfh/ghU+ttIaQuGUhsviliedrqe6PZw7clHHAL0EfKnm+lmowc82BkN/AbcHzYZ4PdUaxkceOnMdOwbOpPCH7mIUELhAbeOtISE7wbBXFKH2U7JFZjoRsEfShXxaPsBTPJkkDYxwJGSt4Nht9NGnJCEaj1JEQSgqJHQg7RRFiRtBA3JEQSsyyAbjoed71fEJGBB8nHAmpUni3Nt+DK4LpHHAgoljRSN/hVVIosao+Jq9tllOKQpp5ldwifNhvUcQ0Dd+vIlgBi/KeKnx83JKQu4oiPgcDq4XAD42RqDcsokWjD61BIXUREgC1hkQcVUirBn8vDwrxAvknHY5EEMAOl/OENjowSTEZbQw7nlfwsihRZsXHuKZaUUQSc72yuttUk9gvDKQ5HwGHMYNfxDmRqvCgeG0ikMsnZInh3O13TPB1ofs/pFHHMt1rhRZO7uoGpkNdJ7F7o96PnMNAaxvHz+pwKORqVCGmXQhdcraF6FhgXZK2hZTG3F3FSYUURBDSw0vLEMqgJN4Jl6ztmGFR7P+1NWVUWUi6Cy0yS3yzu8GtGEeIvku72CM1RBEpQp6M546spXTChBCK8aQk86ag4fQxV6DkUZsQEkPfqk2QC9tBrGduODhSFeIZ2i+F6EOtB1bibHXjb6tldDb+CTAAKXhYW3uLHMIAAAAASUVORK5CYII=) center center no-repeat;

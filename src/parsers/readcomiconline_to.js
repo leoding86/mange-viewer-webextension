@@ -18,6 +18,10 @@ class Parser extends BaseParser {
         });
     }
 
+    getLink (page = null) {
+        return [this.mroot, '&readType=0'].join('') + (page ? ('#' + page) : '')
+    }
+
     // getDocument(url, resolve, reject) {
     //     let _this = this;
     //     let xhr = new XMLHttpRequest();

@@ -23,8 +23,6 @@ class Parser {
         this.mroot = matches[this.siteConfig.groups.mroot];
         this.url = matches[this.siteConfig.groups.url];
         this.id = matches[this.siteConfig.groups.id];
-        this.chapter = matches[this.siteConfig.groups.chapter];
-        this.volume = matches[this.siteConfig.groups.volume];
 
         // 修改请求头信息
         // this.webRequestModifyHeader();
@@ -53,16 +51,12 @@ class Parser {
         return this.icon;
     }
 
-    getChapter () {
-        return this.chapter;
-    }
-
-    getVolume () {
-        return this.volume;
-    }
-
     geturl () {
         return this.url;
+    }
+
+    getHistoryTitle () {
+        return document.querySelector('title').textContent;
     }
 
     getSiteurl () {

@@ -17,6 +17,10 @@ class Parser extends BaseParser {
         });
     }
 
+    getLink (page = null) {
+        return page ? [this.mroot, page].join('/') : this.mroot;
+    }
+
     getDocument (url, resolve, reject) {
         let _this = this;
         let xhr = new XMLHttpRequest();

@@ -21,12 +21,15 @@ class Parser extends BaseParser {
         this.totalPage = $pageMenu.querySelectorAll('option').length;
     }
 
-    getLink () {
-        return [this.mroot, this.id, this.chapter].join('/');
+    getLink (page = null) {
+        return page ? [this.mroot, page].join('/') : this.mroot;
     }
 
-    getTitle () {
-        return document.body.querySelector('#mangainfo h2').textContent;
+    getHistoryTitle () {
+        let magic = new Common.Magic();
+        return document.querySelector('#mangainfo h2').textContent
+               + ' Ch.'
+               + magic.getVar("document['chapterno']", 'string');
     }
 
     getImgSrc (page, callback, context) {

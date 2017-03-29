@@ -49,5 +49,9 @@
 
     "more": {
         "message": "More"
+    },
+
+    "get_image_count": {
+        "message": "Got images: "
     }
 }
