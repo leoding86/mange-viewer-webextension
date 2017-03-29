@@ -13,7 +13,7 @@
                       :configTitle="_('debug_mode')"
                       v-model="debugModeValue"></switcher>
             <div class="row">
-                <a href="#" @click="openMorePage">{{_('more')}}</a>
+                <a href="#" @click="openMorePage" style="font-size:12px;">{{_('more')}}</a>
             </div>
         </div>
     </div>
