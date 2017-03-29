@@ -77,6 +77,14 @@ input, select {
             }
         }
     }
+
+    .actions-wrapper {
+        text-align: center;
+
+        .action-btn {
+            margin: 15px 0;
+        }
+    }
 }
 
 .main-col {
