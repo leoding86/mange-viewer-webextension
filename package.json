@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --progress --watch --colors",
-    "build": "cross-env NODE_ENV=chrome webpack --progress --hide-modules --colors -p"
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --colors"
   },
   "dependencies": {
     "bowser": "^1.6.0",
