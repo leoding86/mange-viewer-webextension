@@ -71,25 +71,6 @@ module.exports = {
 }
 
 if (process.env.NODE_ENV === 'production') {
-    module.exports.devtool = '#source-map'
-    /** http://vue-loader.vuejs.org/en/workflow/production.html **/
-    module.exports.plugins = (module.exports.plugins || []).concat([
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: '"production"'
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: true,
-            compress: {
-                warnings: false
-            }
-        }),
-        new webpack.LoaderOptionsPlugin({
-            minimize: true
-        })
-    ])
-} else if (process.env.NODE_ENV === 'chrome') {
     console.log('Remove builds');
     var files = fs.readdirSync(path.resolve(__dirname, 'package/build'));
     files.forEach(function(file) {
@@ -99,6 +80,25 @@ if (process.env.NODE_ENV === 'production') {
 
         fs.unlinkSync(path.resolve(__dirname, 'package/build', file));
     });
+
+    module.exports.devtool = '#source-map'
+    /** http://vue-loader.vuejs.org/en/workflow/production.html **/
+    module.exports.plugins = (module.exports.plugins || []).concat([
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: '"production"'
+            }
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            sourceMap: false,
+            compress: {
+                warnings: false
+            }
+        }),
+        new webpack.LoaderOptionsPlugin({
+            minimize: true
+        })
+    ])
 } else if (process.env.NODE_ENV === 'development') {
     module.exports.devtool = '#eval-source-map';
 }
