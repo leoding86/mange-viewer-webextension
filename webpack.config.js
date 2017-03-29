@@ -8,7 +8,7 @@ module.exports = {
             popup: './src/popup.js',
             background: './src/background.js',
             content_script: './src/content_script.js',
-            more: './src/more.js'
+            bootstrap: './src/bootstrap.js'
         };
 
         return entries;
@@ -50,7 +50,7 @@ module.exports = {
     },
     {
         test: /\.css$/,
-        loader: ['style-loader', 'css-loader']
+        loader: ['style-loader', 'css-loader', 'sass-loader']
     }
     ]
     },
