@@ -20,7 +20,6 @@ Matcher.prototype.site = function (name) {
 };
 
 Matcher.prototype.is = function () {
-    console.log(this.rules);
     for (var name in this.rules) {
         if (this.rules[name].pattern.test(this.url)) {
             this.rule = this.rules[name];
@@ -128,11 +127,12 @@ Magic.prototype.getVar = function(obj, type) {
 
     document.documentElement.appendChild(iDom);
     var script = '(function(){';
-    script += 'var string = null;';
-    script += 'if (typeof ' + obj + ' == ("string" || "number")) { string = ' + obj + ';console.log(1); }';
-    script += 'else if (typeof ' + obj + ' == "object") { string = JSON.stringify(' + obj + ');console.log(2); }';
+    script += 'var __string = null;';
+    script += 'var __objType = typeof ' + obj + ';';
+    script += 'if (__objType == "string" || __objType == "number") { __string = ' + obj + '; }';
+    script += 'else if (typeof ' + obj + ' == "object") { __string = JSON.stringify(' + obj + '); }';
     // script += 'console.log(typeof ' + obj +');';
-    script += 'document.querySelector("#idom-' + this.randStr + '").setAttribute("data", string);';
+    script += 'document.querySelector("#idom-' + this.randStr + '").setAttribute("data", __string);';
     script += '})()';
 
     let iScript = this.iScript();
