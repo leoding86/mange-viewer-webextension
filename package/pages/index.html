@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF8">
+    <meta name="description" content="MVR">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MVR</title>
+</head>
+<body>
+    <div id="app" style="display: none">
+        <div class="side-col">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="logo">
+                        <img src="../assets/logo.png" alt="MVR">
+                    </div>
+                    <div class="col-xs-12 menu-wrapper">
+                        <ul class="menu-items">
+                            <li><router-link to="/history">History</router-link></li>
+                            <li><router-link to="/other">Others</router-link></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-col">
+            <router-view></router-view>
+        </div>
+    </div>
+</body>
+<script src="../build/bundle.bootstrap.js"></script>
+</html>
