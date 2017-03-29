@@ -23,5 +23,13 @@ const app = new Vue({
 
     mounted () {
         this.$el.style.display = 'block';
+    },
+
+    methods: {
+        openReaderHandler () {
+            chrome.tabs.create({
+                url: chrome.runtime.getURL('pages/reader.html')
+            });
+        }
     }
 }).$mount('#app');
