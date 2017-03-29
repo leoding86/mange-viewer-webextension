@@ -12,8 +12,6 @@ class WatchHistory {
         this.chapter = chapter;
         this.page = 1;
         this.lastVisited = Date.now();
-
-
     }
 
     save (page) {
