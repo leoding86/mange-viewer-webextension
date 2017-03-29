@@ -27,6 +27,10 @@ class Parser extends BaseParser {
         });
     }
 
+    getLink (page) {
+        return page ? [this.mroot, page].join('/') : this.mroot;
+    }
+
     getImgSrc (page, callback, context) {
         callback.call(context, page, this.datasets[page - 1].url);
     }

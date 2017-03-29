@@ -17,20 +17,12 @@ class Parser extends BaseParser {
         });
     }
 
-    getLink () {
-        return '';
+    getLink (page = null) {
+        return page ? [this.mroot, page].join('/') : this.mroot;
     }
 
-    getTitle () {
+    getHistoryTitle () {
         return document.querySelector('title').textContent;
-    }
-
-    getChapter () {
-        return '';
-    }
-
-    getVolume () {
-        return 'n/a';
     }
 
     parseDocument (responseText) {

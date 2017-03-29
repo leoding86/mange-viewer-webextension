@@ -1,7 +1,8 @@
 const siteConfig = {
     readcomics_tv: {
         parser: 'readcomics_tv',
-        pattern: /^https?:\/{2}w{3}\.readcomics\.tv\/[^\/]+\/chapter-[\d]+/i,
+        pattern: /^(https?:\/{2}w{3}\.readcomics\.tv\/([^\/]+)\/chapter-[\d]+)/i,
+        groups: { url: 1, mroot: 1, id: 2 },
         site: '//readcomics.tv',
         icon: '',
         logo: 'http://www.readcomics.tv/images/site/front/logo4.png',
@@ -10,7 +11,8 @@ const siteConfig = {
 
     readcomiconline_to: {
         parser: 'readcomiconline_to',
-        pattern: /^https?:\/{2}readcomiconline\.to\/Comic\/[^\/]+\/[^\/]+\?id=[\d]+/i,
+        pattern: /^(https?:\/{2}readcomiconline\.to\/Comic\/[^\/]+\/[^\/]+\?id=([\d]+))/i,
+        groups: { url: 1, mroot: 1, id: 2 },
         site: '//readcomiconline.to',
         icon: '',
         logo: 'http://readcomiconline.to/Content/images/logo.png',
@@ -37,8 +39,8 @@ const siteConfig = {
 
     mangapanda_com: {
         parser: 'mangapanda_com',
-        pattern: /^((https?:\/{2}(?:w{3}\.)?mangapanda\.com)\/([^\/]+)\/(\d+))(?:\/\d+)?/i,
-        groups: { url: 1, mroot: 2,  id: 3, chapter: 4, volume: 999 },
+        pattern: /^(https?:\/{2}(?:w{3}\.)?mangapanda\.com\/[^\/]+\/(\d+))(?:\/\d+)?/i,
+        groups: { url: 1, mroot: 1, id: 2 },
         site: '//www.mangapanda.com',
         icon: 'http://s1.mangapanda.com/favicon.ico',
         logo: 'http://s5.mangapanda.com/sup/images/dark.813ab89088.png',
@@ -48,7 +50,8 @@ const siteConfig = {
     /* diff domain readms.com */
     mangastream_com: {
         parser: 'mangastream_com',
-        pattern: /^(https?:\/{2}(?:w{3}?\.)?(?:mangastream\.com|readms\.com)\/r\/[^\/]+\/[^\/]+\/\d+)(?:\/\d+)?\/?/i,
+        pattern: /^(https?:\/{2}(?:w{3}?\.)?(?:mangastream\.com|readms\.net|readms\.com)\/r\/[^\/]+\/[^\/]+\/(\d+))(?:\/\d+)?\/?/i,
+        groups: { url: 1, mroot: 1, id: 2 },
         site: '//mangastream.com',
         icon: '',
         logo: 'http://mangastream.com/assets/img/logo.png',
@@ -57,7 +60,8 @@ const siteConfig = {
 
     eatmanga_com: {
         parser: 'eatmanga_com',
-        pattern: /^https?:\/{2}(?:w{3}\.)?eatmanga\.com\/Manga-Scan\/([^\/]+)\/([^\/]+)/i,
+        pattern: /^(https?:\/{2}(?:w{3}\.)?eatmanga\.com\/Manga-Scan\/([^\/]+)\/([^\/]+))/i,
+        groups: { url: 1, mroot: 1, id: 2 },
         site: '//eatmanga.com',
         icon: '',
         logo: 'http://cdn.eatmanga.com/media/logo.png',
@@ -66,7 +70,8 @@ const siteConfig = {
 
     kissmanga_com: {
         parser: 'kissmanga_com',
-        pattern: /^https?:\/{2}kissmanga\.com\/Manga\/[^\/]+\/[^\/]+\?id=\d+/i,
+        pattern: /^(https?:\/{2}kissmanga\.com\/Manga\/[^\/]+\/[^\/]+\?id=(\d+))/i,
+        groups: { url: 1, mroot: 1, id: 2 },
         site: '//kissmanga.com',
         icon: '',
         logo: 'http://kissmanga.com/Content/images/logo.png',
@@ -75,7 +80,8 @@ const siteConfig = {
 
     mangadoom_co: {
         parser: 'mangadoom_co',
-        pattern: /^https?:\/{2}mangadoom\.co\/[^\/]+\/\d+/i,
+        pattern: /^(https?:\/{2}mangadoom\.co\/([^\/]+)\/\d+)/i,
+        groups: { url: 1, mroot: 1, id: 2 },
         site: '//mangadoom.do',
         icon: '',
         logo: 'http://mangadoom.co/assets/img/lgo.png',
@@ -84,7 +90,8 @@ const siteConfig = {
 
     mangapark_me: {
         parser: 'mangapark_me',
-        pattern: /^(https?:\/{2}(?:w{3}?\.)?mangapark\.me\/manga\/[^\/]+\/s\d+(?:\/v\d+)?\/c\d+)/i,
+        pattern: /^(https?:\/{2}(?:w{3}?\.)?mangapark\.me\/manga\/([^\/]+)\/s\d+(?:\/v\d+)?\/c\d+(?:\/e\d+)?)/i,
+        groups: { url: 1, mroot: 1, id: 2 },
         site: '//mangapark.me',
         icon: '',
         logo: 'http://h.s.mangapark.me/img/logo.png',
