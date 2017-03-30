@@ -14,6 +14,12 @@ body {
     background: #3367d6;
 }
 
+.alert {
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 0;
+}
+
 input, select {
     border-radius: 0 !important;
 
@@ -33,6 +39,7 @@ input, select {
     height: 100%;
     background: #fff;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 99999;
 
     .logo {
         width: 100%;
