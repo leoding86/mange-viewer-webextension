@@ -67,6 +67,10 @@ module.exports = {
     performance: {
         hints: false
     },
+    node: {
+        fs: 'empty',
+        ws: 'empty'
+    },
     devtool: '#eval-source-map'
 }
 
@@ -96,9 +100,27 @@ if (process.env.NODE_ENV === 'production') {
             }
         }),
         new webpack.LoaderOptionsPlugin({
-            minimize: true
+            options: {
+                worker: {
+                    output: {
+                        filename: "worker.js",
+                        chunkFilename: "[hash].worker.js"
+                    }
+                }
+            },
+            minimize: true,
         })
     ])
 } else if (process.env.NODE_ENV === 'development') {
     module.exports.devtool = '#eval-source-map';
+    new webpack.LoaderOptionsPlugin({
+        options: {
+            worker: {
+                output: {
+                    filename: "worker.js",
+                    chunkFilename: "[hash].worker.js"
+                }
+            }
+        }
+    });
 }
