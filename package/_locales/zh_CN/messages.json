@@ -3,8 +3,14 @@
         "message": "漫画阅读器"
     },
 
+    // Firefox
     "extDescription": {
-        "message": "支持数个站点的支持预载图片和缩放的增强漫画阅读器"
+        "message": "支持数个站点的支持预载图片和缩放的增强漫画阅读器，并且支持在本地和云端存储浏览历史。（需要FireFox版本不低于 53 才能支持云端存储，并且需要在浏览器登陆到FireFox）"
+    },
+
+    // Chrome
+    "extDescription": {
+        "message": "支持数个站点的支持预载图片和缩放的增强漫画阅读器，并且支持在本地和云端存储浏览历史。（你在浏览器登陆到Google）"
     },
 
     "start_read": {

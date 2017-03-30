@@ -3,8 +3,14 @@
         "message": "Manga Viewer"
     },
 
+    // Firefox
     "extDescription": {
-        "message": "Free comic reader supports preload image, zoomable image and drag to view for some websites."
+        "message": "It's a manga viewer supports preload image, zoomable image and drag to view for some websites. It can save your view history on local or cloud (You need to login to FireFox to save history to cloud)."
+    },
+
+    // Chrome
+    "extDescription": {
+        "message": "It's a manga viewer supports preload image, zoomable image and drag to view for some websites. It can save your view history on local or cloud (You need a Google account)."
     },
 
     "start_read": {

@@ -12,7 +12,7 @@
     "name": "__MSG_extName__",
     "short_name": "MVR",
     "description": "__MSG_extDescription__",
-    "version": "0.7.2",
+    "version": "0.7.4",
     "default_locale": "en",
     "icons": {
         "16": "assets/icon16.png",
@@ -31,35 +31,33 @@
         "webRequest",
         "webRequestBlocking",
         "storage",
-        "*://*.readcomics.tv/*",
-        "*://*.readcomiconline.to/*",
-        "*://*.mangapanda.com/*",
-        "*://*.mangastream.com/*",
-        "*://*.readms.net/*",
-        "*://*.readms.com/*",
-        "*://*.eatmanga.com/*",
-        "*://*.kissmanga.com/*",
-        "*://*.mangadoom.co/*",
-        "*://*.mangapark.me/*",
-        "*://*.googleusercontent.com/*"
+        "<all_urls>"
+        // "*://*.readcomics.tv/*",
+        // "*://*.readcomiconline.to/*",
+        // "*://*.mangapanda.com/*",
+        // "*://*.mangastream.com/*",
+        // "*://*.readms.net/*",
+        // "*://*.readms.com/*",
+        // "*://*.eatmanga.com/*",
+        // "*://*.kissmanga.com/*",
+        // "*://*.mangadoom.co/*",
+        // "*://*.mangapark.me/*"
     ],
 
     "content_scripts": [
         {
             "matches": [
-                "*://*.readcomics.tv/*",
-                "*://*.readcomiconline.to/*",
-                "*://*.dm5.com/*",
-                "*://*.cdndm5.com/*",
-                "*://*.mangapanda.com/*",
-                "*://*.mangastream.com/*",
-                "*://*.readms.com/*",
-                "*://*.readms.net/*",
-                "*://*.eatmanga.com/*",
-                "*://*.kissmanga.com/*",
-                "*://*.mangadoom.co/*",
-                "*://*.mangapark.me/*",
-                "*://*.googleusercontent.com/*"
+                "<all_urls>"
+                // "*://*.readcomics.tv/*",
+                // "*://*.readcomiconline.to/*",
+                // "*://*.mangapanda.com/*",
+                // "*://*.mangastream.com/*",
+                // "*://*.readms.com/*",
+                // "*://*.readms.net/*",
+                // "*://*.eatmanga.com/*",
+                // "*://*.kissmanga.com/*",
+                // "*://*.mangadoom.co/*",
+                // "*://*.mangapark.me/*"
             ],
             "js": [
                 "build/bundle.content_script.js"
