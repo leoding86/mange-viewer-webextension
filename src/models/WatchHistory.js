@@ -43,7 +43,7 @@ class WatchHistory {
             }
 
             /** reached limitation **/
-            while (items.histories.length > 500) {
+            while (items.histories.length > 1000) {
                 items.histories.splice(-1, 1);
             }
 
@@ -80,16 +80,18 @@ class WatchHistory {
             items.histories.unshift(record);
 
             /** reached limitation **/
-            while (items.histories.length > 20) {
-                items.histories.splice(-1, 1);
-            }
-
-            storage.set(items, () => {
-                if (chrome.runtime.lastError) {
-                    console.log('histories are not saved');
-                } else {
-                    console.log('histories are saved');
+            storage.getBytesInUse('histories', (bytes) => {
+                if (Math.round(bytes / storage.QUOTA_BYTES_PER_ITEM() * 100) > 95) {
+                    items.histories.splice(-1, 1);
                 }
+
+                storage.set(items, () => {
+                    if (chrome.runtime.lastError) {
+                        console.log('histories are not saved');
+                    } else {
+                        console.log('histories are saved');
+                    }
+                });
             });
         });
     }
