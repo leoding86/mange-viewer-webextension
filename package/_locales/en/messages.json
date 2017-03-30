@@ -80,11 +80,11 @@
     },
 
     "local_history_storage_in_used": {
-        "message": "Local history storage in used"
+        "message": "Local history storage in used (1000 recrods max)"
     },
 
     "sync_history_storage_in_used": {
-        "message": "Sync history storage in used"
+        "message": "Sync history storage in used (When the storage is near full, old record will be deleted)"
     },
 
     "select_all": {
@@ -121,5 +121,9 @@
 
     "sync_support_notice": {
         "message": "You need Firefox version >= 53 to synchronize history."
+    },
+
+    "clear_local_memory": {
+        "message": "Empty local storage"
     }
 }

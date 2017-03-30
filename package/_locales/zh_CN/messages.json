@@ -80,11 +80,11 @@
     },
 
     "local_history_storage_in_used": {
-        "message": "本地历史记录空间已使用"
+        "message": "本地历史记录空间已使用（最多存储 1000 条）"
     },
 
     "sync_history_storage_in_used": {
-        "message": "云端历史记录空间已使用"
+        "message": "云端历史记录空间已使用（当空间快满时会删除旧的记录）"
     },
 
     "select_all": {
@@ -121,5 +121,9 @@
 
     "sync_support_notice": {
         "message": "需要 Firefox 不低于 53 的版本以支持同步历史记录"
+    },
+
+    "clear_local_memory": {
+        "message": "清空本地存储"
     }
 }
