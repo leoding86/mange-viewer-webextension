@@ -18,12 +18,14 @@
                 <div class="form-inline" style="float:right;">
                     <select v-model="storageType" class="form-control input-sm" style="font-size: 12px;">
                         <option value="1">{{_('local_history')}}</option>
-                        <option value="2">{{_('sync_history')}}</option>
+                        <option value="2" v-if="hasSyncSupport">{{_('sync_history')}}</option>
                     </select>
                 </div>
                 <div class="notice">
                     <p>{{historyRecordsLimitation}}</p>
                 </div>
+                <div class="alert alert-warning" role="alert"
+                     v-if="!hasSyncSupport">{{_('sync_support_notice')}}</div>
                 <table v-show="datasets.length > 0" class="records-table table table-bordered table-condensed table-hover">
                     <tbody>
                         <tr v-for="dataset in datasets"
@@ -85,6 +87,10 @@
                 } else {
                     return this._('sync_history_storage_in_used') + ': ' + this.datasets.length + ' / 20';
                 }
+            },
+
+            hasSyncSupport () {
+                return storage.hasSyncSupport();
             }
         },
 
