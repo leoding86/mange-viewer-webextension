@@ -117,5 +117,9 @@
 
     "open_file": {
         "message": "Open File"
+    },
+
+    "sync_support_notice": {
+        "message": "You need Firefox version >= 53 to synchronize history."
     }
 }

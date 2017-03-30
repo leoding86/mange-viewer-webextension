@@ -80,11 +80,11 @@
     },
 
     "local_history_storage_in_used": {
-        "message": "云端历史记录空间已使用"
+        "message": "本地历史记录空间已使用"
     },
 
     "sync_history_storage_in_used": {
-        "message": "本地历史记录空间已使用"
+        "message": "云端历史记录空间已使用"
     },
 
     "select_all": {
@@ -117,5 +117,9 @@
 
     "open_file": {
         "message": "打开文件"
+    },
+
+    "sync_support_notice": {
+        "message": "需要 Firefox 不低于 53 的版本以支持同步历史记录"
     }
 }
