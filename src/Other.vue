@@ -8,6 +8,7 @@
         <div class="row content-row">
             <div class="col-xs-12">
                 <div class="section" v-if="hasSyncSupport">
+                    <h4>{{_('storage')}}</h4>
                     <h5>{{_('sync_memory_in_used')}}</h5>
                     <div class="progress">
                         <div class="progress-bar" role="progressbar"
@@ -17,8 +18,6 @@
                     </div>
                     <button type="button" class="btn btn-xs btn-danger" role="button"
                             @click="clearSyncData">{{_('clear')}}</button>
-                </div>
-                <div class="section">
                     <h5 v-if="hasGetBytesInUseLocalSupport">{{_('local_memory_in_used')}}</h5>
                     <h5 v-else>{{_('clear_local_memory')}}</h5>
                     <div class="progress" v-if="hasGetBytesInUseLocalSupport">
@@ -29,6 +28,23 @@
                     </div>
                     <button type="button" class="btn btn-xs btn-danger" role="button"
                             @click="clearLocalData">{{_('clear')}}</button>
+                </div>
+                <div class="section">
+                    <h4>{{_('supported_sites')}}</h4>
+                    <div class="section-content">
+                        <ul>
+                            <li>mangapark.me</li>
+                            <li>mangadoom.co</li>
+                            <li>kissmanga.com</li>
+                            <li>eatmanga.tv</li>
+                            <li>readms.tv</li>
+                            <li>readms.net</li>
+                            <li>mangastream.com</li>
+                            <li>mangapanda.com</li>
+                            <li>readcomiconline.to</li>
+                            <li>readcomics.tv</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -104,7 +120,22 @@
     }
 
     .section {
-        margin-bottom: 20px;
+        padding-bottom: 20px;
+
+        h4 {
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        ul {
+            padding-left: 0;
+        }
+
+        li {
+            list-style: none;
+            font-size: 12px;
+            color: #666;
+        }
     }
 
     .progress {
