@@ -9,6 +9,14 @@ let storage = {
         }
     },
 
+    QUOTA_BYTES_PER_ITEM () {
+        if (this.hasSyncSupport()) {
+            return chrome.storage.sync.QUOTA_BYTES_PER_ITEM;
+        } else {
+            return 0;
+        }
+    },
+
     LOCAL_QUOTA_BYTES: chrome.storage.local.QUOTA_BYTES,
 
     hasSyncSupport () {
@@ -67,6 +75,14 @@ let storage = {
 
     clearLocal (callback) {
         chrome.storage.local.clear(callback);
+    },
+
+    hasGetBytesInUseSyncSupport () {
+        return chrome.storage.sync.getBytesInUse ? true : false;
+    },
+
+    hasGetBytesInUseLocalSupport () {
+        return chrome.storage.local.getBytesInUse ? true : false;
     }
 }
 
