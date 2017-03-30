@@ -16,18 +16,19 @@
                              :style="{ width: syncMemoryPercent + '%' }">{{syncMemoryPercent}}%</div>
                     </div>
                     <button type="button" class="btn btn-xs btn-danger" role="button"
-                            @click="clearSyncData">Clear</button>
+                            @click="clearSyncData">{{_('clear')}}</button>
                 </div>
                 <div class="section">
-                    <h5>{{_('local_memory_in_used')}}</h5>
-                    <div class="progress">
+                    <h5 v-if="hasGetBytesInUseLocalSupport">{{_('local_memory_in_used')}}</h5>
+                    <h5 v-else>{{_('clear_local_memory')}}</h5>
+                    <div class="progress" v-if="hasGetBytesInUseLocalSupport">
                         <div class="progress-bar" role="progressbar"
                              aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
                              style="min-width: 2em"
                              :style="{ width: localMemoryPercent + '%' }">{{localMemoryPercent}}%</div>
                     </div>
                     <button type="button" class="btn btn-xs btn-danger" role="button"
-                            @click="clearLocalData">Clear</button>
+                            @click="clearLocalData">{{_('clear')}}</button>
                 </div>
             </div>
         </div>
@@ -49,6 +50,10 @@
         computed: {
             hasSyncSupport () {
                 return storage.hasSyncSupport();
+            },
+
+            hasGetBytesInUseLocalSupport () {
+                return storage.hasGetBytesInUseLocalSupport();
             }
         },
 
@@ -59,9 +64,11 @@
                 });
             }
 
-            storage.getBytesInUseLocal(null, (bytesInUse) => {
-                this.localMemoryPercent = Math.round(bytesInUse / storage.LOCAL_QUOTA_BYTES * 100);
-            });
+            if (storage.hasGetBytesInUseLocalSupport()) {
+                storage.getBytesInUseLocal(null, (bytesInUse) => {
+                    this.localMemoryPercent = Math.round(bytesInUse / storage.LOCAL_QUOTA_BYTES * 100);
+                });
+            }
         },
 
         methods: {

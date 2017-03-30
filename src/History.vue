@@ -10,6 +10,17 @@
         </div>
         <div class="row content-row">
             <div class="col-xs-12">
+                <div class="alert alert-warning" role="alert"
+                     v-if="!hasSyncSupport">{{_('sync_support_notice')}}</div>
+                <div class="notice">
+                    <p>{{historyRecordsLimitation}}</p>
+                    <div class="progress" v-if="hasGetBytesInUseSupport">
+                        <div class="progress-bar" role="progressbar"
+                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                             style="min-width: 2em"
+                             :style="{ width: memoryPercent + '%' }">{{memoryPercent}}%</div>
+                    </div>
+                </div>
                 <button type="button" class="btn btn-sm btn-primary" @click="selectAllHandler">{{_('select_all')}}</button>
                 <button type="button" class="btn btn-sm btn-primary" @click="clearAllHandler">{{_('unselect_all')}}</button>
                 <span v-if="haveDatasetsSelected">
@@ -21,11 +32,6 @@
                         <option value="2" v-if="hasSyncSupport">{{_('sync_history')}}</option>
                     </select>
                 </div>
-                <div class="notice">
-                    <p>{{historyRecordsLimitation}}</p>
-                </div>
-                <div class="alert alert-warning" role="alert"
-                     v-if="!hasSyncSupport">{{_('sync_support_notice')}}</div>
                 <table v-show="datasets.length > 0" class="records-table table table-bordered table-condensed table-hover">
                     <tbody>
                         <tr v-for="dataset in datasets"
@@ -67,7 +73,8 @@
             return {
                 datasets: [],
                 keywords: '',
-                storageType: null
+                storageType: null,
+                memoryPercent: 0
             }
         },
 
@@ -83,19 +90,29 @@
 
             historyRecordsLimitation () {
                 if (this.storageType == 1) {
-                    return this._('local_history_storage_in_used') + ': ' + this.datasets.length + ' / 500';
+                    if (storage.hasGetBytesInUseLocalSupport()) {
+                        return this._('local_history_storage_in_used');
+                    } else {
+                        return this._('local_history_storage_in_used') + ': ' + this.datasets.length + ' / 1000';
+                    }
                 } else {
-                    return this._('sync_history_storage_in_used') + ': ' + this.datasets.length + ' / 20';
+                    return this._('sync_history_storage_in_used');
                 }
             },
 
             hasSyncSupport () {
                 return storage.hasSyncSupport();
+            },
+
+            hasGetBytesInUseSupport () {
+                return storage.hasGetBytesInUseLocalSupport();
             }
         },
 
         watch: {
             storageType (val) {
+                this.updateHistoryStorageUsage(val);
+
                 if (val == 1) {
                     storage.getLocal('histories', (items) => {
                         if (!chrome.runtime.lastError) {
@@ -175,7 +192,7 @@
                     this.datasets.splice(index, 1);
                 }
 
-                this.saveHistory(this.datasets);
+                this.saveHistoryEntries(this.datasets);
             },
 
             deleteSelectedRecords () {
@@ -197,7 +214,7 @@
                     this.datasets.splice(i - length, 1);
                 });
 
-                this.saveHistory(this.datasets);
+                this.saveHistoryEntries(this.datasets);
             },
 
             openRecord (dataset, e) {
@@ -228,7 +245,7 @@
                 return match[1];
             },
 
-            saveHistory () {
+            saveHistoryEntries () {
                 let datasets = [].concat(this.datasets);
                 datasets.map((dataset) => {
                     delete dataset.__selected;
@@ -246,6 +263,24 @@
                             alert(chrome.runtime.lastError);
                         }
                     });
+                }
+
+                this.updateHistoryStorageUsage(this.storageType);
+            },
+
+            updateHistoryStorageUsage (type) {
+                if (type == 1) {
+                    if (storage.hasGetBytesInUseLocalSupport()) {
+                        storage.getBytesInUseLocal('histories', (bytes) => {
+                            this.memoryPercent = Math.round(bytes / storage.LOCAL_QUOTA_BYTES * 100);
+                        });
+                    }
+                } else if (type == 2) {
+                    if (storage.hasGetBytesInUseSyncSupport()) {
+                        storage.getBytesInUse('histories', (bytes) => {
+                            this.memoryPercent = Math.round(bytes / storage.QUOTA_BYTES_PER_ITEM() * 100);
+                        });
+                    }
                 }
             },
 
