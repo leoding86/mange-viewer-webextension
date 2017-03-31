@@ -1,4 +1,5 @@
 import { _ua, _r } from '../modules/common';
+import WatchHistory from '../models/WatchHistory';
 
 class Parser {
 
@@ -10,6 +11,7 @@ class Parser {
         this.PROCESSING = 1;
         this.COMPLETED = 2;
         this.datasets = [];
+        this.watchHistory = null;
 
         this.siteConfig = _r[this.name];
 
@@ -75,6 +77,22 @@ class Parser {
         return index <= this.totalPage - 1;
     }
 
+    createHistoryInstance () {
+        this.watchHistory = new WatchHistory(
+            this.getId(),
+            this.getIcon(),
+            this.getLink(),
+            this.getHistoryTitle()
+        );
+    }
+
+    /**
+     * Save watch history
+     * @return {null|void}
+     */
+    saveHistory (page) {
+        this.watchHistory.save(page);
+    }
 }
 
 export default Parser;

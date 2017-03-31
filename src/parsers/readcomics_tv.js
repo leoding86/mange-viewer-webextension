@@ -27,6 +27,7 @@ class Parser extends BaseParser {
         xhr.open('GET', url);
         xhr.onload = function () {
             _this.parserDocument(xhr.responseText);
+            _this.createHistoryInstance();
             resolve(_this);
         }
         xhr.onerror = function (e) {

@@ -134,14 +134,6 @@ Debug.emit('Initializing parser');
                     (new p.default(window.location.href)).then((parser) => {
 Debug.emit('Praser is ready');
                         this.parser = parser;
-                        this.watchHistory = new WatchHistory(
-                            parser.getId(),
-                            parser.getIcon(),
-                            parser.getLink(),
-                            parser.getHistoryTitle()
-                        );
-
-                        console.log(this.watchHistory);
                         this.parserReady = true;
                     });
                 }
@@ -169,12 +161,12 @@ Debug.emit('Praser is ready');
             },
 
             sliderSlideHandler (curPage, totalPage) {
-                this.watchHistory.save(curPage, this.parser.getLink(curPage)); // save watch history
+                this.parser.saveHistory(curPage); // save watch history
                 this.inputPage = curPage;
             },
 
             sliderInit (curPage, totalPage) {
-                this.watchHistory.save(curPage, this.parser.getLink(curPage)); // save watch history
+                this.parser.saveHistory(curPage); // save watch history
                 this.comicPages = totalPage;
                 this.inputPage = curPage;
             },

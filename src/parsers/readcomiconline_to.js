@@ -14,6 +14,7 @@ class Parser extends BaseParser {
             let magic = new Common.Magic();
             this.datasets = magic.getVar('lstImages', 'object');
             this.totalPage = this.datasets.length;
+            this.createHistoryInstance();
             resolve(this);
         });
     }

@@ -13,6 +13,7 @@ class Parser extends BaseParser {
         this.url = this.pattern.exec(this.url)[1];
         return new Promise((resolve, reject) => {
             this.parseDocument(document.body.innerHTML);
+            this.createHistoryInstance();
             resolve(this);
         });
     }

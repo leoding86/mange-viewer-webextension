@@ -15,6 +15,7 @@ class Parser extends BaseParser {
         return new Promise((resolve, reject) => {
             let magic = new Common.Magic();
             this.totalPage = magic.getVar('_page_total', 'string');
+            this.createHistoryInstance();
             resolve(this);
         });
     }
