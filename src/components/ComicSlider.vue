@@ -215,9 +215,12 @@ Debug.emit('Set current page to ' + startPage + ' [type: sync]');
                 this.$emit('init', startPage, this.totalPage);
                 this.$refs.gallery.forEach((gallery) => {
                     gallery.extras = { page: startPage };
-                    gallery.imgSrc = this.datasets[startPage - 1];
                     gallery.$el.style.left = (gallery.extras.page - 1) * this.wrapperWidth + 'px';
                     startPage++;
+
+                    if (this.isValidIndex(startPage - 1)) {
+                        gallery.imgSrc = this.datasets[startPage - 1];
+                    }
                 });
             },
 
@@ -226,9 +229,12 @@ Debug.emit('Set current page to ' + startPage + ' [type: async]');
                 this.$emit('init', startPage, this.totalPage);
                 this.$refs.gallery.forEach((gallery) => {
                     gallery.extras = { page: startPage };
-                    this.parser.getImgSrc(startPage, this.setGalleryImgSrcCallback, this);
                     gallery.$el.style.left = (gallery.extras.page - 1) * this.wrapperWidth + 'px';
                     startPage++;
+
+                    if (this.isValidIndex(startPage - 1)) {
+                        this.parser.getImgSrc(startPage, this.setGalleryImgSrcCallback, this);
+                    }
                 });
             },
 
