@@ -216,11 +216,12 @@ Debug.emit('Set current page to ' + startPage + ' [type: sync]');
                 this.$refs.gallery.forEach((gallery) => {
                     gallery.extras = { page: startPage };
                     gallery.$el.style.left = (gallery.extras.page - 1) * this.wrapperWidth + 'px';
-                    startPage++;
 
                     if (this.isValidIndex(startPage - 1)) {
                         gallery.imgSrc = this.datasets[startPage - 1];
                     }
+
+                    startPage++;
                 });
             },
 
@@ -230,11 +231,12 @@ Debug.emit('Set current page to ' + startPage + ' [type: async]');
                 this.$refs.gallery.forEach((gallery) => {
                     gallery.extras = { page: startPage };
                     gallery.$el.style.left = (gallery.extras.page - 1) * this.wrapperWidth + 'px';
-                    startPage++;
 
                     if (this.isValidIndex(startPage - 1)) {
                         this.parser.getImgSrc(startPage, this.setGalleryImgSrcCallback, this);
                     }
+
+                    startPage++;
                 });
             },
 
