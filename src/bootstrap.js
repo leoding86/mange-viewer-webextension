@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import config from './modules/config';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/bootstrap.css';
 import _ from './modules/_';
@@ -19,22 +20,27 @@ const router = new VueRouter({
     routes
 });
 
-const app = new Vue({
-    router: router,
+window._cvrContainer = {};
+config.get(null).then((cfg) => {
+    window._cvrContainer.config = cfg;
 
-    mounted () {
-        this.$el.style.display = 'block';
-    },
+    const app = new Vue({
+        router: router,
 
-    methods: {
-        openReaderHandler () {
-            chrome.tabs.create({
-                url: chrome.runtime.getURL('pages/reader.html')
-            });
+        mounted () {
+            this.$el.style.display = 'block';
         },
 
-        _ (string) {
-            return _(string);
+        methods: {
+            openReaderHandler () {
+                chrome.tabs.create({
+                    url: chrome.runtime.getURL('pages/reader.html')
+                });
+            },
+
+            _ (string) {
+                return _(string);
+            }
         }
-    }
-}).$mount('#app');
+    }).$mount('#app');
+});
