@@ -84,7 +84,8 @@ class Parser {
     }
 
     getImgSrc (page, callback, context) {
-        callback.call(context, page, this.datasets[page - 1].url);
+        let url = page <= this.totalPage ? this.datasets[page - 1].url : null;
+        callback.call(context, page, url);
     }
 
     getTotalPage () {
