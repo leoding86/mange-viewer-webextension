@@ -31,7 +31,7 @@ Matcher.prototype.is = function () {
 
 Matcher.prototype.isMH = function () {
     for (var name in this.rules) {
-        if (this.rules[name].mhpattern.test(this.url)) {
+        if (this.rules[name].mhpattern && this.rules[name].mhpattern.test(this.url)) {
             this.rule = this.rules[name];
             return this.rules[name].parser;
         }

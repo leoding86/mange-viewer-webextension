@@ -3,28 +3,33 @@ import WatchHistory from '../models/WatchHistory';
 
 class Parser {
 
-    constructor (name, url) {
+    constructor (name, url, isChapter) {
+        this.PROCESSING = 1;
+        this.COMPLETED = 2;
+
         this.name = name;
         this.link = null;
         this.title = '';
         this.totalPage = 0;
-        this.PROCESSING = 1;
-        this.COMPLETED = 2;
         this.datasets = [];
         this.watchHistory = null;
-
         this.siteConfig = _r[this.name];
-
+        this.mhpattern = this.siteConfig.mhpattern;
         this.pattern = this.siteConfig.pattern;
         this.siteurl = this.siteConfig.site;
         this.icon = this.siteConfig.icon;
         this.sitelogo = this.siteConfig.logo;
         this.resOrigin = this.siteConfig.origins;
 
-        let matches = this.pattern.exec(url);
-        this.mroot = matches[this.siteConfig.groups.mroot];
-        this.url = matches[this.siteConfig.groups.url];
-        this.id = matches[this.siteConfig.groups.id];
+        /* If it's a chapter page */
+        if (isChapter) {
+
+        } else {
+            let matches = this.pattern.exec(url);
+            this.mroot = matches[this.siteConfig.groups.mroot];
+            this.url = matches[this.siteConfig.groups.url];
+            this.id = matches[this.siteConfig.groups.id];
+        }
 
         // 修改请求头信息
         // this.webRequestModifyHeader();
@@ -92,6 +97,36 @@ class Parser {
      */
     saveHistory (page) {
         this.watchHistory.save(page);
+    }
+
+    /**
+     * Get newest chapter of current manga
+     * @return {promise}
+     */
+    getLastestChapter () { }
+
+    /**
+     * Get lastest chapter of current manga
+     * @return {promise}
+     */
+    getLastestChapters () { }
+
+    /**
+     * Get lastest chatper in subscribe
+     * @return {promise}
+     */
+    getLastestChatperInSubscribe () { }
+
+    /**
+     * Check this manga is subscribed
+     * @return {Boolean}
+     */
+    isSubscribed () {
+
+    }
+
+    hasNewChatper () {
+        
     }
 }
 
