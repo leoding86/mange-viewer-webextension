@@ -28,6 +28,21 @@ input, select {
     }
 }
 
+.form-group {
+    label {
+        font-weight: 500;
+    }
+
+    span.help-block {
+        font-size: 12px;
+    }
+
+    span.inline-help-block {
+        display: inline;
+        padding-left: 1em;
+    }
+}
+
 .progress {
     border-radius: 0;
 }
