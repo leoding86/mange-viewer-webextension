@@ -62,7 +62,7 @@
     },
 
     "file_format_support": {
-        "message": "Support zip, cbz file"
+        "message": "Support zip, rar, cbz, cbr file"
     },
 
     "history": {

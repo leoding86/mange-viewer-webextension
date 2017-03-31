@@ -62,7 +62,7 @@
     },
 
     "file_format_support": {
-        "message": "支持 zip, cbz 格式"
+        "message": "支持 zip, rar, cbz, cbr 格式"
     },
 
     "history": {
