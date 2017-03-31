@@ -17,7 +17,6 @@
                  top: imgStyle.top + 'px',
                  left: imgStyle.left + 'px'
              }"
-             ondragstart="return false;"
              draggable="false" @transitionend="(evt) => { evt.stopPropagation(); }" />
         <div class="status" v-if="!isComplete"
              :style="{ top: statusTop + 'px' }">
@@ -151,6 +150,9 @@
             this.$img = this.$el.querySelector('img');
             this.$img.addEventListener('load', this.imageLoadHandler);
             this.$img.addEventListener('error', this.imgeErrorHandler);
+            this.$img.addEventListener('dragstart', (evt) => {
+                evt.preventDefault();
+            }, false);
             this.initEventListener(this.interactiveMode);
             this.imgSrc = this.srcData;
 
@@ -524,6 +526,7 @@ Debug.emit('zoom to ' + this.zoom + ' time(s)');
             -ms-transform: translateZ(0);
             -o-transform: translateZ(0);
             transform: translateZ(0);
+            user-drag: none;
         }
     }
 </style>
