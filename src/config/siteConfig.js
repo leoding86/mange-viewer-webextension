@@ -41,6 +41,7 @@ const siteConfig = {
         parser: 'mangapanda_com',
         pattern: /^(https?:\/{2}(?:w{3}\.)?mangapanda\.com\/[^\/]+\/(\d+))(?:\/\d+)?/i,
         groups: { url: 1, mroot: 1, id: 2 },
+        mhpattern: /^(https?:\/{2}(?:w{3}\.)?mangapanda\.com\/([^\/]+)/i,
         site: '//www.mangapanda.com',
         icon: 'http://s1.mangapanda.com/favicon.ico',
         logo: 'http://s5.mangapanda.com/sup/images/dark.813ab89088.png',

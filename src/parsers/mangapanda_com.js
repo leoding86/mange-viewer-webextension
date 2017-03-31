@@ -4,9 +4,14 @@ import BaseParser from './Parser';
 
 class Parser extends BaseParser {
 
-    constructor (url) {
-        super('mangapanda_com', url);
-        return this.init();
+    constructor (url, isChapter) {
+        if (isChapter) {
+            super('mangapanda_com', url, isChapter);
+            return this.initChapter();
+        } else {
+            super('mangapanda_com', url);
+            return this.init();
+        }
     }
 
     init () {

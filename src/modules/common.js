@@ -29,6 +29,16 @@ Matcher.prototype.is = function () {
     return null;
 };
 
+Matcher.prototype.isMH = function () {
+    for (var name in this.rules) {
+        if (this.rules[name].mhpattern.test(this.url)) {
+            this.rule = this.rules[name];
+            return this.rules[name].parser;
+        }
+    }
+    return null;
+};
+
 Matcher.prototype.origin = function () {
     return '*://*.' + this.rule.site + '/*';
 };
