@@ -62,6 +62,15 @@
             initZoom: {
                 type: [Number, String],
                 default: 1
+            },
+
+            /**
+             * 1: wheel: zoom
+             * 2: ctrl+wheel: zoom, wheel: veritcal move
+             */
+            zoomMode: {
+                type: [Number, String],
+                default: 1
             }
         },
 
@@ -228,41 +237,59 @@
                 if (this.zoom == 1 || this.imgStyle.width <= this.width) {
                     // Do nothing
                 } else {
-                    let computedLeft = this.imgOffsetLeft + this.pointMoveX - this.pointDownX;
-
-                    if (computedLeft >= 0) {
-                        this.imgStyle.left = 0;
-                    } else if (this.minOffsetLeft && computedLeft <= this.minOffsetLeft) {
-                        this.imgStyle.left = this.minOffsetLeft;
-                    } else {
-                        this.imgStyle.left = computedLeft;
-                    }
+                    this.imageMoveHorizontal(this.pointMoveX - this.pointDownX);
                 }
 
                 if (this.zoom == 1 || this.imgStyle.height <= this.height) {
                     // Do nothing
                 } else {
-                    let computedTop = this.imgOffsetTop + this.pointMoveY - this.pointDownY;
+                    this.imageMoveVertical(this.pointMoveY - this.pointDownY);
+                }
+            },
 
-                    if (computedTop >= 0) {
-                        this.imgStyle.top = 0;
-                    } else if (this.minOffsetTop && computedTop <= this.minOffsetTop) {
-                        this.imgStyle.top = this.minOffsetTop;
-                    } else {
-                        this.imgStyle.top = computedTop;
-                    }
+            imageMoveVertical (distance) {
+                let computedTop = this.imgOffsetTop + distance;
+
+                if (computedTop >= 0) {
+                    this.imgStyle.top = 0;
+                } else if (this.minOffsetTop && computedTop <= this.minOffsetTop) {
+                    this.imgStyle.top = this.minOffsetTop;
+                } else {
+                    this.imgStyle.top = computedTop;
+                }
+            },
+
+            imageMoveHorizontal (distance) {
+                let computedLeft = this.imgOffsetLeft + distance;
+
+                if (computedLeft >= 0) {
+                    this.imgStyle.left = 0;
+                } else if (this.minOffsetLeft && computedLeft <= this.minOffsetLeft) {
+                    this.imgStyle.left = this.minOffsetLeft;
+                } else {
+                    this.imgStyle.left = computedLeft;
                 }
             },
 
             imageWheelHandler (e) {
                 e.preventDefault();
-                let zoom = null;
-                if (e.deltaY < 0 && this.zoom < this.zoomMax) {
-                    zoom = 1;
-                } else if (e.deltaY > 0 && this.zoom > 1) {
-                    zoom = -1;
+
+                if (this.zoomMode == 1 || (this.zoomMode == 2 && e.ctrlKey)) {
+                    let zoom = null;
+                    if (e.deltaY < 0 && this.zoom < this.zoomMax) {
+                        zoom = 1;
+                    } else if (e.deltaY > 0 && this.zoom > 1) {
+                        zoom = -1;
+                    }
+                    this.calcTargetOffset(e.offsetX, e.offsetY, zoom);
+                } else {
+                    if (this.zoomMode == 2) {
+                        if (this.zoom > 1) {
+                            this.imageMoveVertical(e.deltaY > 0 ? -50 : 50);
+                            this.imgOffsetTop = this.imgStyle.top;
+                        }
+                    }
                 }
-                this.calcTargetOffset(e.offsetX, e.offsetY, zoom);
             },
 
             imageMouseDownHandler (e) {
@@ -438,6 +465,9 @@ Debug.emit('zoom to ' + this.zoom + ' time(s)');
                 } else {
                     this.imgStyle.top = targetOffsetTop;
                 }
+
+                this.imgOffsetTop = this.imgStyle.top;
+                this.imgOffsetLeft = this.imgStyle.left;
             },
 
             calDistance (l1, l2) {
