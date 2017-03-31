@@ -12,7 +12,7 @@
     "name": "__MSG_extName__",
     "short_name": "MVR",
     "description": "__MSG_extDescription__",
-    "version": "0.7.6",
+    "version": "0.7.9",
     "default_locale": "en",
     "icons": {
         "16": "assets/icon16.png",

@@ -7,8 +7,9 @@
         </div>
         <div class="row content-row">
             <div class="col-xs-12">
-                <div class="section" v-if="hasSyncSupport">
+                <div class="section">
                     <h4>{{_('storage')}}</h4>
+                    <div v-if="hasSyncSupport">
                     <h5>{{_('sync_memory_in_used')}}</h5>
                     <div class="progress">
                         <div class="progress-bar" role="progressbar"
@@ -18,6 +19,7 @@
                     </div>
                     <button type="button" class="btn btn-xs btn-danger" role="button"
                             @click="clearSyncData">{{_('clear')}}</button>
+                    </div>
                     <h5 v-if="hasGetBytesInUseLocalSupport">{{_('local_memory_in_used')}}</h5>
                     <h5 v-else>{{_('clear_local_memory')}}</h5>
                     <div class="progress" v-if="hasGetBytesInUseLocalSupport">
@@ -35,7 +37,7 @@
                         <div class="form-group">
                             <label for="gallery_init_zoom">{{_('init_zoom_level')}}</label>
                             <select name="gallery_init_zoom" id="gallery_init_zoom" class="form-control"
-                                    v-mode="galleryInitZoom">
+                                    v-model="galleryInitZoom">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -80,6 +82,8 @@
     import _ from './modules/_';
 
     export default {
+        name: 'Other',
+
         data () {
             return {
                 syncMemoryPercent: 0,
@@ -99,14 +103,18 @@
             },
 
             galleryZoomModeHelpeText () {
-                config.set('gallery_zoom_mode', this.galleryZoomMode);
+                config.set('gallery_zoom_mode', this.galleryZoomMode, (err) => {
+                    window._cvrContainer.config['gallery_zoom_mode'] = this.galleryZoomMode;
+                });
                 return _('gallery_zoom_mode_type' + this.galleryZoomMode + '_help_text');
             }
         },
 
         watch: {
             galleryInitZoom (val) {
-                config.set('init_zoom_level', val);
+                config.set('init_zoom_level', val, (err) => {
+                    window._cvrContainer.config['init_zoom_level'] = val;
+                });
             }
         },
 

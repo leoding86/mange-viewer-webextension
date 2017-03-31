@@ -2,7 +2,7 @@ import Debug from '../components/CvrDebugEvent';
 import storage from '../modules/storage';
 
 let config = {
-    set (key, value) {
+    set (key, value, callback) {
 Debug.emit('Set config \'' + key + '\' to ' + value);
         storage.getLocal('config', (items) => {
             if (!items.config) {
@@ -15,6 +15,8 @@ Debug.emit('Config has been saved');
                 } else {
 Debug.emit('Save config failed. ' + chrome.runtime.lastError);
                 }
+
+                if (callback) callback((chrome.runtime.lastError ? chrome.runtime.lastError : null));
             });
         });
     },
