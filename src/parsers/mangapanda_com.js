@@ -12,6 +12,7 @@ class Parser extends BaseParser {
     init () {
         return new Promise((resolve, reject) => {
             this.parseDocument();
+            this.createHistoryInstance();
             resolve(this);
         });
     }

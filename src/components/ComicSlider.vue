@@ -17,6 +17,7 @@
                 <control v-for="n in (preloadPage + 1)" :index-data="n" ref="gallery" 
                          src-data=""
                          :init-zoom="galleryInitZoom"
+                         :zoom-mode="galleryZoomMode"
                          :width="wrapperWidth" :height="wrapperHeight"
                          :style="{ position: 'absolute' }"></control>
         </div>
@@ -81,7 +82,8 @@
                 DESKTOP: 1,
                 TOUCHESCREEN: 2,
                 interactiveMode: window._cvrContainer.config['interactive_mode'],
-                galleryInitZoom: window._cvrContainer.config['init_zoom_level']
+                galleryInitZoom: window._cvrContainer.config['init_zoom_level'],
+                galleryZoomMode: window._cvrContainer.config['gallery_zoom_mode']
             }
         },
 

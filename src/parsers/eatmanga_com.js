@@ -24,6 +24,7 @@ class Parser extends BaseParser {
     getDocument (url, resolve, reject) {
         let $pageSelect = document.querySelector('#pages');
         this.totalPage = $pageSelect.querySelectorAll('option').length;
+        this.createHistoryInstance();
         resolve(this);
     }
 

@@ -30,6 +30,29 @@
                             @click="clearLocalData">{{_('clear')}}</button>
                 </div>
                 <div class="section">
+                    <h4>{{_('settings')}}</h4>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label for="gallery_init_zoom">{{_('init_zoom_level')}}</label>
+                            <select name="gallery_init_zoom" id="gallery_init_zoom" class="form-control"
+                                    v-mode="galleryInitZoom">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gallery_zoom_mode">{{_('gallery_zoom_mode')}}<span class="help-block inline-help-block">{{galleryZoomModeHelpeText}}</span></label>
+                            <select name="gallery_zoom_mode" id="gallery_zoom_mode" class="form-control"
+                                    v-model="galleryZoomMode">
+                                <option value="1">{{_('gallery_zoom_mode_type1')}}</option>
+                                <option value="2">{{_('gallery_zoom_mode_type2')}}</option>
+                            </select>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="section">
                     <h4>{{_('supported_sites')}}</h4>
                     <div class="section-content">
                         <ul>
@@ -53,13 +76,16 @@
 
 <script>
     import storage from './modules/storage';
+    import config from './modules/config';
     import _ from './modules/_';
 
     export default {
         data () {
             return {
                 syncMemoryPercent: 0,
-                localMemoryPercent: 0
+                localMemoryPercent: 0,
+                galleryZoomMode: 0,
+                galleryInitZoom: 1
             }
         },
 
@@ -70,10 +96,24 @@
 
             hasGetBytesInUseLocalSupport () {
                 return storage.hasGetBytesInUseLocalSupport();
+            },
+
+            galleryZoomModeHelpeText () {
+                config.set('gallery_zoom_mode', this.galleryZoomMode);
+                return _('gallery_zoom_mode_type' + this.galleryZoomMode + '_help_text');
+            }
+        },
+
+        watch: {
+            galleryInitZoom (val) {
+                config.set('init_zoom_level', val);
             }
         },
 
         mounted () {
+            this.galleryZoomMode = window._cvrContainer.config['gallery_zoom_mode'];
+            this.galleryInitZoom = window._cvrContainer.config['init_zoom_level'];
+
             if (storage.hasSyncSupport()) {
                 storage.getBytesInUse(null, (bytesInUse) => {
                     this.syncMemoryPercent = Math.round(bytesInUse / storage.SYNC_QUOTA_BYTES() * 100);

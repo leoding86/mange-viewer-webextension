@@ -16,6 +16,7 @@ class Parser extends BaseParser {
 
         return new Promise((resolve, reject) => {
             this.totalPage = this.datasets.length;
+            this.createHistoryInstance();
             resolve(this);
         });
     }

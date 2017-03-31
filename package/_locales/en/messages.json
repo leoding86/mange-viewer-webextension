@@ -139,5 +139,29 @@
 
     "storage": {
         "message": "Storage"
+    },
+
+    "settings": {
+        "message": "Settings"
+    },
+
+    "gallery_zoom_mode": {
+        "message": "Gallery zoom mode"
+    },
+
+    "gallery_zoom_mode_type1": {
+        "message": "Type 1"
+    },
+
+    "gallery_zoom_mode_type2": {
+        "message": "Type 2"
+    },
+
+    "gallery_zoom_mode_type1_help_text": {
+        "message": "Zoom: mouse wheel"
+    },
+
+    "gallery_zoom_mode_type2_help_text": {
+        "message": "Zoom: ctrl + mouse wheel; Move vertically: mouse wheel"
     }
 }
