@@ -50,7 +50,8 @@ Debug.emit('Save config failed. ' + chrome.runtime.lastError);
     _config: {
         'interactive_mode' : 1, // 1: mouse; 2: touchscreen
         'debug_mode'       : 0,
-        'init_zoom_level'  : 1
+        'init_zoom_level'  : 1,
+        'gallery_zoom_mode': 1
     },
 
     _checkConfigItem (name, value) {
@@ -59,6 +60,8 @@ Debug.emit('Save config failed. ' + chrome.runtime.lastError);
         } else if (name == 'init_zoom_level' && value && /^[123]$/.test(value)) {
             return true;
         } else if (name == 'interactive_mode' && value && /^[12]$/.test(value)) {
+            return true;
+        } else if (name == 'gallery_zoom_mode' && value && /^[12]$/.test(value)) {
             return true;
         }
 
