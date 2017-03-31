@@ -139,5 +139,29 @@
 
     "storage": {
         "message": "存储"
+    },
+
+    "settings": {
+        "message": "设置"
+    },
+
+    "gallery_zoom_mode": {
+        "message": "图片缩放模式"
+    },
+
+    "gallery_zoom_mode_type1": {
+        "message": "类型1"
+    },
+
+    "gallery_zoom_mode_type2": {
+        "message": "类型2"
+    },
+
+    "gallery_zoom_mode_type1_help_text": {
+        "message": "缩放：鼠标滚动"
+    },
+
+    "gallery_zoom_mode_type2_help_text": {
+        "message": "缩放：Ctrl+鼠标滚轮；垂直移动：鼠标滚轮"
     }
 }
