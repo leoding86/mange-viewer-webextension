@@ -5,13 +5,8 @@ import BaseParser from './Parser';
 class Parser extends BaseParser {
 
     constructor (url, isChapter) {
-        if (isChapter) {
-            super('mangapanda_com', url, isChapter);
-            return this.initChapter();
-        } else {
-            super('mangapanda_com', url);
-            return this.init();
-        }
+        super('mangapanda_com', url);
+        return this.init();
     }
 
     init () {
@@ -38,14 +33,14 @@ class Parser extends BaseParser {
                + magic.getVar("document['chapterno']", 'string');
     }
 
+    getPageUrlByPage (page) {
+        return this.url + '/' + page;
+    }
+
     getImgSrc (page, callback, context) {
         this.requestImgSrc(page).then((src) => {
             callback.call(context, page, src);
         });
-    }
-
-    getPageUrlByPage (page) {
-        return this.url + '/' + page;
     }
 
     requestImgSrc (page) {
