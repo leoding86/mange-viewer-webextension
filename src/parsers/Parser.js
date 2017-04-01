@@ -3,7 +3,7 @@ import WatchHistory from '../models/WatchHistory';
 
 class Parser {
 
-    constructor (name, url, isChapter) {
+    constructor (name, url) {
         this.PROCESSING = 1;
         this.COMPLETED = 2;
 
@@ -14,22 +14,16 @@ class Parser {
         this.datasets = [];
         this.watchHistory = null;
         this.siteConfig = _r[this.name];
-        this.mhpattern = this.siteConfig.mhpattern;
         this.pattern = this.siteConfig.pattern;
         this.siteurl = this.siteConfig.site;
         this.icon = this.siteConfig.icon;
         this.sitelogo = this.siteConfig.logo;
         this.resOrigin = this.siteConfig.origins;
 
-        /* If it's a chapter page */
-        if (isChapter) {
-
-        } else {
-            let matches = this.pattern.exec(url);
-            this.mroot = matches[this.siteConfig.groups.mroot];
-            this.url = matches[this.siteConfig.groups.url];
-            this.id = matches[this.siteConfig.groups.id];
-        }
+        let matches = this.pattern.exec(url);
+        this.mroot = matches[this.siteConfig.groups.mroot];
+        this.url = matches[this.siteConfig.groups.url];
+        this.id = matches[this.siteConfig.groups.id];
 
         // 修改请求头信息
         // this.webRequestModifyHeader();
@@ -82,6 +76,11 @@ class Parser {
         return index <= this.totalPage - 1;
     }
 
+    /**
+     * Create a WatchHistory instance
+     * Call this after init parser to get related props
+     * @return {[type]} [description]
+     */
     createHistoryInstance () {
         this.watchHistory = new WatchHistory(
             this.getId(),
@@ -96,37 +95,9 @@ class Parser {
      * @return {null|void}
      */
     saveHistory (page) {
-        this.watchHistory.save(page);
-    }
-
-    /**
-     * Get newest chapter of current manga
-     * @return {promise}
-     */
-    getLastestChapter () { }
-
-    /**
-     * Get lastest chapter of current manga
-     * @return {promise}
-     */
-    getLastestChapters () { }
-
-    /**
-     * Get lastest chatper in subscribe
-     * @return {promise}
-     */
-    getLastestChatperInSubscribe () { }
-
-    /**
-     * Check this manga is subscribed
-     * @return {Boolean}
-     */
-    isSubscribed () {
-
-    }
-
-    hasNewChatper () {
-        
+        if (this.watchHistory) {
+            this.watchHistory.save(page);
+        }
     }
 }
 
