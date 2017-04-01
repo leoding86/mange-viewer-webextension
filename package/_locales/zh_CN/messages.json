@@ -163,5 +163,21 @@
 
     "gallery_zoom_mode_type2_help_text": {
         "message": "缩放：Ctrl+鼠标滚轮；垂直移动：鼠标滚轮"
+    },
+
+    "has_been_subscribed": {
+        "message": "漫画已经订阅过"
+    },
+
+    "subscribe_failed": {
+        "message": "订阅失败 :("
+    },
+
+    "subscribe_successed": {
+        "message": "订阅成功 :)"
+    },
+
+    "subscribe": {
+        "message": "订阅"
     }
 }

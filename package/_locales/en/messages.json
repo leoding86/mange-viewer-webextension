@@ -163,5 +163,21 @@
 
     "gallery_zoom_mode_type2_help_text": {
         "message": "Zoom: ctrl + mouse wheel; Move vertically: mouse wheel"
+    },
+
+    "has_been_subscribed": {
+        "message": "This manga has been subscribed"
+    },
+
+    "subscribe_failed": {
+        "message": "Something happened when subscribe the manga"
+    },
+
+    "subscribe_successed": {
+        "message": "Subscribe done"
+    },
+
+    "subscribe": {
+        "message": "Subscribe"
     }
 }
