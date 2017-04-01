@@ -42,17 +42,20 @@ const siteConfig = {
         pattern: /^(https?:\/{2}(?:w{3}\.)?mangapanda\.com\/[^\/]+\/(\d+))(?:\/\d+)?/i,
         groups: { url: 1, mroot: 1, id: 2 },
         mhpattern: /^https?:\/{2}(?:w{3}\.)?mangapanda\.com\/([^\/]+)/i,
+        mhgroups: { id: 1 },
         site: '//www.mangapanda.com',
         icon: 'http://s1.mangapanda.com/favicon.ico',
         logo: 'http://s5.mangapanda.com/sup/images/dark.813ab89088.png',
         origins: []
     },
 
-    /* diff domain readms.com */
+    /* diff domains readms.com, readms.net */
     mangastream_com: {
         parser: 'mangastream_com',
         pattern: /^(https?:\/{2}(?:w{3}?\.)?(?:mangastream\.com|readms\.net|readms\.com)\/r\/[^\/]+\/[^\/]+\/(\d+))(?:\/\d+)?\/?/i,
         groups: { url: 1, mroot: 1, id: 2 },
+        mhpattern: /^https?:\/{2}(?:w{3}\.)?(?:mangastream\.com|readms\.net|readms\.com)\/manga\/([^\/]+)/i,
+        mhgroups: { id: 1 },
         site: '//mangastream.com',
         icon: '',
         logo: 'http://mangastream.com/assets/img/logo.png',
@@ -63,6 +66,8 @@ const siteConfig = {
         parser: 'eatmanga_com',
         pattern: /^(https?:\/{2}(?:w{3}\.)?eatmanga\.com\/Manga-Scan\/([^\/]+)\/([^\/]+))/i,
         groups: { url: 1, mroot: 1, id: 2 },
+        mhpattern: /^https?:\/{2}(?:w{3}\.)?eatmanga\.com\/Manga-Scan\/([^\/]+)\/?/i,
+        mhgroups: { id: 1 },
         site: '//eatmanga.com',
         icon: '',
         logo: 'http://cdn.eatmanga.com/media/logo.png',
@@ -73,6 +78,8 @@ const siteConfig = {
         parser: 'kissmanga_com',
         pattern: /^(https?:\/{2}kissmanga\.com\/Manga\/[^\/]+\/[^\/]+\?id=(\d+))/i,
         groups: { url: 1, mroot: 1, id: 2 },
+        mhpattern: /^https?:\/{2}kissmanga\.com\/Manga\/([^\/]+)\/?/i,
+        mhgroups: { id: 1 },
         site: '//kissmanga.com',
         icon: '',
         logo: 'http://kissmanga.com/Content/images/logo.png',
@@ -83,7 +90,9 @@ const siteConfig = {
         parser: 'mangadoom_co',
         pattern: /^(https?:\/{2}mangadoom\.co\/([^\/]+)\/\d+)/i,
         groups: { url: 1, mroot: 1, id: 2 },
-        site: '//mangadoom.do',
+        mhpattern: /^https?:\/{2}mangadoom\.co\/([^\/]+)\/?/i,
+        mhgroups: { id: 1 },
+        site: '//mangadoom.co',
         icon: '',
         logo: 'http://mangadoom.co/assets/img/lgo.png',
         origins: []
