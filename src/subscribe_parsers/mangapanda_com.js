@@ -1,0 +1,40 @@
+import * as Common from '../modules/common';
+import _ from '../modules/_';
+import XHR from '../modules/XHR';
+import BaseParser from './BaseParser';
+
+class Parser extends BaseParser {
+
+    constructor () {
+        super('mangapanda_com');
+
+        return new Promise((resolve, reject) => {
+            resolve(this);
+        });
+    }
+
+    getMangaURL () {
+        return ['//www.mangapanda.com', this.id].join('/');
+    }
+
+    saveSubscribe () {
+        return new Promise((resolve, reject) => {
+            let xhr = XHR();
+            xhr.open('get', this.getMangaURL());
+            xhr.onload = () => {
+                let domparser = new DOMParser();
+                let elements = domparser.parseFromString(xhr.responseText, 'text/html');
+                let lastestChapterEl = elements.querySelector('#latestchapters li');
+                this.lastestSavedChapterId = this.lastestChapterId = /(\d+)\/?$/.exec(lastestChapterEl.querySelector('a').href)[1];
+                this.lastestSavedChapterTitle = this.lastestChapterTitle = lastestChapterEl.querySelector('a').textContent;
+                this.title = elements.querySelector('#mangaproperties h1').textContent;
+                this.lastTime = Date.now();
+
+                super.saveSubscribe(resolve, reject);
+            };
+            xhr.send(null);
+        });
+    }
+}
+
+export default Parser;
