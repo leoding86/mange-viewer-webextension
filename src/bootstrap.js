@@ -8,11 +8,13 @@ import _ from './modules/_';
 Vue.use(VueRouter);
 
 const History = require('./History.vue');
+const Subscribe = require('./Subscribe.vue');
 const Other = require('./Other.vue');
 
 const routes = [
     { path: '/', component: History },
     { path: '/history', component: History },
+    { path: '/subscribe', component: Subscribe },
     { path: '/other', component: Other }
 ];
 
