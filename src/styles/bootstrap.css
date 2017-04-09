@@ -2,6 +2,10 @@ body {
     background: #efefef !important;
 }
 
+.clearfix {
+    clear: both;
+}
+
 .btn {
     border-radius: 0 !important;
 

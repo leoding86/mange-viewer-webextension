@@ -102,6 +102,8 @@ const siteConfig = {
         parser: 'mangapark_me',
         pattern: /^(https?:\/{2}(?:w{3}?\.)?mangapark\.me\/manga\/([^\/]+)\/s\d+(?:\/v\d+)?\/c\d+(?:\/e\d+)?)/i,
         groups: { url: 1, mroot: 1, id: 2 },
+        mhpattern: /^https?:\/{2}(?:w{3}?\.)?mangapark\.me\/manga\/([^\/]+)\/?/i,
+        mhgroups: { id: 1 },
         site: '//mangapark.me',
         icon: '',
         logo: 'http://h.s.mangapark.me/img/logo.png',

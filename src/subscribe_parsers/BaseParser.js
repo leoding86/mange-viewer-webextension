@@ -60,12 +60,10 @@ class BaseParser {
 
         storage.get(['subscribes', subKey], (items) => {
             /* Check has the manga been subscribed */
-            if (items.subscribes) {
-                if (items.subscribes[this.subscribeId]) {
-                    resolve(_('has_been_subscribed'));
-                }
+            if (items.subscribes && items.subscribes[this.subscribeId]) {
+                resolve(_('has_been_subscribed'));
             } else {
-                items.subscribes = {};
+                if (!items.subscribes) items.subscribes = {};
 
                 items.subscribes[this.subscribeId] = {
                     name: this.parserName,
@@ -76,7 +74,7 @@ class BaseParser {
 
                 storage.set(items, () => {
                     if (chrome.runtime.lastError) {
-                        reject(_('subscribe_failed. ' + chrome.runtime.lastError));
+                        reject(_('subscribe_failed') + chrome.runtime.lastError);
                     } else {
                         resolve(_('subscribe_successed'));
                     }
