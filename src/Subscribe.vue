@@ -149,6 +149,7 @@ Debug.emit('Notice of subscribe ' + subscribe.subscribeId + ' is cleared');
                 if (id) {
                     this.getParser(subscribe.parserName).then((parser) => {
                         parser.id = subscribe.mangaId;
+Debug.emit('Navigate to ' + parser.getChapterURL(id));
                         window.location.href = parser.getChapterURL(id)
                     }, (err) => {
 
