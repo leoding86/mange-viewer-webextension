@@ -88,8 +88,8 @@
             return {
                 syncMemoryPercent: 0,
                 localMemoryPercent: 0,
-                galleryZoomMode: 0,
-                galleryInitZoom: 1
+                galleryZoomMode: window._cvrContainer.config['gallery_zoom_mode'],
+                galleryInitZoom: window._cvrContainer.config['init_zoom_level']
             }
         },
 
@@ -103,9 +103,6 @@
             },
 
             galleryZoomModeHelpeText () {
-                config.set('gallery_zoom_mode', this.galleryZoomMode, (err) => {
-                    window._cvrContainer.config['gallery_zoom_mode'] = this.galleryZoomMode;
-                });
                 return _('gallery_zoom_mode_type' + this.galleryZoomMode + '_help_text');
             }
         },
@@ -115,13 +112,16 @@
                 config.set('init_zoom_level', val, (err) => {
                     window._cvrContainer.config['init_zoom_level'] = val;
                 });
+            },
+
+            galleryZoomMode (val) {
+                config.set('gallery_zoom_mode', this.galleryZoomMode, (err) => {
+                    window._cvrContainer.config['gallery_zoom_mode'] = this.galleryZoomMode;
+                });
             }
         },
 
         mounted () {
-            this.galleryZoomMode = window._cvrContainer.config['gallery_zoom_mode'];
-            this.galleryInitZoom = window._cvrContainer.config['init_zoom_level'];
-
             if (storage.hasSyncSupport()) {
                 storage.getBytesInUse(null, (bytesInUse) => {
                     this.syncMemoryPercent = Math.round(bytesInUse / storage.SYNC_QUOTA_BYTES() * 100);
