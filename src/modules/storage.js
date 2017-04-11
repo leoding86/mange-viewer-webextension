@@ -47,6 +47,14 @@ let storage = {
         }
     },
 
+    remove (key, callback) {
+        if (this.hasSyncSupport()) {
+            chrome.storage.sync.remove(key, callback);
+        } else {
+            this.removeLocal(key, callback);
+        }
+    },
+
     getBytesInUse (params, callback) {
         if (this.hasSyncSupport()) {
             chrome.storage.sync.getBytesInUse(params, callback);
@@ -71,6 +79,10 @@ let storage = {
 
     getBytesInUseLocal (params, callback) {
         chrome.storage.local.getBytesInUse(params, callback);
+    },
+
+    removeLocal (key, callback) {
+        chrome.storage.local.remove(key, callback);
     },
 
     clearLocal (callback) {
