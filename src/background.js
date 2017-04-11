@@ -31,8 +31,8 @@ const processes = {
             chrome.runtime.sendMessage(msg);
         } else {
             syncing = true;
-            subscribe.init().then((subscribeInfos) => {
-                subscribeInfos = subscribeInfos; // store subscribe infos
+            subscribe.init().then((infos) => {
+                subscribeInfos = infos; // store subscribe infos
                 updatedSubscribeInfos = [];
                 progressCounter = 0;
                 subscribeCount = subscribeInfos.length;
@@ -72,6 +72,8 @@ const processes = {
                 });
             }
 
+            msg.type = 'sync_finished', msg.msg = null;
+            chrome.runtime.sendMessage(msg);
             syncing = false;
         }
     }
