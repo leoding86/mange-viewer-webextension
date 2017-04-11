@@ -53,11 +53,26 @@ class Subscribe {
     }
 
     remove (id) {
-        
+        return new Promise((resolve, reject) => {
+            storage.remove('subInfo_' + id, () => {
+                resolve(id);
+            });
+        });
     }
 
     clearNotice (id) {
-        
+        let key = 'subInfo_' + id;
+        return new Promise((resolve, reject) => {
+            storage.get(key, (items) => {
+                if (items[key]) {
+                    items[key].lastestSavedChapterId = items[key].lastestChapterId;
+                    items[key].lastestSavedChapterTitle = items[key].lastestChapterTitle;
+                    storage.set(items, () => {
+                        resolve(id);
+                    });
+                }
+            });
+        });
     }
 
 }
