@@ -10,7 +10,7 @@ body {
     border-radius: 0 !important;
 
     &:hover {
-        box-shadow: 0 2px 6px #666;
+        color: #3367d6;
     }
 }
 
