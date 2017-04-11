@@ -19,7 +19,20 @@ class Parser extends BaseParser {
 
     sync () {
         return new Promise((resolve, reject) => {
-            resolve(this);
+            let xhr = XHR();
+            xhr.open('get', this.getMangaURL());
+            xhr.onload = () => {
+                let domparser = new DOMParser();
+                let elements = domparser.parseFromString(xhr.responseText, 'text/html');
+                let lastestChapterEl = elements.querySelector('table a');
+                this.lastestChapterId = /(\d+)\/\d+\/1?$/.exec(lastestChapterEl.getAttribute('href'))[1];
+                this.lastestChapterTitle = lastestChapterEl.textContent;
+                this.title = elements.querySelector('h1').textContent;
+                this.lastTime = Date.now();
+
+                resolve(this.toJSON());
+            };
+            xhr.send(null);
         });
     }
 
@@ -31,7 +44,7 @@ class Parser extends BaseParser {
                 let domparser = new DOMParser();
                 let elements = domparser.parseFromString(xhr.responseText, 'text/html');
                 let lastestChapterEl = elements.querySelector('table a');
-                this.lastestSavedChapterId = this.lastestChapterId = /(\d+)\/\d+\/1?$/.exec(lastestChapterEl.href)[1];
+                this.lastestSavedChapterId = this.lastestChapterId = /(\d+)\/\d+\/1?$/.exec(lastestChapterEl.getAttribute('href'))[1];
                 this.lastestSavedChapterTitle = this.lastestChapterTitle = lastestChapterEl.textContent;
                 this.title = elements.querySelector('h1').textContent;
                 this.lastTime = Date.now();

@@ -32,9 +32,9 @@ class Parser extends BaseParser {
                 let domparser = new DOMParser();
                 let elements = domparser.parseFromString(xhr.responseText, 'text/html');
                 let lastestChapterEl = elements.querySelector('#latestchapters li');
-                this.lastestChapterId = /(\d+)\/?$/.exec(lastestChapterEl.querySelector('a').href)[1];
+                this.lastestChapterId = /(\d+)\/?$/.exec(lastestChapterEl.querySelector('a').getAttribute('href'))[1];
                 this.lastestChapterTitle = lastestChapterEl.querySelector('a').textContent;
-                this.title = elements.querySelector('#mangaproperties h1').textContent;
+                this.title = elements.querySelector('#mangaproperties h1').textContent.replace('manga', '');
                 this.lastTime = Date.now();
                 resolve(this.toJSON());
             };
@@ -50,7 +50,7 @@ class Parser extends BaseParser {
                 let domparser = new DOMParser();
                 let elements = domparser.parseFromString(xhr.responseText, 'text/html');
                 let lastestChapterEl = elements.querySelector('#latestchapters li');
-                this.lastestSavedChapterId = this.lastestChapterId = /(\d+)\/?$/.exec(lastestChapterEl.querySelector('a').href)[1];
+                this.lastestSavedChapterId = this.lastestChapterId = /(\d+)\/?$/.exec(lastestChapterEl.querySelector('a').getAttribute('href'))[1];
                 this.lastestSavedChapterTitle = this.lastestChapterTitle = lastestChapterEl.querySelector('a').textContent;
                 this.title = elements.querySelector('#mangaproperties h1').textContent;
                 this.lastTime = Date.now();
