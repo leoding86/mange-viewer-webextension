@@ -179,5 +179,13 @@
 
     "subscribe": {
         "message": "Subscribe"
+    },
+
+    "sync_now": {
+        "message": "Sync now"
+    },
+
+    "is_syncing_notice": {
+        "message": "It's syncing, please refresh page until it's completed"
     }
 }

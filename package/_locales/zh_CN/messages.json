@@ -179,5 +179,13 @@
 
     "subscribe": {
         "message": "订阅"
+    },
+
+    "sync_now": {
+        "message": "立即同步"
+    },
+
+    "is_syncing_notice": {
+        "message": "It's syncing, please refresh page until it's completed"
     }
 }
