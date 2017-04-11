@@ -40,6 +40,7 @@
     import { _r } from './modules/common';
     import Message from './modules/Message';
     import Subscribe from 'models/Subscribe';
+    import Debug from './components/CvrDebugEvent';
 
     export default {
         name: "Subscribe",
@@ -52,7 +53,9 @@
                 _r: null,
                 parserInstances: {},
                 syncing: false,
-                syncNotice: null
+                syncNotice: null,
+
+                debugModeActive: window._cvrContainer.config['debug_mode']
             }
         },
 
@@ -67,6 +70,7 @@
 
             chrome.runtime.onMessage.addListener((message) => {
                 if (message.type === 'sync_complete') {
+Debug.emit('Subscribe ' + message.msg.subscribeId + ' is sync completed');
                     this.subscribeInfos.forEach((info) => {
                         if (info.subscribeId == message.msg.subscribeId) {
                             info.lastestChapterId = message.msg.lastestChapterId;
@@ -75,14 +79,19 @@
                         }
                     });
                 } else if (message.type === 'syncing') {
+Debug.emit('It\'s syncing');
                     alert(_('is_syncing_notice'));
                 } else if (message.type === 'sync_progress') {
+Debug.emit('Sync progress ' + message.msg);
                     this.syncNotice = message.msg;
                 } else if (message.type === 'sync_error') {
                     alert(message.msg);
                     this.syncNotice = _('sync_now');
                 } else if (message.type === 'sync_done') {
+Debug.emit('Sync successed');
                     this.syncNotice = _('sync_now');
+                } else if (message.type === 'sync_finished') {
+Debug.emit('Sync finished');
                 }
             });
         },
@@ -113,15 +122,27 @@
             },
 
             syncNowClickHandler () {
+                Debug.emit('Sync now');
                 chrome.runtime.sendMessage((new Message('sync_now', '')));
             },
 
             clearSubscribeNoticeHandler (subscribe) {
-                this.subscribeModel.clearNotice(subscribe.subscribeId);
+                subscribe.lastestSavedChapterId = subscribe.lastestChapterId;
+                subscribe.lastestSavedChapterTitle = subscribe.lastestChapterTitle
+                this.subscribeModel.clearNotice(subscribe.subscribeId).then(() => {
+Debug.emit('Notice of subscribe ' + subscribe.subscribeId + ' is cleared');
+                });
             },
 
             deleteSubscribeHandler (subscribe) {
-                this.subscribeModel.remove(subscribe.subscribeId);
+                if (window.confirm(_('delete_confirm'))) {
+                    this.subscribeModel.remove(subscribe.subscribeId);
+                    this.subscribeInfos.forEach((info) => {
+                        if (info.subscribeId == subscribe.subscribeId) {
+                            this.subscribeInfos.splice(this.subscribeInfos.indexOf(info), 1);
+                        }
+                    });
+                }
             },
 
             navigateToChapter (subscribe, id) {
