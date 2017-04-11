@@ -5,7 +5,7 @@ import BaseParser from './Parser';
 class Parser extends BaseParser {
 
     constructor (url) {
-        super('eatmanga_com', url);
+        super('eatmanga_me', url);
         return this.init();
     }
 
@@ -52,7 +52,7 @@ class Parser extends BaseParser {
                 let xhr = new XMLHttpRequest();
                 xhr.open('GET', pageurl);
                 xhr.onload = () => {
-                    let matches = /<img\s+id="eatmanga_image[^"]*"\s+src="(.+?)"/.exec(xhr.responseText);
+                    let matches = /<img\s+id="eatmanga_image[^"]*"[^\/]+src="(.+?)"/.exec(xhr.responseText);
 
                     this.datasets[page] = {
                         status: _this.COMPLETED,

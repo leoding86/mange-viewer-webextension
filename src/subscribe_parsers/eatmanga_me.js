@@ -6,7 +6,7 @@ import BaseParser from './BaseParser';
 class Parser extends BaseParser {
 
     constructor () {
-        super('eatmanga_com');
+        super('eatmanga_me');
 
         return new Promise((resolve, reject) => {
             resolve(this);
@@ -17,8 +17,8 @@ class Parser extends BaseParser {
         return [this.site, 'Manga-Scan', this.id].join('/');
     }
 
-    getChatperURL () {
-        return [];
+    getChapterURL (chapterId) {
+        return [this.site, 'Manga-Scan', this.id, chapterId].join('/');
     }
 
     sync () {
@@ -28,7 +28,7 @@ class Parser extends BaseParser {
             xhr.onload = () => {
                 let domparser = new DOMParser();
                 let elements = domparser.parseFromString(xhr.responseText, 'text/html');
-                let lastestChapterEl = elements.querySelector('#updates tr').nextSibling.querySelector('a');
+                let lastestChapterEl = elements.querySelector('#updates li').nextSibling.querySelector('a');
                 this.lastestChapterId = /([^\/]+)\/?$/.exec(lastestChapterEl.getAttribute('href'))[1];
                 this.lastestChapterTitle = lastestChapterEl.textContent;
                 this.title = elements.querySelector('p b').textContent.replace(' manga', '');
@@ -47,7 +47,7 @@ class Parser extends BaseParser {
             xhr.onload = () => {
                 let domparser = new DOMParser();
                 let elements = domparser.parseFromString(xhr.responseText, 'text/html');
-                let lastestChapterEl = elements.querySelector('#updates tr').nextSibling.querySelector('a');
+                let lastestChapterEl = elements.querySelector('#updates li').nextSibling.querySelector('a');
                 this.lastestSavedChapterId = this.lastestChapterId = /([^\/]+)\/?$/.exec(lastestChapterEl.getAttribute('href'))[1];
                 this.lastestSavedChapterTitle = this.lastestChapterTitle = lastestChapterEl.textContent;
                 this.title = elements.querySelector('p b').textContent.replace(' manga', '');
