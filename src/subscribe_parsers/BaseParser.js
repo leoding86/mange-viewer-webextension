@@ -50,6 +50,8 @@ class BaseParser {
      */
     getChapterURL () { }
 
+    sync () { }
+
     /**
      * Save manga to subscribe area
      * @return {void}
@@ -58,34 +60,28 @@ class BaseParser {
         let data = this.toJSON();
         let subKey = 'subInfo_' + this.subscribeId;
 
-        storage.get(['subscribes', subKey], (items) => {
+        storage.get([subKey], (items) => {
             /* Check has the manga been subscribed */
-            if (items.subscribes && items.subscribes[this.subscribeId]) {
+            if (items[subKey]) {
                 resolve(_('has_been_subscribed'));
-            } else {
-                if (!items.subscribes) items.subscribes = {};
-
-                items.subscribes[this.subscribeId] = {
-                    name: this.parserName,
-                    id: this.subscribeId
-                };
-
-                items[subKey] = this.toJSON();
-
-                storage.set(items, () => {
-                    if (chrome.runtime.lastError) {
-                        reject(_('subscribe_failed') + chrome.runtime.lastError);
-                    } else {
-                        resolve(_('subscribe_successed'));
-                    }
-                });
             }
+
+            items[subKey] = this.toJSON();
+
+            storage.set(items, () => {
+                if (chrome.runtime.lastError) {
+                    reject(_('subscribe_failed') + chrome.runtime.lastError);
+                } else {
+                    resolve(_('subscribe_successed'));
+                }
+            });
         });
     }
 
     toJSON () {
         return {
-            'subscribeId': this.subscribeId,
+            'subscribeId': this.subscribeId ? this.subscribeId : this.getSubscribeId(),
+            'mangaId': this.id,
             'lastestSavedChapterId': this.lastestSavedChapterId,
             'lastestSavedChapterTitle': this.lastestSavedChapterTitle,
             'lastestChapterId': this.lastestChapterId,

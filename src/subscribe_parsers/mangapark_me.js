@@ -17,6 +17,12 @@ class Parser extends BaseParser {
         return [this.site, 'manga', this.id].join('/');
     }
 
+    sync () {
+        return new Promise((resolve, reject) => {
+            resolve(this);
+        });
+    }
+
     saveSubscribe () {
         return new Promise((resolve, reject) => {
             let xhr = XHR();

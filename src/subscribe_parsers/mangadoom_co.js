@@ -15,7 +15,31 @@ class Parser extends BaseParser {
     }
 
     getMangaURL () {
-        return [this.site, this.id].join('/');
+        return 'http:' + [this.site, this.id].join('/');
+    }
+
+    getChapterURL (chapterId) {
+        return 'http:' + [this.site, this.id, chapterId, 1].join('/');
+    }
+
+    sync () {
+        return new Promise((resolve, reject) => {
+            let xhr = XHR();
+            xhr.open('get', this.getMangaURL());
+            xhr.onload = () => {
+                let domparser = new DOMParser();
+                let elements = domparser.parseFromString(xhr.responseText, 'text/html');
+                let chapterInfo = this.getLastestChatperInfo(elements);
+
+                this.lastestChapterId = chapterInfo.id;
+                this.lastestChapterTitle = chapterInfo.title;
+                this.title = elements.querySelector('.widget-heading').innerText;
+                this.lastTime = Date.now();
+
+                resolve(this.toJSON());
+            };
+            xhr.send(null);
+        });
     }
 
     saveSubscribe () {

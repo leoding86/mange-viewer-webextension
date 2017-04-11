@@ -17,6 +17,16 @@ class Parser extends BaseParser {
         return [this.site, 'Manga-Scan', this.id].join('/');
     }
 
+    getChatperURL () {
+        return [];
+    }
+
+    sync () {
+        return new Promise((resolve, reject) => {
+            resolve(this);
+        });
+    }
+
     saveSubscribe () {
         return new Promise((resolve, reject) => {
             let xhr = XHR();
