@@ -14,7 +14,14 @@ class Parser extends BaseParser {
     }
 
     getMangaURL () {
-        return ['//mangastream.com/manga/', this.id].join('/');
+        return [this.site, 'manga', this.id].join('/');
+    }
+
+    getChapterURL (chapterId) {
+        if (!this.id)
+            throw('Need id to get chapter URL');
+
+        return ['http://readms.net/r', this.id, chapterId, 1].join('/');
     }
 
     sync () {
@@ -25,9 +32,10 @@ class Parser extends BaseParser {
                 let domparser = new DOMParser();
                 let elements = domparser.parseFromString(xhr.responseText, 'text/html');
                 let lastestChapterEl = elements.querySelector('table a');
-                this.lastestChapterId = /(\d+)\/\d+\/1?$/.exec(lastestChapterEl.getAttribute('href'))[1];
+                this.lastestChapterId = /(\d+\/\d+)\/1?$/.exec(lastestChapterEl.getAttribute('href'))[1];
                 this.lastestChapterTitle = lastestChapterEl.textContent;
                 this.title = elements.querySelector('h1').textContent;
+
                 this.lastTime = Date.now();
 
                 resolve(this.toJSON());
@@ -44,7 +52,7 @@ class Parser extends BaseParser {
                 let domparser = new DOMParser();
                 let elements = domparser.parseFromString(xhr.responseText, 'text/html');
                 let lastestChapterEl = elements.querySelector('table a');
-                this.lastestSavedChapterId = this.lastestChapterId = /(\d+)\/\d+\/1?$/.exec(lastestChapterEl.getAttribute('href'))[1];
+                this.lastestSavedChapterId = this.lastestChapterId = /(\d+\/\d+)\/1?$/.exec(lastestChapterEl.getAttribute('href'))[1];
                 this.lastestSavedChapterTitle = this.lastestChapterTitle = lastestChapterEl.textContent;
                 this.title = elements.querySelector('h1').textContent;
                 this.lastTime = Date.now();

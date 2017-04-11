@@ -14,7 +14,11 @@ class Parser extends BaseParser {
     }
 
     getMangaURL () {
-        return ['//kissmanga.com/Manga', this.id].join('/');
+        return [this.site, 'Manga', this.id].join('/');
+    }
+
+    getChapterURL () {
+        return [];
     }
 
     sync () {

@@ -14,14 +14,14 @@ class Parser extends BaseParser {
     }
 
     getMangaURL () {
-        return 'http:' + ['//www.mangapanda.com', this.id].join('/');
+        return [this.site, this.id].join('/');
     }
 
     getChapterURL (chapterId) {
         if (!this.id)
             throw('Need id to get chapter URL');
 
-        return 'http:' + [this.site, this.id, chapterId].join('/');
+        return [this.site, this.id, chapterId].join('/');
     }
 
     sync () {

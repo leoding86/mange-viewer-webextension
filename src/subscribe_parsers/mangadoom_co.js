@@ -15,11 +15,11 @@ class Parser extends BaseParser {
     }
 
     getMangaURL () {
-        return 'http:' + [this.site, this.id].join('/');
+        return [this.site, this.id].join('/');
     }
 
     getChapterURL (chapterId) {
-        return 'http:' + [this.site, this.id, chapterId, 1].join('/');
+        return [this.site, this.id, chapterId, 1].join('/');
     }
 
     sync () {
