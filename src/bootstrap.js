@@ -29,7 +29,23 @@ config.get(null).then((cfg) => {
     const app = new Vue({
         router: router,
 
+        components: {
+            'debug-panel'   : require('./components/DebugPanel.vue')
+        },
+
+        data: {
+            debugModeActive: false
+        },
+
         mounted () {
+            this.debugModeActive = window._cvrContainer.config['debug_mode'];
+
+            config.change((changes) => {
+                if (changes.config && changes.config.newValue.hasOwnProperty('debug_mode')) {
+                    this.debugModeActive = changes.config.newValue.debug_mode == 1 ? true : false;
+                }
+            });
+
             this.$el.style.display = 'block';
         },
 
