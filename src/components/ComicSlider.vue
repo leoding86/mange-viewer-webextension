@@ -14,7 +14,7 @@
         <div class="items-wrapper"
              ref="itemsWrapper"
              :style="{ width: itemsWrapperWidth + 'px', height: wrapperHeight + 'px', 'left': itemsWrapperLeft + 'px', transition: itemsWrapperTransition }">
-                <control v-for="n in (preloadPage + 1)" :index-data="n" ref="gallery" 
+                <control v-for="n in (preloadPage + 1)" :index-data="n" :key="n" ref="gallery" 
                          src-data=""
                          :init-zoom="galleryInitZoom"
                          :zoom-mode="galleryZoomMode"
