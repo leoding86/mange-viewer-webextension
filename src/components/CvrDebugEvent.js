@@ -10,6 +10,7 @@ let CvrDebugEvent = {
     },
 
     emit (text) {
+        console.log(text);
         window.cvrDebugEvent.$emit('debug', text);
     }
 }

@@ -15,10 +15,7 @@ class BaseParser {
         this.subscribeId = null;
         this.lastestChapterId = null;
         this.lastestChapterTitle = null;
-        this.lastestReadedChapterId = null;
-        this.lastestReadedChapterTitle = null;
         this.lastestSavedChapterId = null;
-        this.lastestSavedChapterTitle = null;
         this.parserName = name;
         this.extras = {};
     }
@@ -83,11 +80,8 @@ class BaseParser {
             'subscribeId': this.subscribeId ? this.subscribeId : this.getSubscribeId(),
             'mangaId': this.id,
             'lastestSavedChapterId': this.lastestSavedChapterId,
-            'lastestSavedChapterTitle': this.lastestSavedChapterTitle,
             'lastestChapterId': this.lastestChapterId,
             'lastestChapterTitle': this.lastestChapterTitle,
-            'lastestReadedChapterId': this.lastestReadedChapterId,
-            'lastestReadedChapterTitle': this.lastestReadedChapterTitle,
             'title': this.title,
             'lastTime': this.lastTime,
             'parserName': this.parserName,

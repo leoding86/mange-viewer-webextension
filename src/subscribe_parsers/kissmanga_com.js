@@ -33,7 +33,7 @@ class Parser extends BaseParser {
                 this.lastestChapterTitle = lastestChapterEl.innerText;
                 this.title = elements.querySelector('.bigChar').innerText;
                 this.lastTime = Date.now();
-                this.extras.chapterStr = /([^\/]+)\?id/.exec(lastestChapterEl.getAttribute('href'))[1];;
+                this.extras.chapterStr = /([^\/]+)\?id/.exec(lastestChapterEl.getAttribute('href'))[1];
 
                 resolve(this.toJSON());
             };
@@ -50,7 +50,7 @@ class Parser extends BaseParser {
                 let elements = domparser.parseFromString(xhr.responseText, 'text/html');
                 let lastestChapterEl = elements.querySelector('.listing a');
                 this.lastestSavedChapterId = this.lastestChapterId = /id=(\d+)/.exec(lastestChapterEl.getAttribute('href'))[1];
-                this.lastestSavedChapterTitle = this.lastestChapterTitle = lastestChapterEl.innerText;
+                this.lastestChapterTitle = lastestChapterEl.innerText;
                 this.title = elements.querySelector('.bigChar').innerText;
                 this.lastTime = Date.now();
                 this.extras.chapterStr = /([^\/]+)\?id/.exec(lastestChapterEl.getAttribute('href'))[1];;

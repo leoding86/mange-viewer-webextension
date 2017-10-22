@@ -17,6 +17,10 @@ class Parser extends BaseParser {
         return [this.site, 'manga', this.id].join('/');
     }
 
+    getChapterURL (chapterId) {
+        return [this.site, 'manga', this.id, chapterId, 1].join('/');
+    }
+
     sync () {
         return new Promise((resolve, reject) => {
             let xhr = XHR();
@@ -51,7 +55,7 @@ class Parser extends BaseParser {
                 let lastestChapterEls = streamEl.querySelectorAll('.chapter');
                 let lastestChapterEl = lastestChapterEls[0].querySelector('a');
                 this.lastestSavedChapterId = this.lastestChapterId = /(s\d+\/(?:.+\/)*c\d+(?:\.\d+)?)\/1?$/.exec(lastestChapterEl.getAttribute('href'))[1];
-                this.lastestSavedChapterTitle = this.lastestChapterTitle = lastestChapterEl.textContent.trim();
+                this.lastestChapterTitle = lastestChapterEl.parentNode.textContent.trim();
                 this.title = elements.querySelector('.hd h1').textContent.trim().replace(/\s*manga$/i, '');
                 this.lastTime = Date.now();
 

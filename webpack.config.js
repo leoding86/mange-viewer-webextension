@@ -21,39 +21,42 @@ module.exports = {
     },
     module: {
         rules: [
-        {
-            test: /\.vue$/,
-            loader: 'vue-loader',
-            options: {
-                loaders: {
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader',
+                options: {
+                    loaders: {
+                    }
+                // other vue-loader options go here
                 }
-        // other vue-loader options go here
-        }
-    },
-    {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/
-    },
-    {
-        test: /\.(png|jpg|gif|svg)$/,
-        loader: 'file-loader',
-        options: {
-            name: '[name].[ext]?[hash]'
-        }
-    },
-    {
-        test: /\.(woff2?|ttf|eot|svg)$/,
-        loader: 'url-loader',
-        options: {
-            limit: 10000
-        }
-    },
-    {
-        test: /\.css$/,
-        loader: ['style-loader', 'css-loader', 'sass-loader']
-    }
-    ]
+            },
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
+                options: {
+                    presets: ['es2015', 'stage-2']
+                },
+                exclude: /node_modules/
+            },
+            {
+                test: /\.(png|jpg|gif|svg)$/,
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[ext]?[hash]'
+                }
+            },
+            {
+                test: /\.(woff2?|ttf|eot|svg)$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 10000
+                }
+            },
+            {
+                test: /\.css$/,
+                loader: ['style-loader', 'css-loader', 'sass-loader']
+            }
+        ]
     },
     resolve: {
         alias: {

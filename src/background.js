@@ -19,7 +19,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 let subscribeInfos = [];
-let updatedSubscribeInfos = [];
+let updatedSubscribeInfos = []; // store updated subscribes infos for push to storage area at once
 let progressCounter = 0;
 let subscribeCount = 0;
 
@@ -66,6 +66,7 @@ const processes = {
                 subscribe.update(updatedSubscribeInfos).then(() => {
                     msg.type = 'sync_done', msg.msg = null;
                     chrome.runtime.sendMessage(msg);
+                    subscribe.check();
                 }).catch((err) => {
                     msg.type = 'sync_error', msg.msg = err;
                     chrome.runtime.sendMessage(msg);
@@ -83,3 +84,5 @@ const processes = {
 let autoSync = setInterval(() => {
     processes.syncNow();
 }, 7200 * 1000);
+
+subscribe.check();

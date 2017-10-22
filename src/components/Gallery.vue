@@ -4,7 +4,8 @@
         position: 'relative',
         overflow: 'hidden',
         width: width + 'px',
-        height: height + 'px'
+        height: height + 'px',
+                 textAlign: 'left',
         }"
         :zoom-max="zoomMax"
         @click="galleryClickHandler">

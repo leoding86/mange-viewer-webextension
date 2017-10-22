@@ -49,7 +49,7 @@ class Parser extends BaseParser {
                 let elements = domparser.parseFromString(xhr.responseText, 'text/html');
                 let lastestChapterEl = elements.querySelector('#updates li').nextSibling.querySelector('a');
                 this.lastestSavedChapterId = this.lastestChapterId = /([^\/]+)\/?$/.exec(lastestChapterEl.getAttribute('href'))[1];
-                this.lastestSavedChapterTitle = this.lastestChapterTitle = lastestChapterEl.textContent;
+                this.lastestChapterTitle = lastestChapterEl.textContent;
                 this.title = elements.querySelector('p b').textContent.replace(' manga', '');
                 this.lastTime = Date.now();
 

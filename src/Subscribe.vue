@@ -22,7 +22,6 @@
                 <div class="detail">
                     <div class="lst">Lastest chapter: <a @click="navigateToLastestChapter(subscribe
 )">{{subscribe.lastestChapterTitle}}</a></div>
-                    <div class="lrct">Last readed chapter: <a @click="navigateToLastestReadedChapter(subscribe)">{{subscribe.lastestReadedChapterTitle}}</a></div>
                     <div class="actions">
                         <button type="button" class="btn" title="Clear"><span class="glyphicon glyphicon-ok" @click="clearSubscribeNoticeHandler(subscribe)"></span></button>
                         <button type="button" class="btn"><span class="glyphicon glyphicon-remove" @click="deleteSubscribeHandler(subscribe)"></span></button>
@@ -35,7 +34,7 @@
 
 <script>
     import storage from './modules/storage';
-    import underscore from 'underscore';
+    // import underscore from 'underscore';
     import _ from './modules/_';
     import { _r } from './modules/common';
     import Message from './modules/Message';
@@ -64,11 +63,32 @@
             this.syncNotice = _('sync_now');
             this.subscribeModel = new Subscribe();
             this.subscribeModel.init().then((subscribeInfos) => {
+                subscribeInfos.sort((a, b) => {
+                    if (a.parserName < b.parserName) return 1;
+                    if (b.parserName < a.parserName) return -1;
+                    return 0;
+                });
+                // console.log(subscribeInfos);
                 this.subscribeInfos = subscribeInfos;
                 this.ready = true;
             });
 
-            chrome.runtime.onMessage.addListener((message) => {
+            chrome.runtime.onMessage.addListener(this.messageHandler);
+Debug.emit('Subscribe page has been created');
+        },
+
+        beforeDestroy () {
+            chrome.runtime.onMessage.removeListener(this.messageHandler);
+Debug.emit('Remove chrome runtime message listener');
+        },
+
+        methods: {
+            compareChapter (lcid, lscid) {
+                return lcid == lscid ? 
+                    '' : '<span class="label label-danger">NEW</span>';
+            },
+
+            messageHandler (message) {
                 if (message.type === 'sync_complete') {
 Debug.emit('Subscribe ' + message.msg.subscribeId + ' is sync completed');
                     this.subscribeInfos.forEach((info) => {
@@ -93,13 +113,6 @@ Debug.emit('Sync successed');
                 } else if (message.type === 'sync_finished') {
 Debug.emit('Sync finished');
                 }
-            });
-        },
-
-        methods: {
-            compareChapter (lcid, lscid) {
-                return lcid == lscid ? 
-                    '' : '<span class="label label-danger">NEW</span>';
             },
 
             subscribeClickHandler (subscribe) {
@@ -130,7 +143,8 @@ Debug.emit('Sync finished');
                 subscribe.lastestSavedChapterId = subscribe.lastestChapterId;
                 subscribe.lastestSavedChapterTitle = subscribe.lastestChapterTitle
                 this.subscribeModel.clearNotice(subscribe.subscribeId).then(() => {
-Debug.emit('Notice of subscribe ' + subscribe.subscribeId + ' is cleared');
+Debug.emit('Subscribe with ID:' + subscribe.subscribeId + '\'s notice has been cleared');
+                    this.subscribeModel.check();
                 });
             },
 
@@ -140,8 +154,14 @@ Debug.emit('Notice of subscribe ' + subscribe.subscribeId + ' is cleared');
                     this.subscribeInfos.forEach((info) => {
                         if (info.subscribeId == subscribe.subscribeId) {
                             this.subscribeInfos.splice(this.subscribeInfos.indexOf(info), 1);
+                            this.subscribeModel.check();
+Debug.emit('Subscribe with ID:' + subscribe.subscribeId + ' has been deleted');
+                        } else {
+Debug.emit('Cannot found subscribe with ID:' + subscribe.subscribeId);
                         }
                     });
+                } else {
+Debug.emit('Delete operation has been cancelled');
                 }
             },
 

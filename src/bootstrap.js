@@ -4,6 +4,7 @@ import config from './modules/config';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/bootstrap.css';
 import _ from './modules/_';
+import Debug from 'components/CvrDebugEvent';
 
 Vue.use(VueRouter);
 
@@ -47,6 +48,7 @@ config.get(null).then((cfg) => {
             });
 
             this.$el.style.display = 'block';
+Debug.emit('Page has been create');
         },
 
         methods: {

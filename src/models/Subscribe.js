@@ -1,4 +1,5 @@
 import storage from '../modules/storage';
+import Debug from 'components/CvrDebugEvent';
 import md5 from 'md5';
 
 class Subscribe {
@@ -36,8 +37,8 @@ class Subscribe {
                 for (let k in items) {
                     if (subObjs[k]) {
                         items[k].lastestChapterId = subObjs[k].lastestChapterId;
-                        items[k].lastestChapterTitle = subObjs[k].lastestChapterTitle;
                         items[k].lastTime = subObjs[k].lastTime;
+                        items[k].extras = subObjs[k].extras;
                     }
                 }
 
@@ -66,12 +67,26 @@ class Subscribe {
             storage.get(key, (items) => {
                 if (items[key]) {
                     items[key].lastestSavedChapterId = items[key].lastestChapterId;
-                    items[key].lastestSavedChapterTitle = items[key].lastestChapterTitle;
                     storage.set(items, () => {
                         resolve(id);
                     });
                 }
             });
+        });
+    }
+
+    check () {
+Debug.emit('Check subscribes');
+        this.init().then(() => {
+            let mangaUpdateCounter = 0;
+
+            for (let i in this.subscribes) {
+                if (this.subscribes[i].lastestChapterId !== this.subscribes[i].lastestSavedChapterId) {
+                    mangaUpdateCounter++;
+                }
+            }
+
+            chrome.browserAction.setBadgeText({ text: mangaUpdateCounter + '' });
         });
     }
 

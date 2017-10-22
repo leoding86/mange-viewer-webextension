@@ -52,7 +52,7 @@ class Parser extends BaseParser {
                 let chapterInfo = this.getLastestChatperInfo(elements);
 
                 this.lastestSavedChapterId = this.lastestChapterId = chapterInfo.id;
-                this.lastestSavedChapterTitle = this.lastestChapterTitle = chapterInfo.title;
+                this.lastestChapterTitle = chapterInfo.title;
                 this.title = elements.querySelector('.widget-heading').innerText;
                 this.lastTime = Date.now();
 

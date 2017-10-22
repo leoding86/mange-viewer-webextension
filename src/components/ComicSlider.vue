@@ -188,6 +188,11 @@ Debug.emit('Change mode to \'touchscreen\'');
             initControl (curPage) {
                 if (curPage > 0 && curPage <= this.totalPage) {
                     this.currentPage = curPage;
+                    /* 初始化所有gallery的imgSrc属性 */
+                    this.$refs.gallery.forEach((gallery) => {
+                        gallery.imgSrc = '';
+                    });
+
                     this.parser ? this.setControlAsync(curPage) : this.setControl(curPage);
                 } else {
                     window.console && console.log('Invalid input page number');
@@ -286,6 +291,7 @@ Debug.emit('Go to next page ' + this.currentPage);
                 this.$refs.gallery.unshift(this.$refs.gallery.pop());
                 this.$refs.gallery[0].extras = { page: this.currentPage - 1 };
                 this.$refs.gallery[0].$el.style.left = (this.$refs.gallery[0].extras.page - 1) * this.wrapperWidth + 'px';
+                this.$refs.gallery[0].imgSrc = '';
 
                 this.getImgSrc(this.$refs.gallery[0]);
             },
@@ -295,6 +301,7 @@ Debug.emit('Go to next page ' + this.currentPage);
                 this.$refs.gallery.push(this.$refs.gallery.shift());
                 this.$refs.gallery[this.preloadPage].extras = { page: parseInt(this.currentPage) + parseInt(this.preloadPage) };
                 this.$refs.gallery[this.preloadPage].$el.style.left = (this.$refs.gallery[this.preloadPage].extras.page - 1) * this.wrapperWidth + 'px';
+                this.$refs.gallery[this.preloadPage].imgSrc = '';
 
                 if (this.isValidIndex(this.currentPage + this.preloadPage)) {
                     this.getImgSrc(this.$refs.gallery[this.preloadPage]);
