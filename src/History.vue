@@ -228,7 +228,7 @@
                     return true;
                 }
 
-                if (title.toLowerCase().indexOf(this.keywords) > -1) {
+                if (title.toLowerCase().indexOf(this.keywords.toLowerCase()) > -1) {
                     return true;
                 }
 

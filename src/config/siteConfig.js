@@ -60,7 +60,7 @@ const siteConfig = {
 
     eatmanga_com: {
         parser: 'eatmanga_com',
-        pattern: /^(https?:\/{2}(?:w{3}\.)?eatmanga\.com\/Manga-Scan\/([^\/]+)\/([^\/]+))/i,
+        pattern: /^(https?:\/{2}(?:w{3}\.)?eatmanga\.me\/Manga-Scan\/([^\/]+)\/([^\/]+))/i,
         groups: { url: 1, mroot: 1, id: 2 },
         site: '//eatmanga.com',
         icon: '',
