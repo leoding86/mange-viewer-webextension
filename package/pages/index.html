@@ -17,19 +17,22 @@
                     <div class="col-xs-12 menu-wrapper">
                         <ul class="menu-items">
                             <li><router-link to="/history">{{_('history')}}</router-link></li>
+                            <li><router-link to="/subscribe">{{_('subscribe')}}</router-link></li>
                             <li><router-link to="/other">{{_('others')}}</router-link></li>
                         </ul>
                     </div>
                     <div class="col-xs-12 actions-wrapper">
-                        <button type="button" role="button" class="btn btn-ms btn-primary action-btn"
+                        <button v-if="false" type="button" role="button" class="btn btn-ms btn-primary action-btn"
                                 @click="openReaderHandler">{{_('read_local_manga')}}</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="main-col" style="min-width: 500px">
+        <div class="main-col" style="min-width: 800px">
             <router-view></router-view>
         </div>
+        <debug-panel style="position:fixed;bottom:3px;left:3px;z-index:99999"
+                     v-if="debugModeActive"></debug-panel>
     </div>
 </body>
 <script src="../build/bundle.bootstrap.js"></script>

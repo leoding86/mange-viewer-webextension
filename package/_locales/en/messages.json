@@ -163,5 +163,33 @@
 
     "gallery_zoom_mode_type2_help_text": {
         "message": "Zoom: ctrl + mouse wheel; Move vertically: mouse wheel"
+    },
+
+    "has_been_subscribed": {
+        "message": "This manga has been subscribed"
+    },
+
+    "subscribe_failed": {
+        "message": "Something happened when subscribe the manga"
+    },
+
+    "subscribe_successed": {
+        "message": "Subscribe done"
+    },
+
+    "subscribe": {
+        "message": "Subscribe"
+    },
+
+    "sync_now": {
+        "message": "Sync now"
+    },
+
+    "is_syncing_notice": {
+        "message": "It's syncing, please refresh page until it's completed"
+    },
+
+    "delete_confirm": {
+        "message": "Are you sure delete it ?"
     }
 }

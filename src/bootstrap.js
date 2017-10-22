@@ -4,15 +4,18 @@ import config from './modules/config';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/bootstrap.css';
 import _ from './modules/_';
+import Debug from 'components/CvrDebugEvent';
 
 Vue.use(VueRouter);
 
 const History = require('./History.vue');
+const Subscribe = require('./Subscribe.vue');
 const Other = require('./Other.vue');
 
 const routes = [
     { path: '/', component: History },
     { path: '/history', component: History },
+    { path: '/subscribe', component: Subscribe },
     { path: '/other', component: Other }
 ];
 
@@ -27,8 +30,25 @@ config.get(null).then((cfg) => {
     const app = new Vue({
         router: router,
 
+        components: {
+            'debug-panel'   : require('./components/DebugPanel.vue')
+        },
+
+        data: {
+            debugModeActive: false
+        },
+
         mounted () {
+            this.debugModeActive = window._cvrContainer.config['debug_mode'];
+
+            config.change((changes) => {
+                if (changes.config && changes.config.newValue.hasOwnProperty('debug_mode')) {
+                    this.debugModeActive = changes.config.newValue.debug_mode == 1 ? true : false;
+                }
+            });
+
             this.$el.style.display = 'block';
+Debug.emit('Page has been create');
         },
 
         methods: {

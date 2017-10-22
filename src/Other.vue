@@ -58,16 +58,7 @@
                     <h4>{{_('supported_sites')}}</h4>
                     <div class="section-content">
                         <ul>
-                            <li>mangapark.me</li>
-                            <li>mangadoom.co</li>
-                            <li>kissmanga.com</li>
-                            <li>eatmanga.tv</li>
-                            <li>readms.tv</li>
-                            <li>readms.net</li>
-                            <li>mangastream.com</li>
-                            <li>mangapanda.com</li>
-                            <li>readcomiconline.to</li>
-                            <li>readcomics.tv</li>
+                            <li v-for="site in supportedSites">{{site.site}} <span style="color: #aaa">{{site.desc}}</span></li>
                         </ul>
                     </div>
                 </div>
@@ -80,6 +71,7 @@
     import storage from './modules/storage';
     import config from './modules/config';
     import _ from './modules/_';
+    import { _r } from 'modules/common';
 
     export default {
         name: 'Other',
@@ -88,8 +80,9 @@
             return {
                 syncMemoryPercent: 0,
                 localMemoryPercent: 0,
-                galleryZoomMode: 0,
-                galleryInitZoom: 1
+                galleryZoomMode: window._cvrContainer.config['gallery_zoom_mode'],
+                galleryInitZoom: window._cvrContainer.config['init_zoom_level'],
+                supportedSites: []
             }
         },
 
@@ -103,9 +96,6 @@
             },
 
             galleryZoomModeHelpeText () {
-                config.set('gallery_zoom_mode', this.galleryZoomMode, (err) => {
-                    window._cvrContainer.config['gallery_zoom_mode'] = this.galleryZoomMode;
-                });
                 return _('gallery_zoom_mode_type' + this.galleryZoomMode + '_help_text');
             }
         },
@@ -115,13 +105,16 @@
                 config.set('init_zoom_level', val, (err) => {
                     window._cvrContainer.config['init_zoom_level'] = val;
                 });
+            },
+
+            galleryZoomMode (val) {
+                config.set('gallery_zoom_mode', this.galleryZoomMode, (err) => {
+                    window._cvrContainer.config['gallery_zoom_mode'] = this.galleryZoomMode;
+                });
             }
         },
 
         mounted () {
-            this.galleryZoomMode = window._cvrContainer.config['gallery_zoom_mode'];
-            this.galleryInitZoom = window._cvrContainer.config['init_zoom_level'];
-
             if (storage.hasSyncSupport()) {
                 storage.getBytesInUse(null, (bytesInUse) => {
                     this.syncMemoryPercent = Math.round(bytesInUse / storage.SYNC_QUOTA_BYTES() * 100);
@@ -133,6 +126,15 @@
                     this.localMemoryPercent = Math.round(bytesInUse / storage.LOCAL_QUOTA_BYTES * 100);
                 });
             }
+
+            for (let k in _r) {
+                this.supportedSites.push({
+                    site: _r[k].site.replace(/^https?:\/{2}/i, ''),
+                    desc: _r[k].desc ? '(' + _r[k].desc + ')' : ''
+                });
+            }
+
+            console.log(this.supportedSites);
         },
 
         methods: {

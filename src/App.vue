@@ -128,9 +128,9 @@
                  */
                 let parser = window._cvrContainer.parser;
                 if (parser !== null) {
-Debug.emit('Initializing parser');
-
+Debug.emit('Initializing parser ' + parser);
                     let p = require('./parsers/' + parser + '.js');
+Debug.emit(p);
                     (new p.default(window.location.href)).then((parser) => {
 Debug.emit('Praser is ready');
                         this.parser = parser;
