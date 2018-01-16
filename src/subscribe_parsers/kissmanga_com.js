@@ -18,7 +18,7 @@ class Parser extends BaseParser {
     }
 
     getChapterURL () {
-        return [];
+        return [this.site, this.extras.chapterUrl].join('');
     }
 
     sync () {
@@ -26,16 +26,12 @@ class Parser extends BaseParser {
             let xhr = XHR();
             xhr.open('get', this.getMangaURL());
             xhr.onload = () => {
-                let domparser = new DOMParser();
-                let elements = domparser.parseFromString(xhr.responseText, 'text/html');
-                let lastestChapterEl = elements.querySelector('.listing a');
-                this.lastestChapterId = /id=(\d+)/.exec(lastestChapterEl.getAttribute('href'))[1];
-                this.lastestChapterTitle = lastestChapterEl.innerText;
-                this.title = elements.querySelector('.bigChar').innerText;
-                this.lastTime = Date.now();
-                this.extras.chapterStr = /([^\/]+)\?id/.exec(lastestChapterEl.getAttribute('href'))[1];
-
-                resolve(this.toJSON());
+                if (this.parseDocument(xhr.responseText)) {
+                    resolve(this.toJSON());
+                }
+            };
+            xhr.onerror = () => {
+                reject();
             };
             xhr.send(null);
         });
@@ -46,19 +42,35 @@ class Parser extends BaseParser {
             let xhr = XHR();
             xhr.open('get', this.getMangaURL());
             xhr.onload = () => {
-                let domparser = new DOMParser();
-                let elements = domparser.parseFromString(xhr.responseText, 'text/html');
-                let lastestChapterEl = elements.querySelector('.listing a');
-                this.lastestSavedChapterId = this.lastestChapterId = /id=(\d+)/.exec(lastestChapterEl.getAttribute('href'))[1];
-                this.lastestChapterTitle = lastestChapterEl.innerText;
-                this.title = elements.querySelector('.bigChar').innerText;
-                this.lastTime = Date.now();
-                this.extras.chapterStr = /([^\/]+)\?id/.exec(lastestChapterEl.getAttribute('href'))[1];;
-
-                super.saveSubscribe(resolve, reject);
+                if (this.parseDocument(xhr.responseText)) {
+                    super.saveSubscribe(resolve, reject);
+                } else {
+                    reject(_('subscribe_failed'));
+                }
+            };
+            xhr.onerror = () => {
+                reject(_('subscribe_failed'));
             };
             xhr.send(null);
         });
+    }
+
+    parseDocument (document, done) {
+        let dom = super.parseDocument(document);
+        let lastestChapterEl = dom.querySelector('.listing a');
+
+        this.setSubscribeInfoProperties(
+            /id=(\d+)/.exec(lastestChapterEl.getAttribute('href'))[1],
+            lastestChapterEl.innerText,
+            dom.querySelector('.bigChar').innerText,
+            Date.now(),
+            {
+                chapterStr: /([^\/]+)\?id/.exec(lastestChapterEl.getAttribute('href'))[1],
+                chapterUrl: lastestChapterEl.getAttribute('href')
+            }
+        );
+
+        return true;
     }
 }
 
