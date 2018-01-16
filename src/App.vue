@@ -226,7 +226,7 @@ Debug.emit('Hide app viewer');
 </script>
 
 <style lang="sass">
-    $top: 99999;
+    $top: 999999;
 
     .cvr-app-container {
         position: fixed;
