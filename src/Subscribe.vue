@@ -20,8 +20,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="detail">
-                    <div class="lst">Lastest chapter: <a @click="navigateToLastestChapter(subscribe
-)">{{subscribe.lastestChapterTitle}}</a></div>
+                    <div class="lst">Lastest chapter: <a @click="navigateToLastestChapter(subscribe)">{{subscribe.lastestChapterTitle}}</a></div>
                     <div class="actions">
                         <button type="button" class="btn" title="Clear"><span class="glyphicon glyphicon-ok" @click="clearSubscribeNoticeHandler(subscribe)"></span></button>
                         <button type="button" class="btn"><span class="glyphicon glyphicon-remove" @click="deleteSubscribeHandler(subscribe)"></span></button>
@@ -135,7 +134,7 @@ Debug.emit('Sync finished');
             },
 
             syncNowClickHandler () {
-                Debug.emit('Sync now');
+Debug.emit('Sync now');
                 chrome.runtime.sendMessage((new Message('sync_now', '')));
             },
 
@@ -169,6 +168,13 @@ Debug.emit('Delete operation has been cancelled');
                 if (id) {
                     this.getParser(subscribe.parserName).then((parser) => {
                         parser.id = subscribe.mangaId;
+                        parser.setSubscribeInfoProperties(
+                            subscribe.lastestChapterId,
+                            subscribe.lastestChapterTitle,
+                            subscribe.title,
+                            subscribe.lastTime,
+                            subscribe.extras
+                        );
 Debug.emit('Navigate to ' + parser.getChapterURL(id));
                         window.location.href = parser.getChapterURL(id)
                     }, (err) => {
