@@ -9,7 +9,7 @@ class BaseParser {
         this.name = name;
         this.pattern = _r[name].mhpattern;
         this.groups = _r[name].mhgroups;
-        this.site = _r[name].site;
+        this.site = this._getSiteHotfix(_r[name].site);
         this.url = null;
         this.id = null;
         this.subscribeId = null;
@@ -28,6 +28,20 @@ class BaseParser {
     }
 
     /**
+     * hotfix
+     * 
+     * Get site with currently protocol http or https
+     */
+    _getSiteHotfix (site) {
+        if (window.location.protocol === 'https:' &&
+            /^http:/.test(site)
+        ) {
+            return site.replace(/^http:/, 'https:');
+        }
+        return site;
+    }
+
+    /**
      * Get subscribe id with specified manga
      * @return {String}
      */
@@ -36,8 +50,17 @@ class BaseParser {
     }
 
     /**
+     * Get subscribe key for store subscribe info
+     * 
+     * @return {String}
+     */
+    getSubscribeKey () {
+        return 'subInfo_' + this.subscribeId;
+    }
+
+    /**
      * Get current manga url
-     * @return {[type]} [description]
+     * @return {string} [description]
      */
     getMangaURL () { }
 
@@ -55,7 +78,7 @@ class BaseParser {
      */
     saveSubscribe (resolve, reject) {
         let data = this.toJSON();
-        let subKey = 'subInfo_' + this.subscribeId;
+        let subKey = this.getSubscribeKey();
 
         storage.get([subKey], (items) => {
             /* Check has the manga been subscribed */
@@ -89,6 +112,61 @@ class BaseParser {
         }
     }
 
+    isSubscribed () {
+        if (!this.parseDocument(window.document)) { // parseDocument method is from child class
+            return null;
+        }
+
+        if (window._cvrContainer && window._cvrContainer.appDataEntries) {
+            let subscribeKey = this.getSubscribeKey();
+            return Boolean(window._cvrContainer.appDataEntries[subscribeKey]);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param  {string|Document} document
+     * @return {Document}
+     */
+    parseDocument (document) {
+        let dom;
+
+        if (typeof document === 'string') {
+            let domParser = new DOMParser();
+            dom = domParser.parseFromString(document, 'text/html');
+        } else if (typeof document === 'object' && document.nodeType && document.nodeType === Node.DOCUMENT_NODE) {
+            dom = document;
+        }
+
+        return dom;
+    }
+
+    /**
+     * Apply properties about subscribe information
+     * 
+     * @param {String} chapterId 
+     * @param {String} chapterTitle 
+     * @param {String} title 
+     * @param {String} lastTime 
+     * @param {String} extras 
+     * @memberof BaseParser
+     */
+    setSubscribeInfoProperties (chapterId, chapterTitle, title, lastTime, extras) {
+        this.lastestChapterId = chapterId;
+        this.lastestChapterTitle = chapterTitle;
+        this.title = title;
+        this.lastTime = lastTime;
+        this.extras = extras;
+    }
+
+    /**
+     * @param  {string} error
+     */
+    throwError (error) {
+        let errorMsg = !error ? 'Cannot parse document' : error;
+        throw errorMsg;
+    }
 }
 
 export default BaseParser;
