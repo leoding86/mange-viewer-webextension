@@ -55,6 +55,9 @@ const processes = {
                     msg.type = 'sync_complete', msg.msg = info;
                     chrome.runtime.sendMessage(msg);
                     this.startSync(); // When current sync task done, start next
+                }).catch(() => {
+                    msg.type = 'sync_error', msg.msg = subscribeInfo;
+                    chrome.runtime.sendMessage(msg);
                 });
             }).catch(() => {
                 msg.type = 'sync_error', msg.msg = subscribeInfo;
