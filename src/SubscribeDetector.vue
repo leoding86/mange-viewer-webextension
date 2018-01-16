@@ -1,10 +1,13 @@
 <template>
     <div class="cvr-subscribe-wrapper">
-        <div class="cvr-subscribe-btn" @click="subscribeBtnClickHandler" v-if="!subscribed">
-            <span v-if="!processing">Subscribe it</span><span v-if="processing">Working...</span>
+        <div class="cvr-subscribe-btn" @click="subscribeBtnClickHandler" v-if="subscribed === false && detected">
+            <span v-if="!processing">Subscribe it</span><span v-if="processing">Subscribing...</span>
         </div>
-        <div class="cvr-subscribe-btn" v-if="subscribed">
+        <div class="cvr-subscribe-btn" v-if="subscribed === true && detected">
             Subscribed !
+        </div>
+        <div class="cvr-subscribe-btn" v-if="subscribed === null && detected">
+            Something wrong
         </div>
     </div>
 </template>
@@ -15,9 +18,25 @@
 
         data () {
             return {
+                detected: false,
                 processing: false,
-                subscribed: false
+                subscribed: false,
+                parser: null
             }
+        },
+
+        mounted () {
+            this.parser = window._cvrContainer.parserInstance;
+            this.parser.init(window.location.href);
+            let subscribed = this.parser.isSubscribed();
+
+            if (subscribed === true) {
+                this.subscribed = true;
+            } else if (subscribed === null) {
+                this.subscribed = null;
+            }
+
+            this.detected = true;
         },
 
         methods: {
@@ -26,10 +45,10 @@
 
                 this.processing = true;
 
-                let parser = window._cvrContainer.parserInstance;
-                parser.init(window.location.href);
+                // let parser = window._cvrContainer.parserInstance;
+                // parser.init(window.location.href);
 
-                parser.saveSubscribe().then((msg) => {
+                this.parser.saveSubscribe().then((msg) => {
                     this.processing = false;
                     this.subscribed = true;
                     alert(msg);
