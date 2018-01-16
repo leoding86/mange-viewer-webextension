@@ -26,18 +26,12 @@ class Parser extends BaseParser {
             let xhr = XHR();
             xhr.open('get', this.getMangaURL());
             xhr.onload = () => {
-                let domparser = new DOMParser();
-                let elements = domparser.parseFromString(xhr.responseText, 'text/html');
-                let streamEls = elements.querySelectorAll('.stream');
-                let streamEl = streamEls[streamEls.length - 1];
-                let lastestChapterEls = streamEl.querySelectorAll('.chapter');
-                let lastestChapterEl = lastestChapterEls[0].querySelector('a');
-                this.lastestChapterId = /(s\d+\/(?:.+\/)*c\d+(?:\.\d+)?)\/1?$/.exec(lastestChapterEl.getAttribute('href'))[1];
-                this.lastestChapterTitle = lastestChapterEl.textContent.trim();
-                this.title = elements.querySelector('.hd h1').textContent.trim().replace(/\s*manga$/i, '');
-                this.lastTime = Date.now();
-
-                resolve(this.toJSON());
+                if (this.parseDocument(xhr.responseText)) {
+                    resolve(this.toJSON());
+                }
+            };
+            xhr.onerror = () => {
+                reject();
             };
             xhr.send(null);
         });
@@ -48,21 +42,57 @@ class Parser extends BaseParser {
             let xhr = XHR();
             xhr.open('get', this.getMangaURL());
             xhr.onload = () => {
-                let domparser = new DOMParser();
-                let elements = domparser.parseFromString(xhr.responseText, 'text/html');
-                let streamEls = elements.querySelectorAll('.stream');
-                let streamEl = streamEls[streamEls.length - 1];
-                let lastestChapterEls = streamEl.querySelectorAll('.chapter');
-                let lastestChapterEl = lastestChapterEls[0].querySelector('a');
-                this.lastestSavedChapterId = this.lastestChapterId = /(s\d+\/(?:.+\/)*c\d+(?:\.\d+)?)\/1?$/.exec(lastestChapterEl.getAttribute('href'))[1];
-                this.lastestChapterTitle = lastestChapterEl.parentNode.textContent.trim();
-                this.title = elements.querySelector('.hd h1').textContent.trim().replace(/\s*manga$/i, '');
-                this.lastTime = Date.now();
-
-                super.saveSubscribe(resolve, reject)
+                if (this.parseDocument(xhr.responseText)) {
+                    this.lastestSavedChapterId = this.lastestChapterId
+                    super.saveSubscribe(resolve, reject);
+                } else {
+                    reject(_('subscribe_failed'));
+                }
+            };
+            xhr.onerror = () => {
+                reject(_('subscribe_failed'));
             };
             xhr.send(null);
         });
+    }
+
+    /**
+     * Parse document to get informations about lastestChapterId, lastestChapterTitle, title, lastTime
+     * 
+     * @param {string|Document} document
+     * @param {function} done
+     * @throws
+     * @returns {Boolean}
+     */
+    parseDocument (document, done) {
+        let dom = super.parseDocument(document);
+        let streamEls = dom.querySelectorAll('.stream');
+
+        if (streamEls.length < 1) {
+            return null;
+        }
+
+        let streamEl = streamEls[streamEls.length - 1];
+        let lastestChapterEls = streamEl.querySelectorAll('.chapter');
+
+        if (lastestChapterEls.length < 1) {
+            return null;
+        }
+
+        let lastestChapterEl = lastestChapterEls[0].querySelector('a');
+
+        if (!lastestChapterEl) {
+            return null;
+        }
+
+        this.setSubscribeInfoProperties(
+            /(s\d+\/(?:.+\/)*c\d+(?:\.\d+)?)\/1?$/.exec(lastestChapterEl.getAttribute('href'))[1],  // lastestChapterId
+            lastestChapterEl.parentNode.textContent.trim(),                                         // lastestChapterTitle
+            dom.querySelector('.hd h1').textContent.trim().replace(/\s*manga$/i, ''),               // title
+            Date.now() 
+        );
+
+        return true;
     }
 }
 
