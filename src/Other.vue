@@ -128,13 +128,13 @@
             }
 
             for (let k in _r) {
-                this.supportedSites.push({
-                    site: _r[k].site.replace(/^https?:\/{2}/i, ''),
-                    desc: _r[k].desc ? '(' + _r[k].desc + ')' : ''
-                });
+                if (!Boolean(_r[k].disabled)) {
+                    this.supportedSites.push({
+                        site: _r[k].site.replace(/^https?:\/{2}/i, ''),
+                        desc: _r[k].desc ? '(' + _r[k].desc + ')' : ''
+                    });
+                }
             }
-
-            console.log(this.supportedSites);
         },
 
         methods: {
