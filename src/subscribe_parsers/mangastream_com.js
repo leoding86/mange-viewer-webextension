@@ -29,15 +29,7 @@ class Parser extends BaseParser {
             let xhr = XHR();
             xhr.open('get', this.getMangaURL());
             xhr.onload = () => {
-                let domparser = new DOMParser();
-                let elements = domparser.parseFromString(xhr.responseText, 'text/html');
-                let lastestChapterEl = elements.querySelector('table a');
-                this.lastestChapterId = /(\d+\/\d+)\/1?$/.exec(lastestChapterEl.getAttribute('href'))[1];
-                this.lastestChapterTitle = lastestChapterEl.textContent;
-                this.title = elements.querySelector('h1').textContent;
-
-                this.lastTime = Date.now();
-
+                this.parseDocument(xhr.responseText);
                 resolve(this.toJSON());
             };
             xhr.send(null);
@@ -49,18 +41,25 @@ class Parser extends BaseParser {
             let xhr = XHR();
             xhr.open('get', this.getMangaURL());
             xhr.onload = () => {
-                let domparser = new DOMParser();
-                let elements = domparser.parseFromString(xhr.responseText, 'text/html');
-                let lastestChapterEl = elements.querySelector('table a');
-                this.lastestSavedChapterId = this.lastestChapterId = /(\d+\/\d+)\/1?$/.exec(lastestChapterEl.getAttribute('href'))[1];
-                this.lastestChapterTitle = lastestChapterEl.textContent;
-                this.title = elements.querySelector('h1').textContent;
-                this.lastTime = Date.now();
-
+                this.parseDocument(xhr.responseText);
+                this.lastestSavedChapterId = this.lastestChapterId;
                 super.saveSubscribe(resolve, reject);
             };
             xhr.send(null);
         });
+    }
+
+    parseDocument (document) {
+        let doc = this.parseDocument(document);
+        let lastestChapterEl = doc.querySelector('table a');
+        let lastestChapterId = /(\d+\/\d+)\/1?$/.exec(lastestChapterEl.getAttribute('href'))[1];
+        let lastestChapterTitle = lastestChapterEl.textContent;
+        let title = doc.querySelector('h1').textContent;
+        let lastTime = Date.now();
+
+        this.setSubscribeInfoProperties(lastestChapterId, lastestChapterTitle, title, lastTime);
+
+        return true;
     }
 }
 
