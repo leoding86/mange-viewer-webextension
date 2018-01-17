@@ -27,15 +27,7 @@ class Parser extends BaseParser {
             let xhr = XHR();
             xhr.open('get', this.getMangaURL());
             xhr.onload = () => {
-                let domparser = new DOMParser();
-                let elements = domparser.parseFromString(xhr.responseText, 'text/html');
-                let chapterInfo = this.getLastestChatperInfo(elements);
-
-                this.lastestChapterId = chapterInfo.id;
-                this.lastestChapterTitle = chapterInfo.title;
-                this.title = elements.querySelector('.widget-heading').innerText;
-                this.lastTime = Date.now();
-
+                this.parseDocument(xhr.responseText);
                 resolve(this.toJSON());
             };
             xhr.send(null);
@@ -47,15 +39,8 @@ class Parser extends BaseParser {
             let xhr = XHR();
             xhr.open('get', this.getMangaURL());
             xhr.onload = () => {
-                let domparser = new DOMParser();
-                let elements = domparser.parseFromString(xhr.responseText, 'text/html');
-                let chapterInfo = this.getLastestChatperInfo(elements);
-
-                this.lastestSavedChapterId = this.lastestChapterId = chapterInfo.id;
-                this.lastestChapterTitle = chapterInfo.title;
-                this.title = elements.querySelector('.widget-heading').innerText;
-                this.lastTime = Date.now();
-
+                this.parseDocument(xhr.responseText);
+                this.lastestSavedChapterId = this.lastestChapterId;
                 super.saveSubscribe(resolve, reject);
             };
             xhr.send(null);
@@ -65,47 +50,64 @@ class Parser extends BaseParser {
     getLastestChatperInfo (responseDom) {
         let chaptersEls = responseDom.querySelectorAll('.chapter-list li');
         let chapters = [];
+        let chapter = {};
         chaptersEls.forEach((chapterEl) => {
             let datestr = chapterEl.querySelector('.date').textContent.trim();
             let title = chapterEl.querySelector('.val').textContent.trim();
             let chapterNo = /\d+(?:\.\d+)?$/.exec(title)[0] - 0;
 
             let matches = /(\d+)\s*(years|year|month|months|weeks|week|days|day|hours|hour|minutes|minute|seconds|second)/i.exec(datestr);
-            let i = -100;
+            let times = matches[1];
             let unit = matches[2].toLowerCase();
+            let weight = Number.MAX_SAFE_INTEGER;
 
             if (matches) {
-                let base = matches[1].length < 10000 ? 10000 + matches[1] : matches[1];
-
                 switch (unit) {
                     case 'years':
                     case 'year':
-                        i = 7 + '' + base; break;
+                        weight = times * 31536000; break;
                     case 'month':
                     case 'months':
-                        i = 6 + '' + base; break;
+                        weight = times * 2592000; break;
                     case 'weeks':
                     case 'week':
-                        i = 5 + '' + base; break;
+                        weight = times * 604800; break;
                     case 'days':
                     case 'day':
-                        i = 4 + '' + base; break;
+                        weight = times * 86400; break;
                     case 'hours':
                     case 'hour':
-                        i = 3 + '' + base; break;
+                        weight = times * 3600; break;
                     case 'minutes':
                     case 'minute':
-                        i = 2 + '' + base; break;
+                        weight = times * 60; break;
                     case 'seconds':
                     case 'second':
-                        i = 1 + '' + base; break;
+                        weight = times; break;
+                }
+
+                if (!chapter.weight || weight < chapter.weight) {
+                    chapter.id = chapterNo;
+                    chapter.title = title;
+                    chapter.weight = weight;
                 }
             }
-
-            chapters.push({ i: i, id: chapterNo, title: title});
         });
 
-        return chapters.shift();
+        return chapter;
+    }
+
+    parseDocument (document) {
+        let dom = super.parseDocument(document);
+        let chapterInfo = this.getLastestChatperInfo(dom);
+        let lastestChapterId = chapterInfo.id;
+        let lastestChapterTitle = chapterInfo.title;
+        let title = dom.querySelector('.widget-heading').innerText;
+        let lastTime = Date.now();
+
+        this.setSubscribeInfoProperties(lastestChapterId, lastestChapterTitle, title, lastTime);
+
+        return true;
     }
 }
 
