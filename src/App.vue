@@ -1,7 +1,7 @@
 <template>
     <div class="cvr-app-container">
         <div class="cvr-app-show-btn" @click="appShowBtnClickHandler">
-            <span style="color:#1c6af8;font-weight:700">C</span><span style="color:#aa2c1b;font-weight:700">V</span><span style="color:#179709;font-weight:700">R</span>
+            <span style="color:#1c6af8;font-weight:700">M</span><span style="color:#aa2c1b;font-weight:700">V</span><span style="color:#179709;font-weight:700">R</span>
         </div>
         <debug-panel style="position:fixed;bottom:3px;left:3px;z-index:9999"
                      v-if="debugModeActive"></debug-panel>
