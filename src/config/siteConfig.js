@@ -1,5 +1,6 @@
 const siteConfig = {
     readcomics_tv: {
+        disabled: true,
         parser: 'readcomics_tv',
         pattern: /^(https?:\/{2}w{3}\.readcomics\.tv\/([^\/]+)\/chapter-[\d]+)/i,
         groups: { url: 1, mroot: 1, id: 2 },
@@ -11,6 +12,7 @@ const siteConfig = {
     },
 
     readcomiconline_to: {
+        disabled: true,
         parser: 'readcomiconline_to',
         pattern: /^(https?:\/{2}readcomiconline\.to\/Comic\/[^\/]+\/[^\/]+\?id=([\d]+))/i,
         groups: { url: 1, mroot: 1, id: 2 },
@@ -67,7 +69,7 @@ const siteConfig = {
     },
 
     eatmanga_me: {
-        diabled: true,
+        disabled: true,
         parser: 'eatmanga_me',
         pattern: /^(https?:\/{2}(?:w{3}\.)?eatmanga\.me\/Manga-Scan\/([^\/]+)\/([^\/]+))/i,
         groups: { url: 1, mroot: 1, id: 2 },
@@ -103,7 +105,7 @@ const siteConfig = {
         icon: '',
         logo: 'http://www.mngdoom.com/assets/img/lgo.png',
         origins: [],
-        desc: ''
+        desc: 'Known as Mangadoom'
     },
 
     mangapark_me: {
@@ -121,6 +123,7 @@ const siteConfig = {
     },
 
     e_hentai_org: {
+        disabled: true,
         parser: 'e_hentai_org',
         pattern: /^https?:\/{2}e-hentai\.org\/g\/\d+\/[\da-z]+\/?/i,
         groups: { url: 0, mroot: 99, id: 99 },
