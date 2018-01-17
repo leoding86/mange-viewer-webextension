@@ -94,13 +94,13 @@ const siteConfig = {
 
     mangadoom_co: {
         parser: 'mangadoom_co',
-        pattern: /^(https?:\/{2}mangadoom\.co\/([^\/]+)\/\d+)/i,
+        pattern: /^(https?:\/{2}(?:w{3}\.)?(?:mangadoom|mngdoom)\.com?\/([^\/]+)\/\d+)/i,
         groups: { url: 1, mroot: 1, id: 2 },
-        mhpattern: /^https?:\/{2}mangadoom\.co\/([^\/]+)\/?/i,
+        mhpattern: /^https?:\/{2}(?:w{3}\.)?(?:mangadoom|mngdoom)\.com?\/([^\/]+)\/?/i,
         mhgroups: { id: 1 },
-        site: 'http://mangadoom.co',
+        site: 'http://www.mngdoom.com',
         icon: '',
-        logo: 'http://mangadoom.co/assets/img/lgo.png',
+        logo: 'http://www.mngdoom.com/assets/img/lgo.png',
         origins: [],
         desc: ''
     },
