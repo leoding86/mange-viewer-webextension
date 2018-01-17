@@ -43,6 +43,7 @@ class Parser extends BaseParser {
             xhr.open('get', this.getMangaURL());
             xhr.onload = () => {
                 if (this.parseDocument(xhr.responseText)) {
+                    this.lastestSavedChapterId = this.lastestChapterId;
                     super.saveSubscribe(resolve, reject);
                 } else {
                     reject(_('subscribe_failed'));
