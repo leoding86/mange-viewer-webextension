@@ -26,7 +26,12 @@ class Parser extends BaseParser {
         return new Promise((resolve, reject) => {
             let xhr = XHR();
             xhr.open('get', this.getMangaURL());
-            xhr.onload = () => {
+            xhr.onload = (e) => {
+                if (e.target.status != 200) {
+                    reject(this.toJSON());
+                    return;
+                }
+
                 this.parseDocument(xhr.responseText);
                 resolve(this.toJSON());
             };
@@ -38,7 +43,12 @@ class Parser extends BaseParser {
         return new Promise((resolve, reject) => {
             let xhr = XHR();
             xhr.open('get', this.getMangaURL());
-            xhr.onload = () => {
+            xhr.onload = (e) => {
+                if (e.target.status != 200) {
+                    reject(_('subscribe_failed'));
+                    return;
+                }
+                
                 this.parseDocument(xhr.responseText);
                 this.lastestSavedChapterId = this.lastestChapterId;
                 super.saveSubscribe(resolve, reject);
