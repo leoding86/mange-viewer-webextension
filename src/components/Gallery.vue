@@ -16,13 +16,16 @@
                  width: imgStyle.width + 'px',
                  height: imgStyle.height + 'px',
                  top: imgStyle.top + 'px',
-                 left: imgStyle.left + 'px'
+                 left: imgStyle.left + 'px',
+                 opacity: imgStyle.opacity
              }"
              draggable="false" @transitionend="(evt) => { evt.stopPropagation(); }" />
-        <div class="status" v-if="!isComplete"
+        <div class="status" v-show="!isComplete"
              :style="{ top: statusTop + 'px' }">
             <div class="info">{{statusInfo}}</div>
         </div>
+        <a class="reload-image-btn" title="Reload Image" href="javascript:void(0)"
+           @click="reloadImageEventHandle">R</a>
     </div>
 </template>
 
@@ -86,7 +89,8 @@
                 imgStyle : {
                     left: 0, top: 0,
                     width: 0, height: 0,
-                    transition: 'all 0s'
+                    transition: 'all 0s',
+                    opacity: 0
                 },
                 imgInitOffsetLeft: 0,
                 imgInitOffsetTop : 0,
@@ -116,7 +120,13 @@
             imgSrc (val) {
                 this.isComplete = false;
                 this.imgStyle.transition = 'all 0s';
-                this.$img.src = '';
+                this.$img.src = ''; // cancel image onload event
+                this.$img.opacity = 0;
+
+                if (!Boolean(val)) {
+                    return;
+                }
+
                 this.init();
             },
 
@@ -225,12 +235,26 @@
 
                 setTimeout(() => {
                     this.imgStyle.transition = 'all 0.2s';
+                    this.imgStyle.opacity = 1;
                 }, 500);
             },
 
             imageErrorHandler () {
-                this.imgSrc = null;
-                this.imgSrc = this.$img.target.src;
+                // this.imgSrc = this.buildUrl(this.imgSrc, (new Date).getTime());
+            },
+
+            reloadImageEventHandle (e) {
+                e.stopPropagation();
+                let src = this.$img.getAttribute('src');
+
+                if (src.indexOf('__d=') > 0) {
+                    src = src.split('__d=')[0];
+                }
+
+                src += src.indexOf('?') > 0 ? '&' : '?';
+                src += '__d=' + (new Date).getTime();
+
+                this.imgSrc = src.replace(/&+/, '&');
             },
 
             imagePointMove (clientX, clientY, e) {
@@ -528,6 +552,26 @@ Debug.emit('zoom to ' + this.zoom + ' time(s)');
             -o-transform: translateZ(0);
             transform: translateZ(0);
             user-drag: none;
+        }
+
+        a.reload-image-btn {
+            position: absolute;
+            top: 30px;
+            right: 3px;
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.8);
+            text-align: center;
+            font-size: 12px;
+            color: #000;
+            text-decoration: none;
+            line-height: 20px;
+            font-weight: 700;
+
+            &:hover {
+                background: #fff;
+            }
         }
     }
 </style>
