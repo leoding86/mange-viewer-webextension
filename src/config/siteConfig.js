@@ -67,6 +67,7 @@ const siteConfig = {
     },
 
     eatmanga_me: {
+        diabled: true,
         parser: 'eatmanga_me',
         pattern: /^(https?:\/{2}(?:w{3}\.)?eatmanga\.me\/Manga-Scan\/([^\/]+)\/([^\/]+))/i,
         groups: { url: 1, mroot: 1, id: 2 },
