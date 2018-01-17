@@ -29,13 +29,7 @@ class Parser extends BaseParser {
             let xhr = XHR();
             xhr.open('get', this.getMangaURL());
             xhr.onload = () => {
-                let domparser = new DOMParser();
-                let elements = domparser.parseFromString(xhr.responseText, 'text/html');
-                let lastestChapterEl = elements.querySelector('#latestchapters li');
-                this.lastestChapterId = /(\d+)\/?$/.exec(lastestChapterEl.querySelector('a').getAttribute('href'))[1];
-                this.lastestChapterTitle = lastestChapterEl.querySelector('a').textContent;
-                this.title = elements.querySelector('#mangaproperties h1').textContent.replace('manga', '');
-                this.lastTime = Date.now();
+                this.parseDocument(xhr.responseText);
                 resolve(this.toJSON());
             };
             xhr.send(null);
@@ -47,17 +41,25 @@ class Parser extends BaseParser {
             let xhr = XHR();
             xhr.open('get', this.getMangaURL());
             xhr.onload = () => {
-                let domparser = new DOMParser();
-                let elements = domparser.parseFromString(xhr.responseText, 'text/html');
-                let lastestChapterEl = elements.querySelector('#latestchapters li');
-                this.lastestSavedChapterId = this.lastestChapterId = /(\d+)\/?$/.exec(lastestChapterEl.querySelector('a').getAttribute('href'))[1];
-                this.lastestChapterTitle = lastestChapterEl.querySelector('a').textContent;
-                this.title = elements.querySelector('#mangaproperties h1').textContent;
-                this.lastTime = Date.now();
+                this.parseDocument(xhr.responseText);
+                this.lastestSavedChapterId = this.lastestChapterId;
                 super.saveSubscribe(resolve, reject);
             };
             xhr.send(null);
         });
+    }
+
+    parseDocument (document) {
+        let dom = super.parseDocument(document);
+        let lastestChapterEl = dom.querySelector('#latestchapters li');
+        let lastestChapterId = /(\d+)\/?$/.exec(lastestChapterEl.querySelector('a').getAttribute('href'))[1];
+        let lastestChapterTitle = lastestChapterEl.querySelector('a').textContent;
+        let title = dom.querySelector('#mangaproperties h1').textContent.replace('manga', '');
+        let lastTime = Date.now();
+
+        this.setSubscribeInfoProperties(lastestChapterId, lastestChapterTitle, title, lastTime);
+
+        return true;
     }
 }
 
