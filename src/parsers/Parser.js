@@ -44,6 +44,15 @@ class Parser {
     //     }, { urls: _this.resOrigin }, [ 'requestHeaders', 'blocking' ]);
     // }
 
+    /**
+     * Check is the site disabled
+     * 
+     * @return {Boolean}
+     */
+    isDisabled () {
+        return Boolean(this.siteConfig.disabled);
+    }
+
     getId () {
         return this.id;
     }

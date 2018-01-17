@@ -7,16 +7,17 @@ class BaseParser {
 
     constructor (name) {
         this.name = name;
-        this.pattern = _r[name].mhpattern;
-        this.groups = _r[name].mhgroups;
-        this.site = this._getSiteHotfix(_r[name].site);
+        this.siteConfig = _r[this.name];
+        this.pattern = this.siteConfig.mhpattern;
+        this.groups = this.siteConfig.mhgroups;
+        this.site = this._getSiteHotfix(this.siteConfig.site);
         this.url = null;
         this.id = null;
         this.subscribeId = null;
         this.lastestChapterId = null;
         this.lastestChapterTitle = null;
         this.lastestSavedChapterId = null;
-        this.parserName = name;
+        this.parserName = this.name;
         this.extras = {};
     }
 
@@ -25,6 +26,15 @@ class BaseParser {
         let matches = this.pattern.exec(this.url);
         this.id = matches[this.groups.id];
         this.subscribeId = this.getSubscribeId();
+    }
+
+    /**
+     * Check is the site disabled
+     * 
+     * @return {Boolean}
+     */
+    isDisabled () {
+        return Boolean(this.siteConfig.disabled);
     }
 
     /**
