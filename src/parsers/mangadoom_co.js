@@ -13,12 +13,9 @@ class Parser extends BaseParser {
         this.url = this.pattern.exec(this.url)[0];
         this.magic = new Common.Magic();
         this.datasets = this.magic.getVar('images', 'object');
-        let pattern = /^http:\/\/mangadoom\.co\/[^\/]+\/chapters\/\d+\/+(http:\/{2}.*)/;
 
         this.datasets.map((item) => {
-            let matches = pattern.exec(item.url);
-            item.url = matches[1];
-            return item;
+            return item.url;
         });
 
         return new Promise((resolve, reject) => {
