@@ -15,7 +15,7 @@
                  @mouseenter="subscribeMouseenterHandler($event)"
                  @mouseleave="subscribeMouseleaveHandler($event)">
                 <div class="row-info" @click="subscribeClickHandler(subscribe)">
-                    <div class="title"><strong>{{subscribe.title}}</strong> <span class="label label-primary">{{_r[subscribe.parserName].parser}}</span></div>
+                    <div class="title"><strong>{{subscribe.title}}</strong> <span class="label label-primary">{{_r[subscribe.parserName].parser}}</span> <span class="label label-danger" v-if="subscribe.syncStatus !== 'ok'">sync failed</span></div>
                     <div class="notice" v-html="compareChapter(subscribe.lastestChapterId, subscribe.lastestSavedChapterId)"></div>
                     <div class="clearfix"></div>
                 </div>
@@ -67,8 +67,15 @@
                     if (b.parserName < a.parserName) return -1;
                     return 0;
                 });
-                // console.log(subscribeInfos);
-                this.subscribeInfos = subscribeInfos;
+
+                let temp = {};
+
+                subscribeInfos.forEach((item) => {
+                    item.syncStatus = 'ok';
+                    temp[item.subscribeId] = item;
+                });
+
+                this.subscribeInfos = temp;
                 this.ready = true;
             });
 
@@ -88,29 +95,36 @@ Debug.emit('Remove chrome runtime message listener');
             },
 
             messageHandler (message) {
-                if (message.type === 'sync_complete') {
-Debug.emit('Subscribe ' + message.msg.subscribeId + ' is sync completed');
-                    this.subscribeInfos.forEach((info) => {
-                        if (info.subscribeId == message.msg.subscribeId) {
-                            info.lastestChapterId = message.msg.lastestChapterId;
-                            info.lastestChapterTitle = message.msg.lastestChapterTitle;
-                            // console.log(info);
-                        }
-                    });
-                } else if (message.type === 'syncing') {
-Debug.emit('It\'s syncing');
-                    alert(_('is_syncing_notice'));
-                } else if (message.type === 'sync_progress') {
-Debug.emit('Sync progress ' + message.msg);
-                    this.syncNotice = message.msg;
-                } else if (message.type === 'sync_error') {
-                    alert(message.msg);
-                    this.syncNotice = _('sync_now');
-                } else if (message.type === 'sync_done') {
-Debug.emit('Sync successed');
-                    this.syncNotice = _('sync_now');
-                } else if (message.type === 'sync_finished') {
-Debug.emit('Sync finished');
+                switch (message.type) {
+                    case 'sync_complete':
+                        Debug.emit('Subscribe ' + message.msg.subscribeId + ' is sync completed');
+                        this.subscribeInfos[message.msg.subscribeId].lastestChapterId = message.msg.lastestChapterId;
+                        this.subscribeInfos[message.msg.subscribeId].lastestChapterTitle = message.msg.lastestChapterTitle;
+                        this.subscribeInfos[message.msg.subscribeId].syncStatus = 'ok';
+                        break;
+                    case 'syncing':
+                        Debug.emit('It\'s syncing');
+                        alert(_('is_syncing_notice'));
+                        break;
+                    case 'sync_progress':
+                        Debug.emit('Sync progress ' + message.msg);
+                        this.syncNotice = message.msg;
+                        break;
+                    case 'sync_error':
+                        alert(message.msg);
+                        this.syncNotice = _('sync_now');
+                        break;
+                    case 'sync_item_error':
+                        this.subscribeInfos[message.msg['subscribeId']].syncStatus = 'error';
+                        break;
+                    case 'sync_done':
+                        Debug.emit('Sync successed');
+                        this.syncNotice = _('sync_now');
+                        break;
+                    case 'sync_finished':
+                        Debug.emit('Sync finished');
+                        this.syncNotice = _('sync_now');
+                        break;
                 }
             },
 

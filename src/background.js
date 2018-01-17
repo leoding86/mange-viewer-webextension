@@ -55,13 +55,15 @@ const processes = {
                     msg.type = 'sync_complete', msg.msg = info;
                     chrome.runtime.sendMessage(msg);
                     this.startSync(); // When current sync task done, start next
-                }).catch(() => {
-                    msg.type = 'sync_error', msg.msg = subscribeInfo;
+                }).catch((info) => {
+                    msg.type = 'sync_item_error', msg.msg = info;
                     chrome.runtime.sendMessage(msg);
+                    this.startSync();
                 });
             }).catch(() => {
-                msg.type = 'sync_error', msg.msg = subscribeInfo;
+                msg.type = 'sync_parser_error', msg.msg = subscribeInfo;
                 chrome.runtime.sendMessage(msg);
+                this.startSync();
             });
         } else {
             if (updatedSubscribeInfos.length > 0) {
