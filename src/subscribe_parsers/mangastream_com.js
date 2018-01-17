@@ -60,7 +60,7 @@ class Parser extends BaseParser {
     }
 
     parseDocument (document) {
-        let doc = this.parseDocument(document);
+        let doc = super.parseDocument(document);
         let lastestChapterEl = doc.querySelector('table a');
         let lastestChapterId = /(\d+\/\d+)\/1?$/.exec(lastestChapterEl.getAttribute('href'))[1];
         let lastestChapterTitle = lastestChapterEl.textContent;
