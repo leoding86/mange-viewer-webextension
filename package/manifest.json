@@ -1,18 +1,10 @@
 {
     "manifest_version": 2,
 
-    // Firefox only
-    // "applications": {
-    //     "gecko": {
-    //         "id": "{55239418-cdf9-4a1d-9b38-d5f47240b57f}",
-    //         "strict_min_version": "45.0"
-    //     }
-    // },
-
     "name": "__MSG_extName__",
     "short_name": "MVR",
     "description": "__MSG_extDescription__",
-    "version": "0.7.9",
+    "version": "0.8",
     "default_locale": "en",
     "icons": {
         "16": "assets/icon16.png",
@@ -32,32 +24,12 @@
         "webRequestBlocking",
         "storage",
         "<all_urls>"
-        // "*://*.readcomics.tv/*",
-        // "*://*.readcomiconline.to/*",
-        // "*://*.mangapanda.com/*",
-        // "*://*.mangastream.com/*",
-        // "*://*.readms.net/*",
-        // "*://*.readms.com/*",
-        // "*://*.eatmanga.com/*",
-        // "*://*.kissmanga.com/*",
-        // "*://*.mangadoom.co/*",
-        // "*://*.mangapark.me/*"
     ],
 
     "content_scripts": [
         {
             "matches": [
                 "<all_urls>"
-                // "*://*.readcomics.tv/*",
-                // "*://*.readcomiconline.to/*",
-                // "*://*.mangapanda.com/*",
-                // "*://*.mangastream.com/*",
-                // "*://*.readms.com/*",
-                // "*://*.readms.net/*",
-                // "*://*.eatmanga.com/*",
-                // "*://*.kissmanga.com/*",
-                // "*://*.mangadoom.co/*",
-                // "*://*.mangapark.me/*"
             ],
             "js": [
                 "build/bundle.content_script.js"

@@ -120,21 +120,6 @@ const siteConfig = {
         origins: [],
         nsfw: true,
         desc: ''
-    },
-
-    e_hentai_org: {
-        disabled: true,
-        parser: 'e_hentai_org',
-        pattern: /^https?:\/{2}e-hentai\.org\/g\/\d+\/[\da-z]+\/?/i,
-        groups: { url: 0, mroot: 99, id: 99 },
-        mhpattern: null,
-        mhgroups: null,
-        site: 'https://e-hentai.org',
-        icon: '',
-        logo: '',
-        origins: [],
-        nsfw: true,
-        desc: ''
     }
 }
 
