@@ -1,7 +1,7 @@
-var path = require('path')
-var webpack = require('webpack')
-var fs = require('fs')
-var editJsonFile = require("edit-json-file");
+var path = require('path');
+var webpack = require('webpack');
+var fs = require('fs');
+var fse = require("fs-extra");
 
 module.exports = {
     entry () {
@@ -82,15 +82,13 @@ module.exports = {
     devtool: '#eval-source-map'
 }
 
-console.log('Remove builds');
-var files = fs.readdirSync(path.resolve(__dirname, 'package/build'));
-files.forEach(function(file) {
-    if (file === '.' || file === '...') {
-        return;
-    }
+console.log('Remove package');
+fse.readdirSync(path.resolve(__dirname, 'package'));
+console.log('Package removed');
 
-    fs.unlinkSync(path.resolve(__dirname, 'package/build', file));
-});
+console.log('Copy package resources');
+fse.copySync(path.resolve(__dirname, 'src/package'), path.resolve(__dirname, 'package'));
+console.log('Package resources copied');
 
 if (process.env.NODE_ENV === 'production') {
 
@@ -127,7 +125,7 @@ module.exports.plugins = (module.exports.plugins || []).concat([
     })
 ])
 
-var manifestData = fs.readFileSync(path.resolve(__dirname, 'src/manifest.json'), 'utf-8');
+var manifestData = fs.readFileSync(path.resolve(__dirname, 'src/package/manifest.json'), 'utf-8');
 var manifestDataJson = JSON.parse(manifestData);
 
 if (process.env.NODE_ENV === 'production') {
