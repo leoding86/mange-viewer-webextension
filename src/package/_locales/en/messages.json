@@ -1,0 +1,189 @@
+{
+    "extName": {
+        "message": "Manga Viewer"
+    },
+
+    "extDescription": {
+        "message": "It's a manga viewer supports preload image, zoomable image and drag to view for some websites."
+    },
+
+    "start_read": {
+        "message": "Start Read"
+    },
+
+    "refresh_target_page": {
+        "message": "Refresh the comic page and try again"
+    },
+
+    "not_supported": {
+        "message": "This page is not been supported"
+    },
+
+    "initializing_parser": {
+        "message": "Initializing parser"
+    },
+
+    "initializing_parser_failed": {
+        "message": "Initializing parser failed"
+    },
+
+    "check_issue": {
+        "message": "There was a issue about target comic page, please check it and try again"
+    },
+
+    "interactive_mode": {
+        "message": "Touchscreen"
+    },
+
+    "debug_mode": {
+        "message": "Debug mode"
+    },
+
+    "open": {
+        "message": "Open"
+    },
+
+    "init_zoom_level": {
+        "message": "Init zoom"
+    },
+
+    "more": {
+        "message": "More"
+    },
+
+    "get_image_count": {
+        "message": "Got images: "
+    },
+
+    "file_format_support": {
+        "message": "Support zip, rar, cbz, cbr file"
+    },
+
+    "history": {
+        "message": "History"
+    },
+
+    "others": {
+        "message": "Others"
+    },
+
+    "read_local_manga": {
+        "message": "Read Local Manga"
+    },
+
+    "sync_memory_in_used": {
+        "message": "Sync memory in used"
+    },
+
+    "local_memory_in_used": {
+        "message": "Local memory in used"
+    },
+
+    "local_history_storage_in_used": {
+        "message": "Local history storage in used (1000 recrods max)"
+    },
+
+    "sync_history_storage_in_used": {
+        "message": "Sync history storage in used (When the storage is near full, old record will be deleted)"
+    },
+
+    "select_all": {
+        "message": "Select All"
+    },
+
+    "unselect_all": {
+        "message": "Unselect All"
+    },
+
+    "delete": {
+        "message": "Delete"
+    },
+
+    "clear": {
+        "message": "Empty"
+    },
+
+    "local_history": {
+        "message": "Local History"
+    },
+
+    "sync_history": {
+        "message": "Sync History"
+    },
+
+    "search_history": {
+        "message": "Search History"
+    },
+
+    "open_file": {
+        "message": "Open File"
+    },
+
+    "sync_support_notice": {
+        "message": "You need Firefox version >= 53 to synchronize history."
+    },
+
+    "clear_local_memory": {
+        "message": "Empty local storage"
+    },
+
+    "supported_sites": {
+        "message": "Supported sites"
+    },
+
+    "storage": {
+        "message": "Storage"
+    },
+
+    "settings": {
+        "message": "Settings"
+    },
+
+    "gallery_zoom_mode": {
+        "message": "Gallery zoom mode"
+    },
+
+    "gallery_zoom_mode_type1": {
+        "message": "Type 1"
+    },
+
+    "gallery_zoom_mode_type2": {
+        "message": "Type 2"
+    },
+
+    "gallery_zoom_mode_type1_help_text": {
+        "message": "Zoom: mouse wheel"
+    },
+
+    "gallery_zoom_mode_type2_help_text": {
+        "message": "Zoom: ctrl + mouse wheel; Move vertically: mouse wheel"
+    },
+
+    "has_been_subscribed": {
+        "message": "This manga has been subscribed"
+    },
+
+    "subscribe_failed": {
+        "message": "Something happened when subscribe the manga"
+    },
+
+    "subscribe_successed": {
+        "message": "Subscribe done"
+    },
+
+    "subscribe": {
+        "message": "Subscribe"
+    },
+
+    "sync_now": {
+        "message": "Sync now"
+    },
+
+    "is_syncing_notice": {
+        "message": "It's syncing, please refresh page until it's completed"
+    },
+
+    "delete_confirm": {
+        "message": "Are you sure delete it ?"
+    }
+}
