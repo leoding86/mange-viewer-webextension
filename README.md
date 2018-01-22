@@ -3,12 +3,8 @@
 A web extension for enhancing user experience for reading manga on website. Support Chrome and Firefox, also support touchscreen  
   
 Supported sites:  
-readcomics.tv  
-readcomiconline.to  
-mangapanda.com  
-mangastream.com (readms.com)  
-eatmanga.com  
-kissmanga.com  
-mangadoom.cn  
-mangapark.me  
-(...keep adding)
+* www.mangapanda.com  
+* mangastream.com  
+* kissmanga.com  
+* www.mngdoom.com (Known as Mangadoom)  
+* mangapark.me
